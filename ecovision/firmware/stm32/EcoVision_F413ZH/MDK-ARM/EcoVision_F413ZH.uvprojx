@@ -548,6 +548,7 @@
           <Files>
 <File><FileName>net_codec.c</FileName><FileType>1</FileType><FilePath>../App/Src/net_codec.c</FilePath></File>
 <File><FileName>net_publish.c</FileName><FileType>1</FileType><FilePath>../App/Src/net_publish.c</FilePath></File>
+<File><FileName>net_recovery.c</FileName><FileType>1</FileType><FilePath>../App/Src/net_recovery.c</FilePath></File>
 <File><FileName>app_net.c</FileName><FileType>1</FileType><FilePath>../App/Src/app_net.c</FilePath></File>
             <File><FileName>app_environment.c</FileName><FileType>1</FileType><FilePath>../App/Src/app_environment.c</FilePath></File>
             <File><FileName>environment_codec.c</FileName><FileType>1</FileType><FilePath>../App/Src/environment_codec.c</FilePath></File>

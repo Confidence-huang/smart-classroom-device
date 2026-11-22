@@ -2,6 +2,7 @@
 #include "app_net.h"
 #include "net_codec.h"
 #include "net_publish.h"
+#include "net_recovery.h"
 #include "app_log.h"
 #include "app_environment.h"
 #include "app_vision.h"
@@ -80,25 +81,36 @@ static int transaction(const char *command,const char *expected,uint32_t timeout
  return -2;
 }
 static bool simple(const char *cmd){return transaction(cmd,NULL,5000U)==0;}
-static bool find_at(void) {
- static const uint32_t rates[]={115200U,921600U,460800U,230400U,57600U,9600U};
- for(unsigned i=0;i<sizeof rates/sizeof rates[0];i++) {
-  (void)HAL_UART_AbortReceive(&huart6);huart6.Init.BaudRate=rates[i];
-  if(HAL_UART_Init(&huart6)!=HAL_OK)continue;
-  uint32_t before=received_bytes;
-  int result=transaction("AT",NULL,1800U);
-  AppLog_Printf("[NET] AT probe baud=%lu result=%d rx_bytes=%lu rx_pin=%u\r\n",(unsigned long)rates[i],result,(unsigned long)(received_bytes-before),(unsigned)HAL_GPIO_ReadPin(GPIOG,GPIO_PIN_9));
-  if(!result)return true;
-  if(rates[i]==115200U && result==-2) {
-   /* A separately powered modem may remain in the previous MicroPython
-    * PPP/data session after the STM32 is reflashed. Respect both guard times. */
-   osDelay(1200U);(void)transmit("+++",3);osDelay(1500U);
-   result=transaction("AT",NULL,1800U);
-   AppLog_Printf("[NET] guarded data-mode escape result=%d\r\n",result);
-   if(!result){(void)transaction("ATH",NULL,3000U);return true;}
-  }
+static bool configure_at_rate(uint32_t baud) {
+ (void)HAL_UART_AbortReceive(&huart6);huart6.Init.BaudRate=baud;
+ if(HAL_UART_Init(&huart6)!=HAL_OK) {
+  AppLog_Printf("[NET] UART reconfigure failed baud=%lu\r\n",(unsigned long)baud);return false;
  }
+ return true;
+}
+static void configure_at(void *context,uint32_t baud) {
+ (void)context;(void)configure_at_rate(baud);
+}
+static int probe_at(void *context,uint32_t baud) {
+ (void)context;if(!configure_at_rate(baud))return -4;
+ uint32_t before=received_bytes;
+ int result=transaction("AT",NULL,1800U);
+ AppLog_Printf("[NET] AT probe baud=%lu result=%d rx_bytes=%lu rx_pin=%u\r\n",(unsigned long)baud,result,(unsigned long)(received_bytes-before),(unsigned)HAL_GPIO_ReadPin(GPIOG,GPIO_PIN_9));
+ return result;
+}
+static bool escape_initial_ppp(void *context) {
+ (void)context;
+ /* Compatibility with the original MicroPython PPP entry is startup-only. */
+ osDelay(1200U);(void)transmit("+++",3);osDelay(1500U);
+ int result=transaction("AT",NULL,1800U);
+ AppLog_Printf("[NET] initial guarded data-mode escape result=%d\r\n",result);
+ if(!result){(void)transaction("ATH",NULL,3000U);return true;}
  return false;
+}
+static bool find_at(void) {
+ static NetAtLink link={false,115200U};
+ const NetRecoveryIo io={NULL,probe_at,escape_initial_ppp,configure_at};
+ return Net_FindAt(&link,&io);
 }
 static bool wait_result(const char *cmd,const char *prefix,size_t count,uint32_t timeout,int *v) {
  return transaction(cmd,prefix,timeout)==0 && Net_Result(matched_line,prefix,v,count);

@@ -9,3 +9,7 @@ D01初始导入检查点25d2d25，源checkpoint5c74253，main基线0f8b9d6。应
 总控本地证据路径为docs/verification/2026-11-22（在总控工作区，不在本仓库根）：d01-recovery-identity.json、d01-recovery-flash-ur.log、d01-recovery-window-failed.json、d01-recovery-uplink.json、ec200u-net9-fault-readonly.json及d01-checks/。完整结论见总控RESULTS.md。
 
 本分支为验证候选；没有PR或推送，也未合入main。解决主UART稳定性后需要最终固定固件的一小时、复位/掉电与云端关联记录。原src/的MicroPython未改，现场当前运行D02 local-auto-20261122.2，不能把net9称为当前实板版本。
+
+## .11恢复流程修正（后续候选）
+
+当前候选版本/哈希见CANDIDATE.json。发现正常已连接链路丢回复后仍扫描全波特率并留在9600退避，现由net_recovery.c集中控制：已确认链路仅按原速率重试，不作PPP逃逸；兼容扫描仅用于首次连接，失败后恢复115200。状态恢复主机测试通过，Keil0错误458告警（新增结构对齐告警未隐藏）。这修复了恢复延迟放大问题，不证明模组底层偶发无响应消失；新实板一小时与复位恢复仍待完成。

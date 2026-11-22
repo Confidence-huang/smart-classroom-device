@@ -5,7 +5,7 @@
 - C/HAL 构建、配置区、软件验证与未完成项：[ecovision/README.md](ecovision/README.md)。
 - 本轮软件结果与硬件验证门槛：[D01 验证记录](ecovision/validation/D01.md)。
 - 当前网页：https://confidence-huang.github.io/smart-classroom-web/ 。网页存在不代表收到新鲜实测。
-- 2026-11-22 已进行实板构建/烧录/只读回及真实4G短测；D01网络恢复候选仍复现超时，一小时稳定性未通过。现场目前为D02 local-auto-20261122.2，灯/风扇未接入，实际动作未测；未推送或开PR。见 ecovision/validation/D01-RECOVERY.md。
+- 2026-11-22 已进行实板构建/烧录/只读回及真实4G短测；D01网络恢复候选仍复现超时，一小时稳定性未通过。现场版本和进行中的测试以总控最新记录为准，灯/风扇未接入，实际动作未测；未推送或开PR。见 ecovision/validation/D01-RECOVERY.md。
 
 当前源码候选版本与HEX哈希见 [CANDIDATE.json](ecovision/validation/CANDIDATE.json)。其中硬件完整验收为false；旧版本实板记录不能自动迁移到新候选。
 

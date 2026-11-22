@@ -1,10 +1,11 @@
 {
-  "candidate": "net-20261122.10",
-  "hex_sha256": "12c4271befef4b9ca8d88a3047b828cf01044db491832cbf2a749d25e98870b8",
+  "candidate": "net-20261122.11",
+  "hex_sha256": "eae7b5112b6539581f4540b0da28d8690ef047e13f5ae8cdf712a86e9039b26d",
   "build_errors": 0,
-  "build_warnings": 456,
+  "build_warnings": 458,
   "added_diagnostics": "UART baud/BRR/RxState/RxCount/NVIC/arm failures/hardware error count; no public contract changes",
   "hardware_validation_complete": false,
   "previous_hardware_evidence_version": "net-20261122.9",
-  "pr_ready": false
+  "pr_ready": false,
+  "change": "Confirmed-baud reconnect; startup-only compatibility scan/PPP escape; failed scan restores115200; bounded UART diagnostics"
 }
