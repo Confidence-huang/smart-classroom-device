@@ -9,6 +9,7 @@ typedef struct {
     bool active, valid, have_seq;
     uint8_t count;
     uint32_t seq, uptime, fresh_at, start_at, accepted, errors, rejected;
+    uint32_t invalid_frames; /* Accepted valid=0 samples since the current link was opened. */
 } EvVision;
 uint16_t EvVision_Crc(const uint8_t *data, size_t size);
 void EvVision_Init(EvVision *v, const char *link, uint32_t now);

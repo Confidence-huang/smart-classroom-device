@@ -23,6 +23,23 @@ static ControlOutput frame(uint32_t at,uint32_t seq) {
     environment.sampled_at=at;environment.th_valid=true;environment.temp_x100=2900;
     return AppControl_Poll();
 }
+
+/* Model an invalid sample followed by a valid sample before AUTO next reads the snapshot. */
+static void invalid_between_polls_resets_confirmation(void) {
+    AppControl_Init();
+    assert(frame(0,0).occupancy==CONTROL_UNKNOWN);
+    assert(frame(1000,1).occupancy==CONTROL_UNKNOWN);
+    vision.invalid_frames++;
+    ControlOutput out=frame(3000,3);
+    assert(out.occupancy==CONTROL_UNKNOWN && !out.led);
+
+    /* The latest valid frame can start a fresh count, but still needs two more frames. */
+    assert(AppControl_Poll().occupancy==CONTROL_UNKNOWN);
+    assert(frame(4000,4).occupancy==CONTROL_UNKNOWN);
+    out=frame(5000,5);
+    assert(out.occupancy==CONTROL_OCCUPIED && out.led);
+}
+
 int main(void) {
     AppControl_Init();memcpy(vision.link,"0000000000000001",17);memcpy(vision.boot,"0000000000000002",17);vision.count=1;
     ControlOutput out=frame(0,0);assert(!out.led);
@@ -40,7 +57,8 @@ int main(void) {
     AppControl_SafetyOff();out=AppControl_Poll();
     assert(out.mode==CONTROL_LOCAL_OFF && !out.led && !out.fan && out.control_epoch==1);
     AppControl_PublishApplied(&out);AppControl_GetSnapshot(&published);assert(published.mode==CONTROL_LOCAL_OFF);
+    invalid_between_polls_resets_confirmation();
     assert(critical_depth==0);
-    puts("PASS: adapter frame identity, duplicate/rejected input, applied-only snapshot, safety OFF and critical-section balance");
+    puts("PASS: adapter frame identity, invalid sample between polls, applied-only snapshot, safety OFF and critical-section balance");
     return 0;
 }

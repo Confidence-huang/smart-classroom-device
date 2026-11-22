@@ -9,12 +9,13 @@ static ControlPolicy policy;
 static ControlOutput applied;
 static char last_link[17],last_boot[17];
 static uint32_t last_seq,last_errors,last_rejected;
+static uint32_t last_invalid_frames; /* Last interruption already handled by AUTO. */
 static bool have_seq;
 
 void AppControl_Init(void) {
     Control_Init(&policy);applied=policy.output;
     memset(last_link,0,sizeof last_link);memset(last_boot,0,sizeof last_boot);
-    have_seq=false;last_errors=0;last_rejected=0;
+    have_seq=false;last_errors=0;last_rejected=0;last_invalid_frames=0;
 }
 
 ControlOutput AppControl_Poll(void) {
@@ -25,9 +26,12 @@ ControlOutput AppControl_Poll(void) {
     if(session) {
         memcpy(last_link,vision.link,17);memcpy(last_boot,vision.boot,17);
         have_seq=false;last_errors=vision.errors;last_rejected=vision.rejected;
+        last_invalid_frames=vision.invalid_frames; /* A new link already resets occupancy confirmation. */
     }
-    bool damaged=vision.errors!=last_errors || vision.rejected!=last_rejected;
-    last_errors=vision.errors;last_rejected=vision.rejected;
+    /* Reset confirmation before counting another frame if any accepted sample was invalid between polls. */
+    bool damaged=vision.errors!=last_errors || vision.rejected!=last_rejected ||
+                 vision.invalid_frames!=last_invalid_frames;
+    last_errors=vision.errors;last_rejected=vision.rejected;last_invalid_frames=vision.invalid_frames;
     ControlInput input={0};
     input.vision_valid=vision.active && vision.valid && !damaged;
     input.vision_age_ms=now-vision.fresh_at;

@@ -1,15 +1,30 @@
 {
-  "candidate": "local-auto-20261122.4",
-  "hex_sha256": "d65cfd6897be9ba1fc0b83811cbf5d28a717eaf525de95656276a964fa92dc6a",
-  "build_errors": 0,
-  "build_warnings": 480,
+  "candidate": "local-auto-20261122.4+review-invalid-frames-pending-main",
+  "hex_sha256": null,
+  "build_errors": null,
+  "build_warnings": null,
   "added_diagnostics": "UART baud/BRR/RxState/RxCount/NVIC/arm failures/hardware error count; no public contract changes",
   "hardware_validation_complete": false,
   "previous_hardware_evidence_version": "local-auto-20261122.2",
   "pr_ready": false,
-  "change": "Confirmed-baud reconnect; startup-only compatibility scan/PPP escape; failed scan restores115200; bounded UART diagnostics",
-  "user_decision": "Reuse prior evidence; no further acceptance retest",
+  "change": "Preserve accepted invalid-frame interruptions across vision snapshots; reset consecutive AUTO confirmation; public protocol unchanged",
+  "user_decision": "Apply original PR patches; combined reviewed candidate short hardware check; do not repeat 1h or 8h acceptance",
   "pr_preparation_authorized": true,
   "pr_creation_authorized": true,
-  "review_basis": "User explicitly requested PR creation using existing evidence, with declared hardware gaps; not automatic merge approval"
+  "review_basis": "Fresh local control RED/GREEN, vision C and 49 Python tests; combined build and hardware pending",
+  "review_comment": "https://github.com/Confidence-huang/smart-classroom-device/pull/2#issuecomment-7080789667",
+  "previous_candidate": {
+    "candidate": "local-auto-20261122.4",
+    "hex_sha256": "d65cfd6897be9ba1fc0b83811cbf5d28a717eaf525de95656276a964fa92dc6a",
+    "build_errors": 0,
+    "build_warnings": 480
+  },
+  "review_tests": {
+    "control_red": "assertion reproduced",
+    "control_green": "pass",
+    "vision_c": "pass",
+    "contracts": 17,
+    "k230_host": 32
+  },
+  "build_status": "Pending D01 maintainer merge, retarget to main and sync latest main before combined Keil build"
 }
