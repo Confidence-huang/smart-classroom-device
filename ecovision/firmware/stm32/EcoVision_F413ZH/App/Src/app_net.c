@@ -1,6 +1,7 @@
 /* EC200U network waits run only in this task; no credential or AT echo logging. */
 #include "app_net.h"
 #include "net_codec.h"
+#include "net_publish.h"
 #include "app_log.h"
 #include "app_environment.h"
 #include "app_vision.h"
@@ -16,6 +17,7 @@ enum {RX_CAP=2048};
 static volatile uint16_t head,tail;
 static volatile bool rx_fault;
 static volatile uint32_t received_bytes;
+static volatile uint32_t receive_arm_failures,receive_errors,last_receive_error;
 static uint8_t ring[RX_CAP],rx_byte;
 static NetAtParser parser;
 static NetConfig config;
@@ -29,14 +31,14 @@ static char matched_line[512];
 
 const char *AppNet_State(void){return state;}
 static void stage(const char *value){state=value;AppLog_Printf("[NET] state=%s\r\n",value);}
-static void arm(void){if(HAL_UART_Receive_IT(&huart6,&rx_byte,1)!=HAL_OK)rx_fault=true;}
+static void arm(void){if(HAL_UART_Receive_IT(&huart6,&rx_byte,1)!=HAL_OK){receive_arm_failures++;rx_fault=true;}}
 void AppNet_RxComplete(UART_HandleTypeDef *uart) {
  if(uart!=&huart6)return;
  uint16_t next=(uint16_t)((head+1U)%RX_CAP);
  received_bytes++;
  if(next==tail)rx_fault=true;else{ring[head]=rx_byte;head=next;}arm();
 }
-void AppNet_RxError(UART_HandleTypeDef *uart){if(uart==&huart6)rx_fault=true;}
+void AppNet_RxError(UART_HandleTypeDef *uart){if(uart==&huart6){last_receive_error=uart->ErrorCode;receive_errors++;rx_fault=true;}}
 static void discard(void) {
  HAL_NVIC_DisableIRQ(USART6_IRQn);tail=head;rx_fault=false;
  (void)HAL_UART_AbortReceive(&huart6);arm();HAL_NVIC_EnableIRQ(USART6_IRQn);
@@ -48,6 +50,7 @@ static bool transmit(const void *p,size_t n) {
 /* A text result is accepted only together with final OK; asynchronous URCs
  * may precede or follow OK. A bare OK cannot confirm MQTT CONNECT/PUBACK. */
 static int transaction(const char *command,const char *expected,uint32_t timeout) {
+ uint32_t received_before=received_bytes;
  bool ok=false,match=expected==NULL;
  bool prompt=expected && !strcmp(expected,">");
  if(command){discard();if(!transmit(command,strlen(command))||!transmit("\r",1))return -4;}
@@ -72,7 +75,8 @@ static int transaction(const char *command,const char *expected,uint32_t timeout
   }
   osDelay(2U);
  }
- AppLog_Printf("[NET] wait timeout expect=%s ok=%u matched=%u\r\n",expected?expected:"OK",ok?1U:0U,match?1U:0U);
+ AppLog_Printf("[NET] timeout expect=%s ok=%u match=%u rx=%lu SR=%lx CR1=%lx err=%lx used=%u drop=%u\r\n",expected?expected:"OK",ok?1U:0U,match?1U:0U,(unsigned long)(received_bytes-received_before),(unsigned long)huart6.Instance->SR,(unsigned long)huart6.Instance->CR1,(unsigned long)huart6.ErrorCode,(unsigned)parser.used,parser.dropping?1U:0U);
+ AppLog_Printf("[NET] UART baud=%lu brr=%lx CR3=%lx RxState=%lx RxCount=%u irq=%u arm_fail=%lu errors=%lu last_err=%lx\r\n",(unsigned long)huart6.Init.BaudRate,(unsigned long)huart6.Instance->BRR,(unsigned long)huart6.Instance->CR3,(unsigned long)huart6.RxState,(unsigned)huart6.RxXferCount,(unsigned)NVIC_GetEnableIRQ(USART6_IRQn),(unsigned long)receive_arm_failures,(unsigned long)receive_errors,(unsigned long)last_receive_error);
  return -2;
 }
 static bool simple(const char *cmd){return transaction(cmd,NULL,5000U)==0;}
@@ -121,14 +125,27 @@ static bool sync_clock(void) {
  AppLog_Printf("[NET] trusted_utc=%lu source=%s\r\n",(unsigned long)epoch,trusted?"NETWORK_NITZ":"NTP");return true;
 }
 static uint32_t utc_now(void){return utc_base+(uint32_t)(HAL_GetTick()-utc_tick)/1000U;}
+static int begin_publish(void *context,const char *name,uint16_t id,bool retain,size_t length) {
+ (void)context;
+ int n=snprintf(command_buffer,sizeof command_buffer,"AT+QMTPUBEX=0,%u,1,%u,\"%s\",%u",id,retain?1U:0U,name,(unsigned)length);
+ if(n<0 || (size_t)n>=sizeof command_buffer)return -4;
+ return transaction(command_buffer,">",10000U);
+}
+static bool write_publish_payload(void *context,const char *data,size_t length) {
+ (void)context;return transmit(data,length);
+}
+static bool finish_publish(void *context,uint16_t id) {
+ (void)context;int v[3]={-1,-1,-1};bool ack=wait_result(NULL,"+QMTPUBEX:",3,20000U,v);
+ if(!ack||v[0]!=0||v[1]!=id||v[2]!=0){AppLog_Printf("[NET] PUBACK failed matched=%u result=%d,%d,%d expected_id=%u\r\n",ack?1U:0U,v[0],v[1],v[2],id);return false;}
+ return true;
+}
 static bool publish(const char *name,const char *data,bool retain) {
  if(++message_id==0)message_id=1;
- (void)snprintf(command_buffer,sizeof command_buffer,"AT+QMTPUBEX=0,%u,1,%u,\"%s\",%u",message_id,retain?1U:0U,name,(unsigned)strlen(data));
- int prompt_result=transaction(command_buffer,">",10000U);
- if(prompt_result||!transmit(data,strlen(data))){AppLog_Printf("[NET] publish prompt failed=%d\r\n",prompt_result);return false;}
- int v[3]={-1,-1,-1};bool ack=wait_result(NULL,"+QMTPUBEX:",3,20000U,v);
- if(!ack||v[0]!=0||v[1]!=message_id||v[2]!=0){AppLog_Printf("[NET] PUBACK failed matched=%u result=%d,%d,%d expected_id=%u\r\n",ack?1U:0U,v[0],v[1],v[2],message_id);return false;}
- return true;
+ const NetPublishIo io={NULL,begin_publish,write_publish_payload,finish_publish};
+ bool missing_prompt=false;
+ bool result=Net_PublishFixed(&io,name,data,message_id,retain,&missing_prompt);
+ if(missing_prompt)AppLog_Printf("[NET] missing prompt; completed declared payload once; matching PUBACK=%u id=%u\r\n",result?1U:0U,message_id);
+ return result;
 }
 static bool configure_tls(void) {
  /* The modem remains powered across MCU reset: close the previous socket

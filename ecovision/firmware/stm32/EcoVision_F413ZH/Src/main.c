@@ -82,7 +82,7 @@ const osThreadAttr_t visionTask_attributes = {
 };
 /* USER CODE BEGIN PV */
 static const uint8_t boot_message[] =
-    "EcoVision F413ZH net-20261121.8, interface baseline 1.0.0\r\n"
+    "EcoVision F413ZH net-20261122.10, interface baseline 1.0.0\r\n"
     "FreeRTOS heartbeat running; HAL TIM6 tick OK\r\n";
 /* USER CODE END PV */
 

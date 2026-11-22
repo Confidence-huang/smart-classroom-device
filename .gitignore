@@ -6,3 +6,6 @@ __pycache__/
 src/settings.py
 src/*.pem
 src/*.cer
+
+# Keep local build products outside reviewed evidence packages.
+ecovision/firmware/stm32/tb6612-evidence/
