@@ -1,8 +1,8 @@
 {
   "candidate": "local-auto-20261122.4+combined-review-20261122",
-  "hex_sha256": null,
-  "build_errors": null,
-  "build_warnings": null,
+  "hex_sha256": "1682b08549e2e47a8a2d0fb24f074293bf05baf398b7e6999f5fc769bc7ffd47",
+  "build_errors": 0,
+  "build_warnings": 481,
   "added_diagnostics": "UART baud/BRR/RxState/RxCount/NVIC/arm failures/hardware error count; no public contract changes",
   "hardware_validation_complete": false,
   "previous_hardware_evidence_version": "local-auto-20261122.2",
@@ -11,7 +11,7 @@
   "user_decision": "Deliver combined HEX on original D02 branch first; no flash or hardware checks in this step",
   "pr_preparation_authorized": true,
   "pr_creation_authorized": true,
-  "review_basis": "Fresh merged-tree control/vision/LED-exit regressions and 17 contract plus 32 K230 host tests pass; combined Keil build pending; no hardware test",
+  "review_basis": "Fresh merged-tree control/vision/LED-exit regressions, 17 contract and 32 K230 host tests, and Keil 0 errors/481 warnings; no hardware validation",
   "review_comment": "https://github.com/Confidence-huang/smart-classroom-device/pull/2#issuecomment-7080789667",
   "previous_candidate": {
     "candidate": "local-auto-20261122.4",
@@ -26,7 +26,7 @@
     "contracts": 17,
     "k230_host": 32
   },
-  "build_status": "Pending fresh combined Keil build after main sync and control/vision regression",
+  "build_status": "PASS: fresh combined Keil rebuild; hardware NOT_RUN",
   "source_main_sha": "ee86e0c9151b1cdc791ab5a58dcda86ddc314ac2",
   "d02_before_sync_sha": "ade40642018399f5aaa7b8190cd8295a57c4415f",
   "integrated_d01_review": {
@@ -42,5 +42,24 @@
     "contracts_passed": 17,
     "k230_host_passed": 32,
     "hardware": "NOT_RUN"
+  },
+  "build_completed_at_beijing": "2026-11-22T23:37:56.183124+08:00",
+  "source_commit_sha": "fd67c806b660dc6e215ad5e561ebc5ada71bad98",
+  "source_project_tree_sha": "7cf7bf564eafc58a87174cd4956afd8731854de7",
+  "hex_path": "ecovision/validation/candidates/D02-combined-20261122/EcoVision_F413ZH.hex",
+  "build_evidence_dir": "ecovision/validation/candidates/D02-combined-20261122",
+  "startup_banner": "local-auto-20261122.4 (unchanged); identify combined candidate by source commit and HEX SHA256",
+  "build_command": "ecovision/firmware/stm32/tests/build_fan.ps1 -EvidenceName D02-COMBINED-20261122",
+  "application_data_start": "0x8000000",
+  "application_data_end_exclusive": "0x8010908",
+  "application_span_bytes": 67848,
+  "private_config_region_included": false,
+  "flash_status": "NOT_RUN; this step delivers combined HEX only",
+  "hardware_short_check": "NOT_RUN; future tests must use this exact HEX",
+  "program_size": {
+    "code": 61938,
+    "ro_data": 5862,
+    "rw_data": 44,
+    "zi_data": 94196
   }
 }

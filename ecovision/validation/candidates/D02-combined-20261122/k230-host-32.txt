@@ -1,0 +1,49 @@
+test_boot_id_does_not_repeat_across_runs (test_entrypoint.EntryTests.test_boot_id_does_not_repeat_across_runs) ... ok
+test_corrupt_boot_id_file_fails_closed (test_entrypoint.EntryTests.test_corrupt_boot_id_file_fails_closed) ... ok
+test_main_loop_handshake_real_fault_and_recovery_frames (test_entrypoint.EntryTests.test_main_loop_handshake_real_fault_and_recovery_frames) ... ok
+test_short_uart_writes_are_completed (test_entrypoint.EntryTests.test_short_uart_writes_are_completed) ... ok
+test_stalled_uart_write_does_not_loop (test_entrypoint.EntryTests.test_stalled_uart_write_does_not_loop) ... ok
+test_uart_disabled_does_not_import_machine (test_entrypoint.EntryTests.test_uart_disabled_does_not_import_machine) ... ok
+test_uart_unconfirmed_fails_before_pinmux (test_entrypoint.EntryTests.test_uart_unconfirmed_fails_before_pinmux) ... ok
+test_fault_between_heartbeats_is_reported (test_figurine_uart.PublisherTests.test_fault_between_heartbeats_is_reported) ... ok
+test_fault_recovery_and_no_sequence_reset (test_figurine_uart.PublisherTests.test_fault_recovery_and_no_sequence_reset) ... ok
+test_handshake_and_one_second_latest_sample (test_figurine_uart.PublisherTests.test_handshake_and_one_second_latest_sample) ... ok
+test_short_writes_and_stall (test_figurine_uart.PublisherTests.test_short_writes_and_stall) ... ok
+test_crc_errors_malformed_non_ascii_and_oversize_resynchronize (test_protocol.ProtocolTests.test_crc_errors_malformed_non_ascii_and_oversize_resynchronize) ... ok
+test_crc_standard_vector (test_protocol.ProtocolTests.test_crc_standard_vector) ... ok
+test_duplicate_query_and_new_link_do_not_reset_seq (test_protocol.ProtocolTests.test_duplicate_query_and_new_link_do_not_reset_seq) ... ok
+test_frozen_public_vectors_match_byte_for_byte (test_protocol.ProtocolTests.test_frozen_public_vectors_match_byte_for_byte) ... ok
+test_incomplete_frame_expires_at_200ms (test_protocol.ProtocolTests.test_incomplete_frame_expires_at_200ms) ... ok
+test_invalid_count_uses_zero_placeholder_with_valid_zero (test_protocol.ProtocolTests.test_invalid_count_uses_zero_placeholder_with_valid_zero) ... ok
+test_no_data_before_query_then_exact_handshake (test_protocol.ProtocolTests.test_no_data_before_query_then_exact_handshake) ... ok
+test_wrap_and_boot_id_validation (test_protocol.ProtocolTests.test_wrap_and_boot_id_validation) ... ok
+test_corrupt_history_is_not_reset (test_runtime_identity.IdentityTests.test_corrupt_history_is_not_reset) ... ok
+test_repeated_entropy_is_rejected_against_history (test_runtime_identity.IdentityTests.test_repeated_entropy_is_rejected_against_history) ... ok
+test_failure_replaces_previous_count_and_recovery_is_immediate (test_vision.VisionTests.test_failure_replaces_previous_count_and_recovery_is_immediate) ... ok
+test_fault_between_heartbeats_is_not_hidden_by_old_success (test_vision.VisionTests.test_fault_between_heartbeats_is_not_hidden_by_old_success) ... ok
+test_frame_quality_rejects_missing_wrong_shape_and_saturation (test_vision.VisionTests.test_frame_quality_rejects_missing_wrong_shape_and_saturation) ... ok
+test_heartbeat_includes_fault_without_reinitializing_forever (test_vision.VisionTests.test_heartbeat_includes_fault_without_reinitializing_forever) ... ok
+test_malformed_results_are_invalid (test_vision.VisionTests.test_malformed_results_are_invalid) ... ok
+test_none_result_is_invalid_but_empty_list_is_valid_zero (test_vision.VisionTests.test_none_result_is_invalid_but_empty_list_is_valid_zero) ... ok
+test_over_capacity_is_not_clamped_to_five (test_vision.VisionTests.test_over_capacity_is_not_clamped_to_five) ... ok
+test_resources_are_closed (test_vision.VisionTests.test_resources_are_closed) ... ok
+test_sequence_wrap_does_not_stop_heartbeat (test_vision.VisionTests.test_sequence_wrap_does_not_stop_heartbeat) ... ok
+test_unconfirmed_configuration_cannot_initialize_hardware (test_vision.VisionTests.test_unconfirmed_configuration_cannot_initialize_hardware) ... ok
+test_zero_to_five_are_valid_without_debounce (test_vision.VisionTests.test_zero_to_five_are_valid_without_debounce) ... ok
+
+----------------------------------------------------------------------
+Ran 32 tests in 0.054s
+
+OK
+UART EVH 000000000000000a
+UART TX $EV1,000000000000000a,000000000000000b,0,0,12,1*D72C
+UART TX $EV1,000000000000000a,000000000000000b,1,1000,0,0*6713
+UART TX $EV1,000000000000000a,000000000000000b,2,2000,12,1*1445
+UART EVH 000000000000000a
+UART TX $EV1,000000000000000a,000000000000000b,0,0,0,0*53F3
+UART EVH 000000000000000a
+UART TX $EV1,000000000000000a,000000000000000b,1,1000,15,1*C46B
+UART EVH 000000000000000a
+UART TX $EV1,000000000000000a,000000000000000b,0,10,12,1*8B5F
+UART TX $EV1,000000000000000a,000000000000000b,1,1010,0,1*3292
+UART TX $EV1,000000000000000a,000000000000000b,2,2010,0,0*5B09
