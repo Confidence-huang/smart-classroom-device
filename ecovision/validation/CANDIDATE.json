@@ -9,5 +9,7 @@
   "pr_ready": false,
   "change": "Confirmed-baud reconnect; startup-only compatibility scan/PPP escape; failed scan restores115200; bounded UART diagnostics",
   "user_decision": "Reuse prior evidence; no further acceptance retest",
-  "pr_preparation_authorized": true
+  "pr_preparation_authorized": true,
+  "pr_creation_authorized": true,
+  "review_basis": "User explicitly requested PR creation using existing evidence, with declared hardware gaps; not automatic merge approval"
 }
