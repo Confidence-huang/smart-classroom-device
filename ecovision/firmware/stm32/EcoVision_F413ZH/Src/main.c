@@ -617,6 +617,8 @@ void StartLedTask(void *argument)
   /* USER CODE BEGIN StartLedTask */
   (void)argument;
   AppLed_Run(&huart3);
+  /* A failed LED setup returns here. End only this task so the network and sensor tasks can keep running. */
+  osThreadExit();
   /* USER CODE END StartLedTask */
 }
 

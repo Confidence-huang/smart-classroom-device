@@ -2,7 +2,7 @@
 
 ## 当前快照
 
-- 2026-11-22 D01：PR #1已开放，D02为依赖PR #2。最新用户确认风扇能转、灯能亮，更新此前未接入状态；具体档位/固件、停止/压降、新负载AUTO与远控仍未新增独立通过。代码、软件与硬件版本边界见PROGRESS.md和CANDIDATE.json。按用户要求仅同步已有进度，不重新测试/烧录，不合并main。
+- 2026-11-22 D01审查修复：原PR #1分支增加LED失败返回时osThreadExit；实际入口主机回归先失败后通过，Keil重建0错误459告警，HEX 97cd5764…60840。新镜像尚未烧录；待审查者合入main，再由D02同步并做用户新授权的短测。既有实板证据保留，不合并main。
 
 以下为原MicroPython截至11月18日的历史快照，不代表本轮C/HAL状态：
 
@@ -51,3 +51,5 @@
 - 2026-11-16：用户 VS Code 截图证实 `mpremote` 经 COM15 返回 MicroPython 1.27.0 preview 与 NUCLEO-F413ZH 机器标识；本机只读 `fs ls` 及 `os.listdir('/flash')` 见 `boot.py`、`main.py`，`st7735.LCD`、`quectel.Network`、`umqtt.robust.MQTTClient`、`tls` 导入均成功。EC200U AT COM18 当前也已枚举。未运行 LCD 例程、上传文件或联网发布，下一步屏幕最小验收。
 - 2026-11-16：为本工程建立 VS Code 专用工作区和配置文件，接入 Python 3.12、锁定 mpremote 1.29.0，配置语法检查、数据测试及板端串口任务。电脑端 3 项测试和两份脚本语法检查通过；Python/Pylance 在专用配置文件安装并列出。未执行实板串口任务或上传，REPL 状态待验。
 - 2026-11-15：创建独立源码工程，记录第 1 次 git；电脑端三项载荷测试与语法编译通过。板端和云端验收尚未执行。
+
+- 2026-11-22 PR #1审查7080788516：核对FreeRTOS任务返回断言及CMSIS vTaskDelete路径后应用补丁；新增实际任务入口故障返回回归，修复前退出码1、修复后0。Keil0错误459告警（新增StartLedTask可标注noreturn告警），应用区边界及HEX哈希已核对。未将此缺陷认定为当前间歇上报的已证实根因；未烧录或合并main。详见ecovision/validation/review-fixes/D01/RESULTS.md。
