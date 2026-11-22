@@ -1,0 +1,13 @@
+{
+  "formal_schema_valid_messages": 44,
+  "official_retain_false": true,
+  "boot_sessions_observed": 2,
+  "formal_legacy_correlations": 44,
+  "legacy_api_correlations": 20,
+  "mcu_reset_upload_recovered": true,
+  "observer_published_messages": false,
+  "software_replay_of_real_evidence": true,
+  "one_hour_acceptance_complete": false,
+  "eight_hour_acceptance_complete": false,
+  "remote_command_ack_verified": false
+}

@@ -1,0 +1,22 @@
+{
+  "candidate": "net-20261122.11+review-led-exit",
+  "hex_sha256": "97cd57644809805e22d956fadc86e8c3db488c8f1664f4613343a41c9fd60840",
+  "build_errors": 0,
+  "build_warnings": 459,
+  "added_diagnostics": "UART baud/BRR/RxState/RxCount/NVIC/arm failures/hardware error count; no public contract changes",
+  "hardware_validation_complete": false,
+  "previous_hardware_evidence_version": "net-20261122.9",
+  "pr_ready": false,
+  "change": "StartLedTask exits via osThreadExit if AppLed_Run returns; no public contract changes",
+  "user_decision": "Apply review patches on original PR branches; D01 Keil build first; short combined D02 hardware checks after maintainer merges D01",
+  "pr_preparation_authorized": true,
+  "pr_creation_authorized": true,
+  "review_basis": "Fresh RED/GREEN host regression and Keil rebuild; new hardware verification pending; old evidence retained",
+  "review_comment": "https://github.com/Confidence-huang/smart-classroom-device/pull/1#issuecomment-7080788516",
+  "previous_candidate": {
+    "candidate": "net-20261122.11",
+    "hex_sha256": "eae7b5112b6539581f4540b0da28d8690ef047e13f5ae8cdf712a86e9039b26d"
+  },
+  "startup_banner": "net-20261122.11 (unchanged); identify reviewed image by commit SHA plus HEX SHA256",
+  "review_build_hex": "ecovision/firmware/stm32/tb6612-evidence/D01-REVIEW-20261122/EcoVision_F413ZH-fan-rebuild.hex"
+}

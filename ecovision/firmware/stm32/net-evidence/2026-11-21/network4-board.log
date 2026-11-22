@@ -1,0 +1,79 @@
+EcoVision F413ZH net-20261121.1, interface baseline 1.0.0
+[LED] READY level=0 OFF; ASCII 0..4 selects warm brightness
+[FAN] READY level=0; F0 OFF, F1..F4 PWM 40/60/80/100%
+[ENV] th_valid=1 temp_x100=2952 rh_x100=2499 adc_valid=1 adc12=860 adc16=13763 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[LCD] ST7735 SPI1 PA5/PA7 DC=PF12 CS=PD14 init=OK
+[VISION] WAIT link=1df8d4f34dbf0d50 (UART2 PD5 TX/PD6 RX, 115200 8N1)
+[VISION] heap_free=12136 bytes; task_stack_free=2476 bytes
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[NET] private_config=valid (values not logged)
+[NET] state=AT_WAIT
+[NET] AT probe baud=115200 result=0 rx_bytes=6 rx_pin=1
+[NET] state=SIM_CHECK
+[NET] state=REGISTER
+[NET] state=PDP
+[NET] state=TIME_SYNC
+[NET] trusted_utc=1795272586 source=NETWORK_NITZ
+[NET] state=TLS_CONFIG
+[NET] state=MQTT_CONNECT
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[NET] state=ONLINE
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[NET] PUBACK seq=0 bytes=463 temp_valid=1 vision_valid=0
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[ENV] th_valid=1 temp_x100=2953 rh_x100=2516 adc_valid=1 adc12=852 adc16=13635 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[NET] PUBACK seq=1 bytes=464 temp_valid=1 vision_valid=0
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[ENV] th_valid=1 temp_x100=2953 rh_x100=2511 adc_valid=1 adc12=852 adc16=13635 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[NET] PUBACK seq=2 bytes=464 temp_valid=1 vision_valid=0
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[ENV] th_valid=1 temp_x100=2955 rh_x100=2503 adc_valid=1 adc12=861 adc16=13779 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[NET] PUBACK seq=3 bytes=464 temp_valid=1 vision_valid=0
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[ENV] th_valid=1 temp_x100=2956 rh_x100=2498 adc_valid=1 adc12=870 adc16=13923 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[NET] PUBACK seq=4 bytes=464 temp_valid=1 vision_valid=0
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[ENV] th_valid=1 temp_x100=2953 rh_x100=2477 adc_valid=1 adc12=850 adc16=13603 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[NET] PUBACK seq=5 bytes=464 temp_valid=1 vision_valid=0
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[ENV] th_valid=1 temp_x100=2953 rh_x100=2470 adc_valid=1 adc12=862 adc16=13795 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[NET] PUBACK seq=6 bytes=465 temp_valid=1 vision_valid=0
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B
+[NET] PUBACK seq=7 bytes=464 temp_valid=1 vision_valid=0
+[ENV] th_valid=1 temp_x100=2956 rh_x100=2514 adc_valid=1 adc12=851 adc16=13619 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,1df8d4f34dbf0d50*BD8B

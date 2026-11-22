@@ -1,6 +1,10 @@
 # Gen1 Pro MicroPython
 
-本仓库只存放新写的板端模拟程序。先读根目录 README.md；不要提交 settings.py、证书、账号或密码。真实固件烧录按上级项目规则由用户执行。
+本仓库保留根 src/ 的 MicroPython 历史基线，并在 ecovision/firmware/stm32/ 中引入独立 C/HAL 工程；两者不能互相覆盖或同时作为板端入口。先读 PROJECT_LOG.md、本文与 README.md。settings.py、私有配置、证书账号和整片 Flash 不入库。硬件操作按当前会话授权执行；没有通过验证前不创建 PR、不推 main。
+
+## C/HAL 验证入口
+
+当前功能分支仅准备 D01：STM32 C/HAL 与真实 EC200U 上报。构建和软件核对不等于新增硬件通过；K230 本地灯扇闭环、远控业务 ACK 与长测分别验收。看 ecovision/README.md 和 ecovision/validation/D01.md；原 src/ 不改动。不要把历史日志中的 COM 号、固件身份或测试结论当作当前现场事实。
 
 <!-- GLOBAL-PROJECT-LOG-RULES:START v5 -->
 ## GLOBAL-PROJECT-LOG-RULES 托管规则块（v5）

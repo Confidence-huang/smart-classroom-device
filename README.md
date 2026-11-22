@@ -1,4 +1,21 @@
-# Gen1 Pro 智慧教室板端 MicroPython
+# Smart Classroom 设备工程
+
+**最新进度与剩余任务：[PROGRESS.md](PROGRESS.md)**。用户已确认风扇能转、灯能亮；AUTO真实负载联动与远控仍按进度表列为待完成。
+
+本轮 D01 引入 `ecovision/firmware/stm32/EcoVision_F413ZH/` 下的 C/HAL 工程，保留根 `src/` 的原 MicroPython 基线。两套固件独立，禁止为运行旧示例直接覆盖当前实板。
+
+- C/HAL 构建、配置区、软件验证与未完成项：[ecovision/README.md](ecovision/README.md)。
+- 本轮软件结果与硬件验证门槛：[D01 验证记录](ecovision/validation/D01.md)。
+- 当前网页：https://confidence-huang.github.io/smart-classroom-web/ 。网页存在不代表收到新鲜实测。
+- D01、D02功能分支及PR已上传；既有构建/真实4G/按键/失效保护证据见validation及PR。最新用户反馈确认灯扇已能动作；这是用户观察，不代表AUTO、远控或所有硬件验收通过。
+
+当前源码候选版本与HEX哈希见 [CANDIDATE.json](ecovision/validation/CANDIDATE.json)。其中硬件完整验收为false；旧版本实板记录不能自动迁移到新候选。
+
+## 以下为原 MicroPython 基线说明（保留历史）
+
+以下验收记录针对原 MicroPython 固件及当时设备配置，不代表当前 C/HAL 新增硬件通过。
+
+### Gen1 Pro 智慧教室板端 MicroPython
 
 本仓库保存新写的板端环境监测程序。目标硬件为 NUCLEO-F413ZH、UniKnect Gen1 Pro EC200U 扩展板及官方 160×128 ST7735S LCD。板载 AHT20 温湿度与 PC5 光敏 ADC 已实测可读；K230 尚未接入，人数明确留空。程序不会上报 CO₂。组长的 C 工程、固件和相关文件均未复制到本仓库。
 

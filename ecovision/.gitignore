@@ -1,0 +1,33 @@
+node_modules/
+.runtime/
+.secrets/
+__pycache__/
+*.pyc
+.env
+.env.*
+*.local.json
+*.pem
+*.key
+*.p12
+*.pfx
+*.sqlite
+*.sqlite3
+*.db
+*.uvoptx
+*.uvguix.*
+
+# Local validation outputs; public evidence is selected explicitly.
+firmware/stm32/**/build/
+firmware/stm32/EcoVision_F413ZH/MDK-ARM/EcoVision_F413ZH/
+firmware/stm32/EcoVision_F413ZH/MDK-ARM/DebugConfig/
+firmware/stm32/EcoVision_F413ZH/MDK-ARM/Listings/
+firmware/stm32/tb6612-evidence/D01-20261122/
+firmware/stm32/tb6612-evidence/2026-11-21/
+firmware/stm32/bh1750-evidence/2026-11-21/
+firmware/stm32/reed-evidence/2026-11-21/
+firmware/stm32/environment-evidence/dashboard-preview.ppm
+
+# Preserve the audited text evidence included in this snapshot.
+!firmware/**/*.log
+!tests/**/*.log
+!docs/**/*.log

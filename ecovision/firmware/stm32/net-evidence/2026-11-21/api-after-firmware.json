@@ -1,0 +1,15 @@
+{
+  "http_status": 200,
+  "broker_connected": true,
+  "latest": {
+    "device_id": "f413zh-gen1pro-01",
+    "seq": 848588878,
+    "captured_at": "2026-11-21T15:07:58Z",
+    "received_at": "2026-11-21T15:08:00.499Z",
+    "simulated": false,
+    "temperature_c": 29.16,
+    "humidity_pct": 24.48,
+    "people_count": null,
+    "light_raw_u16": 13827
+  }
+}

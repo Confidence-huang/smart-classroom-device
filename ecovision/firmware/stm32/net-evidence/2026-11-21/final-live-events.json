@@ -1,0 +1,452 @@
+[
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31402.076657,
+    "line": "[NET] LEGACY PUBACK seq=848589088 source=C_HAL_REAL_4G"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31404.8117743,
+    "line": "EcoVision F413ZH net-20261121.8, interface baseline 1.0.0"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31404.9627608,
+    "line": "[LED] READY level=0 OFF; ASCII 0..4 selects warm brightness"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31404.9677347,
+    "line": "[FAN] READY level=0; F0 OFF, F1..F4 PWM 40/60/80/100%"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31405.1467429,
+    "line": "[ENV] th_valid=1 temp_x100=2917 rh_x100=2435 adc_valid=1 adc12=861 adc16=13779 err=0"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31405.1518512,
+    "line": "[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31405.7598267,
+    "line": "[LCD] ST7735 SPI1 PA5/PA7 DC=PF12 CS=PD14 init=OK"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31405.8228566,
+    "line": "[VISION] WAIT link=1450a80575adbf2d (UART2 PD5 TX/PD6 RX, 115200 8N1)"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31405.8278447,
+    "line": "[VISION] heap_free=12144 bytes; task_stack_free=2468 bytes"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31405.8338336,
+    "line": "[VISION] TX $EVQ,1450a80575adbf2d*E55F"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31405.9110388,
+    "line": "[NET] private_config=valid (values not logged)"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31405.9128537,
+    "line": "[NET] state=AT_WAIT"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31405.9321245,
+    "line": "[NET] AT probe baud=115200 result=0 rx_bytes=6 rx_pin=1"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31405.9780795,
+    "line": "[NET] state=SIM_CHECK"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31405.9938787,
+    "line": "[NET] state=REGISTER"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31406.0120224,
+    "line": "[NET] state=PDP"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31406.0458798,
+    "line": "[NET] modem result=ERROR"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31406.0639362,
+    "line": "[NET] state=TIME_SYNC"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31406.0848375,
+    "line": "[NET] trusted_utc=1795273894 source=NETWORK_NITZ"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31406.087005,
+    "line": "[NET] state=TLS_CONFIG"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31406.69501,
+    "line": "[NET] state=MQTT_CONNECT"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31406.7118198,
+    "line": "[NET] modem result=ERROR"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31406.8328987,
+    "line": "[VISION] TX $EVQ,1450a80575adbf2d*E55F"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31407.8339886,
+    "line": "[VISION] TX $EVQ,1450a80575adbf2d*E55F"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31408.0058395,
+    "line": "[NET] state=ONLINE"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31408.2728379,
+    "line": "[NET] PUBACK seq=0 bytes=463 temp_valid=1 vision_valid=0"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31408.5089608,
+    "line": "[NET] LEGACY PUBACK seq=848589095 source=C_HAL_REAL_4G"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31408.8349813,
+    "line": "[VISION] TX $EVQ,1450a80575adbf2d*E55F"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31409.8351821,
+    "line": "[VISION] TX $EVQ,1450a80575adbf2d*E55F"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31410.5640397,
+    "line": "[ENV] th_valid=1 temp_x100=2918 rh_x100=2436 adc_valid=1 adc12=852 adc16=13635 err=0"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31410.5699744,
+    "line": "[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31410.8350412,
+    "line": "[VISION] TX $EVQ,1450a80575adbf2d*E55F"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31411.8350398,
+    "line": "[VISION] TX $EVQ,1450a80575adbf2d*E55F"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31412.8351475,
+    "line": "[VISION] TX $EVQ,1450a80575adbf2d*E55F"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31413.3030007,
+    "line": "[NET] PUBACK seq=1 bytes=463 temp_valid=1 vision_valid=0"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31413.5311025,
+    "line": "[NET] LEGACY PUBACK seq=848589100 source=C_HAL_REAL_4G"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31413.8351363,
+    "line": "[VISION] TX $EVQ,1450a80575adbf2d*E55F"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31414.8351411,
+    "line": "[VISION] TX $EVQ,1450a80575adbf2d*E55F"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31415.8352218,
+    "line": "[VISION] TX $EVQ,1450a80575adbf2d*E55F"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31415.9822195,
+    "line": "[ENV] th_valid=1 temp_x100=2918 rh_x100=2430 adc_valid=1 adc12=854 adc16=13667 err=0"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31415.9881628,
+    "line": "[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31416.8354167,
+    "line": "[VISION] TX $EVQ,1450a80575adbf2d*E55F"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31417.8352604,
+    "line": "[VISION] TX $EVQ,1450a80575adbf2d*E55F"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31418.4264425,
+    "line": "[NET] PUBACK seq=2 bytes=464 temp_valid=1 vision_valid=0"
+  },
+  {
+    "phase": "initial_boot",
+    "at_monotonic": 31418.7013672,
+    "line": "[NET] LEGACY PUBACK seq=848589105 source=C_HAL_REAL_4G"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31418.8364211,
+    "line": "[VISION] TX $EVQ,1450a80575adbf2d*E55F"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31419.5642303,
+    "line": "EcoVision F413ZH net-20261121.8, interface baseline 1.0.0"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31419.715256,
+    "line": "[LED] READY level=0 OFF; ASCII 0..4 selects warm brightness"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31419.720302,
+    "line": "[FAN] READY level=0; F0 OFF, F1..F4 PWM 40/60/80/100%"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31419.8992262,
+    "line": "[ENV] th_valid=1 temp_x100=2916 rh_x100=2425 adc_valid=1 adc12=853 adc16=13651 err=0"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31419.9052648,
+    "line": "[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31420.5123427,
+    "line": "[LCD] ST7735 SPI1 PA5/PA7 DC=PF12 CS=PD14 init=OK"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31420.5752605,
+    "line": "[VISION] WAIT link=c07a50d2e74b3da7 (UART2 PD5 TX/PD6 RX, 115200 8N1)"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31420.5803139,
+    "line": "[VISION] heap_free=12144 bytes; task_stack_free=2468 bytes"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31420.5863012,
+    "line": "[VISION] TX $EVQ,c07a50d2e74b3da7*579F"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31420.6642192,
+    "line": "[NET] private_config=valid (values not logged)"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31420.6661873,
+    "line": "[NET] state=AT_WAIT"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31420.6832471,
+    "line": "[NET] AT probe baud=115200 result=0 rx_bytes=6 rx_pin=1"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31420.729236,
+    "line": "[NET] state=SIM_CHECK"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31420.7452658,
+    "line": "[NET] state=REGISTER"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31420.7623102,
+    "line": "[NET] state=PDP"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31420.7962777,
+    "line": "[NET] modem result=ERROR"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31420.815356,
+    "line": "[NET] state=TIME_SYNC"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31420.8352863,
+    "line": "[NET] trusted_utc=1795273909 source=NETWORK_NITZ"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31420.837303,
+    "line": "[NET] state=TLS_CONFIG"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31421.4473088,
+    "line": "[NET] state=MQTT_CONNECT"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31421.4643002,
+    "line": "[NET] modem result=ERROR"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31421.5863442,
+    "line": "[VISION] TX $EVQ,c07a50d2e74b3da7*579F"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31422.5872844,
+    "line": "[VISION] TX $EVQ,c07a50d2e74b3da7*579F"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31422.6342495,
+    "line": "[NET] state=ONLINE"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31422.9014121,
+    "line": "[NET] PUBACK seq=0 bytes=463 temp_valid=1 vision_valid=0"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31423.1503031,
+    "line": "[NET] LEGACY PUBACK seq=848589110 source=C_HAL_REAL_4G"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31423.588331,
+    "line": "[VISION] TX $EVQ,c07a50d2e74b3da7*579F"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31424.5883191,
+    "line": "[VISION] TX $EVQ,c07a50d2e74b3da7*579F"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31425.3183772,
+    "line": "[ENV] th_valid=1 temp_x100=2916 rh_x100=2426 adc_valid=1 adc12=855 adc16=13683 err=0"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31425.3243378,
+    "line": "[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31425.58838,
+    "line": "[VISION] TX $EVQ,c07a50d2e74b3da7*579F"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31426.588402,
+    "line": "[VISION] TX $EVQ,c07a50d2e74b3da7*579F"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31427.5884238,
+    "line": "[VISION] TX $EVQ,c07a50d2e74b3da7*579F"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31428.2275141,
+    "line": "[NET] PUBACK seq=1 bytes=463 temp_valid=1 vision_valid=0"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31428.5884782,
+    "line": "[VISION] TX $EVQ,c07a50d2e74b3da7*579F"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31428.6275027,
+    "line": "[NET] LEGACY PUBACK seq=848589115 source=C_HAL_REAL_4G"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31429.5884899,
+    "line": "[VISION] TX $EVQ,c07a50d2e74b3da7*579F"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31430.5885139,
+    "line": "[VISION] TX $EVQ,c07a50d2e74b3da7*579F"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31430.7365563,
+    "line": "[ENV] th_valid=1 temp_x100=2917 rh_x100=2432 adc_valid=1 adc12=850 adc16=13603 err=0"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31430.7425008,
+    "line": "[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31431.5886776,
+    "line": "[VISION] TX $EVQ,c07a50d2e74b3da7*579F"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31432.5885737,
+    "line": "[VISION] TX $EVQ,c07a50d2e74b3da7*579F"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31432.9145909,
+    "line": "[NET] PUBACK seq=2 bytes=464 temp_valid=1 vision_valid=0"
+  },
+  {
+    "phase": "after_mcu_reset",
+    "at_monotonic": 31433.2255692,
+    "line": "[NET] LEGACY PUBACK seq=848589120 source=C_HAL_REAL_4G"
+  }
+]

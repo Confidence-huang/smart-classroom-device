@@ -1,0 +1,14 @@
+[
+  {
+    "command": "AT+QLTS=2",
+    "response": "+QLTS: \"2026/11/21,22:46:55+32,0\"\r\n\r\nOK"
+  },
+  {
+    "command": "AT+QMTCONN?",
+    "response": "OK"
+  },
+  {
+    "command": "AT+QIGETERROR",
+    "response": "+QIGETERROR: 0,operate successfully\r\n\r\nOK"
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "v": "1.0.0",
+  "device_id": "ev001",
+  "boot_id": "0000000000000001",
+  "seq": 1,
+  "state": "online",
+  "reason": "connected",
+  "ts": 1794657600
+}

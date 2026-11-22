@@ -1,0 +1,15 @@
+{
+  "source_file_references": 58,
+  "missing": [],
+  "license_files": [
+    "firmware/stm32/EcoVision_F413ZH/Middlewares/Third_Party/FreeRTOS/Source/LICENSE",
+    "firmware/stm32/EcoVision_F413ZH/Drivers/CMSIS/LICENSE.txt",
+    "firmware/stm32/EcoVision_F413ZH/Drivers/STM32F4xx_HAL_Driver/LICENSE.txt",
+    "firmware/stm32/EcoVision_F413ZH/Drivers/CMSIS/DSP/ComputeLibrary/LICENSE.txt",
+    "firmware/stm32/EcoVision_F413ZH/Drivers/CMSIS/Documentation/General/html/LICENSE.txt",
+    "firmware/stm32/EcoVision_F413ZH/Drivers/CMSIS/Device/ST/STM32F4xx/LICENSE.txt"
+  ],
+  "private_folder_present": false,
+  "image_region": "0x08000000 + 0x160000",
+  "config_region": "0x08160000 + 0x20000"
+}

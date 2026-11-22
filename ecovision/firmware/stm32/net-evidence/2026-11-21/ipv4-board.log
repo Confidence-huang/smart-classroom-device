@@ -1,0 +1,107 @@
+[VISION] TX $EVQ,d8b23b7cb4334c02*2B04
+EcoVision F413ZH net-20261121.5, interface baseline 1.0.0
+[LED] READY level=0 OFF; ASCII 0..4 selects warm brightness
+[FAN] READY level=0; F0 OFF, F1..F4 PWM 40/60/80/100%
+[ENV] th_valid=1 temp_x100=2912 rh_x100=2467 adc_valid=1 adc12=853 adc16=13651 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[LCD] ST7735 SPI1 PA5/PA7 DC=PF12 CS=PD14 init=OK
+[VISION] WAIT link=f971756cfa8c48e9 (UART2 PD5 TX/PD6 RX, 115200 8N1)
+[VISION] heap_free=12144 bytes; task_stack_free=2468 bytes
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[NET] private_config=valid (values not logged)
+[NET] state=AT_WAIT
+[NET] AT probe baud=115200 result=0 rx_bytes=6 rx_pin=1
+[NET] state=SIM_CHECK
+[NET] state=REGISTER
+[NET] state=PDP
+[NET] IPv4 PDP configured; existing APN/auth preserved
+[NET] state=TIME_SYNC
+[NET] trusted_utc=1795273588 source=NETWORK_NITZ
+[NET] state=TLS_CONFIG
+[NET] modem result=+QMTSTAT: 0,1
+[NET] state=MQTT_CONNECT
+[NET] modem result=ERROR
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[ENV] th_valid=1 temp_x100=2913 rh_x100=2466 adc_valid=1 adc12=852 adc16=13635 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[ENV] th_valid=1 temp_x100=2913 rh_x100=2464 adc_valid=1 adc12=852 adc16=13635 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[NET] MQTT OPEN failed result=0,4
+[NET] stage=MQTT_CONNECT failed; retry=0 (local tasks continue)
+[NET] state=OFFLINE
+[ENV] th_valid=1 temp_x100=2913 rh_x100=2468 adc_valid=1 adc12=863 adc16=13811 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[NET] state=AT_WAIT
+[NET] AT probe baud=115200 result=0 rx_bytes=6 rx_pin=1
+[NET] state=SIM_CHECK
+[NET] state=REGISTER
+[NET] state=PDP
+[NET] modem result=ERROR
+[NET] state=TIME_SYNC
+[NET] trusted_utc=1795273605 source=NETWORK_NITZ
+[NET] state=TLS_CONFIG
+[NET] modem result=ERROR
+[NET] state=MQTT_CONNECT
+[NET] modem result=ERROR
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[NET] state=ONLINE
+[NET] PUBACK seq=0 bytes=464 temp_valid=1 vision_valid=0
+[ENV] th_valid=1 temp_x100=2913 rh_x100=2467 adc_valid=1 adc12=868 adc16=13891 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[NET] LEGACY PUBACK seq=848588808 source=C_HAL_REAL_4G
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[NET] PUBACK seq=1 bytes=464 temp_valid=1 vision_valid=0
+[NET] LEGACY PUBACK seq=848588813 source=C_HAL_REAL_4G
+[ENV] th_valid=1 temp_x100=2913 rh_x100=2468 adc_valid=1 adc12=864 adc16=13827 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[NET] PUBACK seq=2 bytes=464 temp_valid=1 vision_valid=0
+[NET] LEGACY PUBACK seq=848588818 source=C_HAL_REAL_4G
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[ENV] th_valid=1 temp_x100=2911 rh_x100=2466 adc_valid=1 adc12=853 adc16=13651 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[NET] PUBACK seq=3 bytes=464 temp_valid=1 vision_valid=0
+[NET] LEGACY PUBACK seq=848588823 source=C_HAL_REAL_4G
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[ENV] th_valid=1 temp_x100=2914 rh_x100=2468 adc_valid=1 adc12=859 adc16=13747 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[NET] PUBACK seq=4 bytes=464 temp_valid=1 vision_valid=0
+[NET] LEGACY PUBACK seq=848588828 source=C_HAL_REAL_4G
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF
+[ENV] th_valid=1 temp_x100=2913 rh_x100=2464 adc_valid=1 adc12=866 adc16=13859 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,f971756cfa8c48e9*9FAF

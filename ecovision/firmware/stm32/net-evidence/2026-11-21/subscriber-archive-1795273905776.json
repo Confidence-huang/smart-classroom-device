@@ -1,0 +1,1020 @@
+{
+  "started_at": "2026-11-21T15:06:39.766Z",
+  "observer_only": true,
+  "connected": true,
+  "messages": [
+    {
+      "received_at": "2026-11-21T15:06:39.997Z",
+      "topic": "ecovision/f413zh-gen1pro-01/status",
+      "retain": true,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "7614a1ad5ade5d2f3044018e2db0b9b4",
+        "seq": 6,
+        "state": "online",
+        "reason": "connected",
+        "ts": 1795273352
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:06:39.998Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": true,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588783,
+        "captured_at": "2026-11-21T15:06:23Z",
+        "people_count": null,
+        "temperature_c": 29.11,
+        "humidity_pct": 24.7,
+        "light_lux": null,
+        "light_raw_u16": 13763
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:06:50.771Z",
+      "topic": "ecovision/f413zh-gen1pro-01/status",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "7614a1ad5ade5d2f3044018e2db0b9b4",
+        "seq": 7,
+        "state": "offline",
+        "reason": "lwt",
+        "ts": null
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:06:50.990Z",
+      "topic": "ecovision/f413zh-gen1pro-01/status",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 2,
+        "state": "online",
+        "reason": "connected",
+        "ts": 1795273608
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:06:51.228Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 0,
+        "uptime_ms": 22251,
+        "ts": 1795273608,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.14,
+        "temp_valid": true,
+        "temp_age_ms": 827,
+        "humidity_pct": 24.65,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:06:51.469Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588808,
+        "captured_at": "2026-11-21T15:06:48Z",
+        "people_count": null,
+        "temperature_c": 29.14,
+        "humidity_pct": 24.65,
+        "light_lux": null,
+        "light_raw_u16": 13891
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:06:56.249Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 1,
+        "uptime_ms": 27255,
+        "ts": 1795273613,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.16,
+        "temp_valid": true,
+        "temp_age_ms": 411,
+        "humidity_pct": 24.64,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:06:56.483Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588813,
+        "captured_at": "2026-11-21T15:06:53Z",
+        "people_count": null,
+        "temperature_c": 29.16,
+        "humidity_pct": 24.64,
+        "light_lux": null,
+        "light_raw_u16": 13827
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:01.276Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 2,
+        "uptime_ms": 32258,
+        "ts": 1795273618,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.13,
+        "temp_valid": true,
+        "temp_age_ms": 966,
+        "humidity_pct": 24.66,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:01.533Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588818,
+        "captured_at": "2026-11-21T15:06:58Z",
+        "people_count": null,
+        "temperature_c": 29.13,
+        "humidity_pct": 24.66,
+        "light_lux": null,
+        "light_raw_u16": 13699
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:06.263Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 3,
+        "uptime_ms": 37265,
+        "ts": 1795273623,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.13,
+        "temp_valid": true,
+        "temp_age_ms": 555,
+        "humidity_pct": 24.68,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:06.541Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588823,
+        "captured_at": "2026-11-21T15:07:03Z",
+        "people_count": null,
+        "temperature_c": 29.13,
+        "humidity_pct": 24.68,
+        "light_lux": null,
+        "light_raw_u16": 13731
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:11.259Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 4,
+        "uptime_ms": 42268,
+        "ts": 1795273628,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.12,
+        "temp_valid": true,
+        "temp_age_ms": 140,
+        "humidity_pct": 24.65,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:11.500Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588828,
+        "captured_at": "2026-11-21T15:07:08Z",
+        "people_count": null,
+        "temperature_c": 29.12,
+        "humidity_pct": 24.65,
+        "light_lux": null,
+        "light_raw_u16": 13971
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:16.254Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 5,
+        "uptime_ms": 47271,
+        "ts": 1795273633,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.14,
+        "temp_valid": true,
+        "temp_age_ms": 806,
+        "humidity_pct": 24.6,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:16.515Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588833,
+        "captured_at": "2026-11-21T15:07:13Z",
+        "people_count": null,
+        "temperature_c": 29.14,
+        "humidity_pct": 24.6,
+        "light_lux": null,
+        "light_raw_u16": 13651
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:21.282Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 6,
+        "uptime_ms": 52293,
+        "ts": 1795273638,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.13,
+        "temp_valid": true,
+        "temp_age_ms": 409,
+        "humidity_pct": 24.59,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:21.534Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588838,
+        "captured_at": "2026-11-21T15:07:18Z",
+        "people_count": null,
+        "temperature_c": 29.13,
+        "humidity_pct": 24.59,
+        "light_lux": null,
+        "light_raw_u16": 14035
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:26.300Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 7,
+        "uptime_ms": 57298,
+        "ts": 1795273643,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.15,
+        "temp_valid": true,
+        "temp_age_ms": 1077,
+        "humidity_pct": 24.63,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:26.562Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588843,
+        "captured_at": "2026-11-21T15:07:23Z",
+        "people_count": null,
+        "temperature_c": 29.15,
+        "humidity_pct": 24.63,
+        "light_lux": null,
+        "light_raw_u16": 13651
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:31.283Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 8,
+        "uptime_ms": 62300,
+        "ts": 1795273648,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.16,
+        "temp_valid": true,
+        "temp_age_ms": 660,
+        "humidity_pct": 24.67,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:31.554Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588848,
+        "captured_at": "2026-11-21T15:07:28Z",
+        "people_count": null,
+        "temperature_c": 29.16,
+        "humidity_pct": 24.67,
+        "light_lux": null,
+        "light_raw_u16": 13827
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:36.308Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 9,
+        "uptime_ms": 67302,
+        "ts": 1795273653,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.15,
+        "temp_valid": true,
+        "temp_age_ms": 138,
+        "humidity_pct": 24.59,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:36.541Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588853,
+        "captured_at": "2026-11-21T15:07:33Z",
+        "people_count": null,
+        "temperature_c": 29.15,
+        "humidity_pct": 24.59,
+        "light_lux": null,
+        "light_raw_u16": 13603
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:41.363Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 10,
+        "uptime_ms": 72364,
+        "ts": 1795273658,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.17,
+        "temp_valid": true,
+        "temp_age_ms": 876,
+        "humidity_pct": 24.58,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:41.635Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588858,
+        "captured_at": "2026-11-21T15:07:38Z",
+        "people_count": null,
+        "temperature_c": 29.17,
+        "humidity_pct": 24.58,
+        "light_lux": null,
+        "light_raw_u16": 13795
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:46.381Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 11,
+        "uptime_ms": 77370,
+        "ts": 1795273663,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.15,
+        "temp_valid": true,
+        "temp_age_ms": 464,
+        "humidity_pct": 24.53,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:46.621Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588863,
+        "captured_at": "2026-11-21T15:07:43Z",
+        "people_count": null,
+        "temperature_c": 29.15,
+        "humidity_pct": 24.53,
+        "light_lux": null,
+        "light_raw_u16": 13635
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:51.363Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 12,
+        "uptime_ms": 82372,
+        "ts": 1795273668,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.17,
+        "temp_valid": true,
+        "temp_age_ms": 48,
+        "humidity_pct": 24.53,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:51.625Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588868,
+        "captured_at": "2026-11-21T15:07:48Z",
+        "people_count": null,
+        "temperature_c": 29.17,
+        "humidity_pct": 24.53,
+        "light_lux": null,
+        "light_raw_u16": 13651
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:56.356Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 13,
+        "uptime_ms": 87374,
+        "ts": 1795273673,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.16,
+        "temp_valid": true,
+        "temp_age_ms": 713,
+        "humidity_pct": 24.51,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:07:56.576Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588873,
+        "captured_at": "2026-11-21T15:07:53Z",
+        "people_count": null,
+        "temperature_c": 29.16,
+        "humidity_pct": 24.51,
+        "light_lux": null,
+        "light_raw_u16": 13539
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:08:01.422Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 14,
+        "uptime_ms": 92436,
+        "ts": 1795273678,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.16,
+        "temp_valid": true,
+        "temp_age_ms": 357,
+        "humidity_pct": 24.48,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:08:01.664Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588878,
+        "captured_at": "2026-11-21T15:07:58Z",
+        "people_count": null,
+        "temperature_c": 29.16,
+        "humidity_pct": 24.48,
+        "light_lux": null,
+        "light_raw_u16": 13827
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:08:06.436Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 15,
+        "uptime_ms": 97442,
+        "ts": 1795273683,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.17,
+        "temp_valid": true,
+        "temp_age_ms": 1026,
+        "humidity_pct": 24.48,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:08:06.702Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588883,
+        "captured_at": "2026-11-21T15:08:03Z",
+        "people_count": null,
+        "temperature_c": 29.17,
+        "humidity_pct": 24.48,
+        "light_lux": null,
+        "light_raw_u16": 13667
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:08:11.436Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 16,
+        "uptime_ms": 102444,
+        "ts": 1795273688,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.17,
+        "temp_valid": true,
+        "temp_age_ms": 610,
+        "humidity_pct": 24.51,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:08:11.675Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588888,
+        "captured_at": "2026-11-21T15:08:08Z",
+        "people_count": null,
+        "temperature_c": 29.17,
+        "humidity_pct": 24.51,
+        "light_lux": null,
+        "light_raw_u16": 13619
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:08:16.462Z",
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "e12ced6748f6d1d88c73788751075970",
+        "seq": 17,
+        "uptime_ms": 107445,
+        "ts": 1795273693,
+        "time_valid": true,
+        "control_epoch": 0,
+        "count": null,
+        "vision_valid": false,
+        "vision_age_ms": null,
+        "temp_c": 29.17,
+        "temp_valid": true,
+        "temp_age_ms": 89,
+        "humidity_pct": 24.49,
+        "humidity_valid": true,
+        "occupancy": "UNKNOWN",
+        "mode": "AUTO",
+        "fan_out": 0,
+        "led_out": 0,
+        "hold_remaining_s": 0,
+        "net_state": "ONLINE",
+        "last_cmd_id": null,
+        "faults": [
+          "VISION_FAULT"
+        ]
+      }
+    },
+    {
+      "received_at": "2026-11-21T15:08:16.702Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": false,
+      "payload": {
+        "schema_version": 1,
+        "type": "telemetry",
+        "source": "stm32_c_hal_ec200u",
+        "simulated": false,
+        "device_id": "f413zh-gen1pro-01",
+        "seq": 848588893,
+        "captured_at": "2026-11-21T15:08:13Z",
+        "people_count": null,
+        "temperature_c": 29.17,
+        "humidity_pct": 24.49,
+        "light_lux": null,
+        "light_raw_u16": 13715
+      }
+    }
+  ],
+  "errors": [],
+  "grants": [
+    {
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "qos": 1
+    },
+    {
+      "topic": "ecovision/f413zh-gen1pro-01/status",
+      "qos": 1
+    },
+    {
+      "topic": "classroom/room01/telemetry",
+      "qos": 1
+    }
+  ],
+  "ended_at": "2026-11-21T15:08:19.865Z"
+}

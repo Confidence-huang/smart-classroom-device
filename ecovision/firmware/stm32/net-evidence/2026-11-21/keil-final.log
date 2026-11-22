@@ -1,0 +1,1539 @@
+*** Using Compiler 'V6.16', folder: 'D:\k51\ARM\ARMCLANG\Bin'
+Rebuild target 'EcoVision_F413ZH'
+../Src/stm32f4xx_it.c(74): warning: function 'NMI_Handler' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+{
+^
+../Src/stm32f4xx_it.c(89): warning: function 'HardFault_Handler' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+{
+^
+../Src/stm32f4xx_it.c(104): warning: function 'MemManage_Handler' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+{
+^
+../Src/stm32f4xx_it.c(119): warning: function 'BusFault_Handler' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+{
+^
+../Src/stm32f4xx_it.c(134): warning: function 'UsageFault_Handler' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+{
+^
+../Src/stm32f4xx_it.c(169): warning: no previous prototype for function 'USART6_IRQHandler' [-Wmissing-prototypes]
+void USART6_IRQHandler(void){HAL_UART_IRQHandler(&huart6);}
+     ^
+../Src/stm32f4xx_it.c(169): note: declare 'static' if the function is not intended to be used outside of this translation unit
+void USART6_IRQHandler(void){HAL_UART_IRQHandler(&huart6);}
+^
+static 
+../Src/stm32f4xx_it.c(21): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(411): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_uart.h(195): warning: padding struct 'struct __UART_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t                 ErrorCode;        /*!< UART Error code                    */
+                                ^
+../Src/stm32f4xx_it.c(21): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../Src/stm32f4xx_it.c(21): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(407): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(343): warning: padding struct 'TIM_HandleTypeDef' with 3 bytes to align 'hdma' [-Wpadded]
+  DMA_HandleTypeDef                  *hdma[7];          /*!< DMA Handlers array
+                                      ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(337): warning: padding size of 'TIM_HandleTypeDef' with 1 byte to alignment boundary [-Wpadded]
+typedef struct
+        ^
+10 warnings generated.
+compiling stm32f4xx_it.c...
+assembling startup_stm32f413xx.s...
+../Src/main.c(63): warning: no previous extern declaration for non-static variable 'heartbeatTask_attributes' [-Wmissing-variable-declarations]
+const osThreadAttr_t heartbeatTask_attributes = {
+                     ^
+../Src/main.c(63): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+const osThreadAttr_t heartbeatTask_attributes = {
+      ^
+../Src/main.c(70): warning: no previous extern declaration for non-static variable 'ledTask_attributes' [-Wmissing-variable-declarations]
+const osThreadAttr_t ledTask_attributes = {
+                     ^
+../Src/main.c(70): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+const osThreadAttr_t ledTask_attributes = {
+      ^
+../Src/main.c(76): warning: no previous extern declaration for non-static variable 'environmentTask_attributes' [-Wmissing-variable-declarations]
+const osThreadAttr_t environmentTask_attributes={
+                     ^
+../Src/main.c(76): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+const osThreadAttr_t environmentTask_attributes={
+      ^
+../Src/main.c(80): warning: no previous extern declaration for non-static variable 'visionTask_attributes' [-Wmissing-variable-declarations]
+const osThreadAttr_t visionTask_attributes = {
+                     ^
+../Src/main.c(80): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+const osThreadAttr_t visionTask_attributes = {
+      ^
+../Src/main.c(20): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(407): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(343): warning: padding struct 'TIM_HandleTypeDef' with 3 bytes to align 'hdma' [-Wpadded]
+  DMA_HandleTypeDef                  *hdma[7];          /*!< DMA Handlers array
+                                      ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(337): warning: padding size of 'TIM_HandleTypeDef' with 1 byte to alignment boundary [-Wpadded]
+typedef struct
+        ^
+../Src/main.c(20): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../Src/main.c(20): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(411): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_uart.h(195): warning: padding struct 'struct __UART_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t                 ErrorCode;        /*!< UART Error code                    */
+                                ^
+../Src/main.c(20): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(295): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(86): warning: padding struct 'ADC_InitTypeDef' with 3 bytes to align 'NbrOfConversion' [-Wpadded]
+  uint32_t NbrOfConversion;              /*!< Specifies the number of ranks that will be converted within the regular group sequencer.
+           ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(93): warning: padding struct 'ADC_InitTypeDef' with 3 bytes to align 'NbrOfDiscConversion' [-Wpadded]
+  uint32_t NbrOfDiscConversion;          /*!< Specifies the number of discontinuous conversions in which the  main sequence of regular group (parameter NbrOfConversion) will be subdivided.
+           ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(59): warning: padding size of 'ADC_InitTypeDef' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct
+        ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(208): warning: padding struct 'ADC_HandleTypeDef' with 3 bytes to align 'State' [-Wpadded]
+  __IO uint32_t                 State;                       /*!< ADC communication state */
+                                ^
+../Src/main.c(20): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(363): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_i2c.h(215): warning: padding struct 'I2C_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t              ErrorCode;      /*!< I2C Error code                           */
+                             ^
+../Src/main.c(575): warning: function 'StartHeartbeatTask' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+{
+^
+../Src/main.c(650): warning: function 'Error_Handler' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+{
+^
+../Src/main.c(50): warning: no previous extern declaration for non-static variable 'hadc1' [-Wmissing-variable-declarations]
+ADC_HandleTypeDef hadc1;
+                  ^
+../Src/main.c(50): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+ADC_HandleTypeDef hadc1;
+^
+../Src/main.c(52): warning: no previous extern declaration for non-static variable 'hi2c1' [-Wmissing-variable-declarations]
+I2C_HandleTypeDef hi2c1;
+                  ^
+../Src/main.c(52): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+I2C_HandleTypeDef hi2c1;
+^
+../Src/main.c(54): warning: no previous extern declaration for non-static variable 'htim3' [-Wmissing-variable-declarations]
+TIM_HandleTypeDef htim3;
+                  ^
+../Src/main.c(54): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+TIM_HandleTypeDef htim3;
+^
+../Src/main.c(56): warning: no previous extern declaration for non-static variable 'huart6' [-Wmissing-variable-declarations]
+UART_HandleTypeDef huart6;
+                   ^
+../Src/main.c(56): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+UART_HandleTypeDef huart6;
+^
+../Src/main.c(57): warning: no previous extern declaration for non-static variable 'huart2' [-Wmissing-variable-declarations]
+UART_HandleTypeDef huart2;
+                   ^
+../Src/main.c(57): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+UART_HandleTypeDef huart2;
+^
+../Src/main.c(58): warning: no previous extern declaration for non-static variable 'huart4' [-Wmissing-variable-declarations]
+UART_HandleTypeDef huart4;
+                   ^
+../Src/main.c(58): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+UART_HandleTypeDef huart4;
+^
+../Src/main.c(59): warning: no previous extern declaration for non-static variable 'huart3' [-Wmissing-variable-declarations]
+UART_HandleTypeDef huart3;
+                   ^
+../Src/main.c(59): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+UART_HandleTypeDef huart3;
+^
+../Src/main.c(62): warning: no previous extern declaration for non-static variable 'heartbeatTaskHandle' [-Wmissing-variable-declarations]
+osThreadId_t heartbeatTaskHandle;
+             ^
+../Src/main.c(62): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+osThreadId_t heartbeatTaskHandle;
+^
+../Src/main.c(69): warning: no previous extern declaration for non-static variable 'ledTaskHandle' [-Wmissing-variable-declarations]
+osThreadId_t ledTaskHandle;
+             ^
+../Src/main.c(69): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+osThreadId_t ledTaskHandle;
+^
+../Src/main.c(75): warning: no previous extern declaration for non-static variable 'environmentTaskHandle' [-Wmissing-variable-declarations]
+osThreadId_t environmentTaskHandle;
+             ^
+../Src/main.c(75): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+osThreadId_t environmentTaskHandle;
+^
+../Src/main.c(79): warning: no previous extern declaration for non-static variable 'visionTaskHandle' [-Wmissing-variable-declarations]
+osThreadId_t visionTaskHandle;
+             ^
+../Src/main.c(79): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+osThreadId_t visionTaskHandle;
+^
+26 warnings generated.
+compiling main.c...
+compiling freertos.c...
+compiling stm32f4xx_hal.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c(248): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(295): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(86): warning: padding struct 'ADC_InitTypeDef' with 3 bytes to align 'NbrOfConversion' [-Wpadded]
+  uint32_t NbrOfConversion;              /*!< Specifies the number of ranks that will be converted within the regular group sequencer.
+           ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(93): warning: padding struct 'ADC_InitTypeDef' with 3 bytes to align 'NbrOfDiscConversion' [-Wpadded]
+  uint32_t NbrOfDiscConversion;          /*!< Specifies the number of discontinuous conversions in which the  main sequence of regular group (parameter NbrOfConversion) will be subdivided.
+           ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(59): warning: padding size of 'ADC_InitTypeDef' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct
+        ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(208): warning: padding struct 'ADC_HandleTypeDef' with 3 bytes to align 'State' [-Wpadded]
+  __IO uint32_t                 State;                       /*!< ADC communication state */
+                                ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c(248): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc.c(248): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(295): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(152): warning: padding struct 'ADC_AnalogWDGConfTypeDef' with 3 bytes to align 'WatchdogNumber' [-Wpadded]
+  uint32_t WatchdogNumber;    /*!< Reserved for future use, can be set to 0 */
+           ^
+6 warnings generated.
+compiling stm32f4xx_hal_adc.c...
+compiling system_stm32f4xx.c...
+../Src/stm32f4xx_hal_timebase_tim.c(21): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(407): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(343): warning: padding struct 'TIM_HandleTypeDef' with 3 bytes to align 'hdma' [-Wpadded]
+  DMA_HandleTypeDef                  *hdma[7];          /*!< DMA Handlers array
+                                      ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(337): warning: padding size of 'TIM_HandleTypeDef' with 1 byte to alignment boundary [-Wpadded]
+typedef struct
+        ^
+../Src/stm32f4xx_hal_timebase_tim.c(21): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../Src/stm32f4xx_hal_timebase_tim.c(28): warning: no previous extern declaration for non-static variable 'htim6' [-Wmissing-variable-declarations]
+TIM_HandleTypeDef        htim6;
+                         ^
+../Src/stm32f4xx_hal_timebase_tim.c(28): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+TIM_HandleTypeDef        htim6;
+^
+4 warnings generated.
+compiling stm32f4xx_hal_timebase_tim.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c(39): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+1 warning generated.
+compiling stm32f4xx_hal_dma_ex.c...
+compiling stm32f4xx_hal_rcc.c...
+../App/Src/net_codec.c(1): warning: In file included from...../App/Inc\net_codec.h(7): warning: padding size of 'NetAtParser' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct {char line[512];size_t used;bool dropping;} NetAtParser;
+        ^
+../App/Inc\net_codec.h(10): warning: padding struct 'NetConfig' with 1 byte to align 'port' [-Wpadded]
+ uint16_t port,ca_length;char ca[4097],legacy_topic[128],room[33];
+          ^
+../App/Inc\net_codec.h(16): warning: padding struct 'NetSample' with 1 byte to align 'light_raw16' [-Wpadded]
+ bool light_valid;uint16_t light_raw16;
+                           ^
+3 warnings generated.
+compiling net_codec.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c(23): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(275): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_rcc.h(31): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc_ex.h(225): warning: padding size of 'RCC_PeriphCLKInitTypeDef' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct
+        ^
+1 warning generated.
+compiling stm32f4xx_hal_rcc_ex.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c(215): warning: function 'HAL_NVIC_SystemReset' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+{
+^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c(81): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(291): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_cortex.h(52): warning: padding struct 'MPU_Region_InitTypeDef' with 2 bytes to align 'BaseAddress' [-Wpadded]
+  uint32_t               BaseAddress;           /*!< Specifies the base address of the region to protect.                           */
+                         ^
+2 warnings generated.
+compiling stm32f4xx_hal_cortex.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_ll_adc.c(922): warning: ISO C requires a translation unit to contain at least one declaration [-Wempty-translation-unit]
+^
+1 warning generated.
+compiling stm32f4xx_ll_adc.c...
+../Src/stm32f4xx_hal_msp.c(22): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(295): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(86): warning: padding struct 'ADC_InitTypeDef' with 3 bytes to align 'NbrOfConversion' [-Wpadded]
+  uint32_t NbrOfConversion;              /*!< Specifies the number of ranks that will be converted within the regular group sequencer.
+           ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(93): warning: padding struct 'ADC_InitTypeDef' with 3 bytes to align 'NbrOfDiscConversion' [-Wpadded]
+  uint32_t NbrOfDiscConversion;          /*!< Specifies the number of discontinuous conversions in which the  main sequence of regular group (parameter NbrOfConversion) will be subdivided.
+           ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(59): warning: padding size of 'ADC_InitTypeDef' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct
+        ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(208): warning: padding struct 'ADC_HandleTypeDef' with 3 bytes to align 'State' [-Wpadded]
+  __IO uint32_t                 State;                       /*!< ADC communication state */
+                                ^
+../Src/stm32f4xx_hal_msp.c(22): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../Src/stm32f4xx_hal_msp.c(22): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(363): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_i2c.h(215): warning: padding struct 'I2C_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t              ErrorCode;      /*!< I2C Error code                           */
+                             ^
+../Src/stm32f4xx_hal_msp.c(22): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(407): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(343): warning: padding struct 'TIM_HandleTypeDef' with 3 bytes to align 'hdma' [-Wpadded]
+  DMA_HandleTypeDef                  *hdma[7];          /*!< DMA Handlers array
+                                      ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(337): warning: padding size of 'TIM_HandleTypeDef' with 1 byte to alignment boundary [-Wpadded]
+typedef struct
+        ^
+../Src/stm32f4xx_hal_msp.c(22): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(411): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_uart.h(195): warning: padding struct 'struct __UART_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t                 ErrorCode;        /*!< UART Error code                    */
+                                ^
+9 warnings generated.
+compiling stm32f4xx_hal_msp.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c(379): warning: default label in switch which covers all enumeration values [-Wcovered-switch-default]
+    default:
+    ^
+1 warning generated.
+compiling stm32f4xx_hal_exti.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c(186): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(407): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(343): warning: padding struct 'TIM_HandleTypeDef' with 3 bytes to align 'hdma' [-Wpadded]
+  DMA_HandleTypeDef                  *hdma[7];          /*!< DMA Handlers array
+                                      ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(337): warning: padding size of 'TIM_HandleTypeDef' with 1 byte to alignment boundary [-Wpadded]
+typedef struct
+        ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c(186): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+3 warnings generated.
+compiling stm32f4xx_hal_tim.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c(258): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(411): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_uart.h(195): warning: padding struct 'struct __UART_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t                 ErrorCode;        /*!< UART Error code                    */
+                                ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c(258): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c(1162): warning: cast from 'const uint8_t *' (aka 'const unsigned char *') to 'const uint16_t *' (aka 'const unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+      pdata16bits = (const uint16_t *) pData;
+                    ^~~~~~~~~~~~~~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c(1249): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+      pdata16bits = (uint16_t *) pData;
+                    ^~~~~~~~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c(1626): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+      pdata16bits = (uint16_t *) pData;
+                    ^~~~~~~~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c(3572): warning: cast from 'const uint8_t *' (aka 'const unsigned char *') to 'const uint16_t *' (aka 'const unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+      tmp = (const uint16_t *) huart->pTxBuffPtr;
+            ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_uart.c(3640): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+      pdata16bits = (uint16_t *) huart->pRxBuffPtr;
+                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+7 warnings generated.
+compiling stm32f4xx_hal_uart.c...
+compiling stm32f4xx_hal_flash_ramfunc.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c(86): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(295): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(86): warning: padding struct 'ADC_InitTypeDef' with 3 bytes to align 'NbrOfConversion' [-Wpadded]
+  uint32_t NbrOfConversion;              /*!< Specifies the number of ranks that will be converted within the regular group sequencer.
+           ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(93): warning: padding struct 'ADC_InitTypeDef' with 3 bytes to align 'NbrOfDiscConversion' [-Wpadded]
+  uint32_t NbrOfDiscConversion;          /*!< Specifies the number of discontinuous conversions in which the  main sequence of regular group (parameter NbrOfConversion) will be subdivided.
+           ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(59): warning: padding size of 'ADC_InitTypeDef' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct
+        ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(208): warning: padding struct 'ADC_HandleTypeDef' with 3 bytes to align 'State' [-Wpadded]
+  __IO uint32_t                 State;                       /*!< ADC communication state */
+                                ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c(86): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_adc_ex.c(86): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(295): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(554): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_adc_ex.h(96): warning: padding struct 'ADC_InjectionConfTypeDef' with 2 bytes to align 'ExternalTrigInjecConv' [-Wpadded]
+  uint32_t ExternalTrigInjecConv;                /*!< Selects the external event used to trigger the conversion start of injected group.
+           ^
+6 warnings generated.
+compiling stm32f4xx_hal_adc_ex.c...
+../App/Src/environment_codec.c(6): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+        for(unsigned bit=0;bit<8;bit++) crc=(uint8_t)((crc&0x80U)?(crc<<1)^0x31U:crc<<1);
+                                                                   ~~~^~~ ~
+../App/Src/environment_codec.c(6): warning: operand of ? changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+        for(unsigned bit=0;bit<8;bit++) crc=(uint8_t)((crc&0x80U)?(crc<<1)^0x31U:crc<<1);
+                                           ~                                     ~~~^~~
+2 warnings generated.
+compiling environment_codec.c...
+compiling stm32f4xx_hal_pwr_ex.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c(42): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(363): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_i2c.h(215): warning: padding struct 'I2C_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t              ErrorCode;      /*!< I2C Error code                           */
+                             ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c(42): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c_ex.c(142): warning: implicit conversion loses integer precision: 'volatile uint32_t' (aka 'volatile unsigned int') to 'uint16_t' (aka 'unsigned short') [-Wimplicit-int-conversion]
+    tmpreg = hi2c->Instance->FLTR;
+           ~ ~~~~~~~~~~~~~~~~^~~~
+3 warnings generated.
+compiling stm32f4xx_hal_i2c_ex.c...
+../App/Src/app_environment.c(2): warning: In file included from...../App/Inc\app_environment.h(7): warning: padding struct 'EnvironmentSnapshot' with 2 bytes to align 'temp_x100' [-Wpadded]
+    int32_t temp_x100,humi_x100;
+            ^
+../App/Inc\app_environment.h(12): warning: padding struct 'EnvironmentSnapshot' with 1 byte to align 'bh1750_raw' [-Wpadded]
+    uint16_t bh1750_raw;
+             ^
+../App/Src/app_environment.c(7): warning: In file included from...../App/Inc\app_bh1750.h(13): warning: padding struct 'Bh1750_Sample' with 2 bytes to align 'lux_x100' [-Wpadded]
+typedef struct { uint16_t raw; uint32_t lux_x100; } Bh1750_Sample;
+                                        ^
+../App/Src/app_environment.c(18): warning: function 'AppEnvironment_Run' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+void AppEnvironment_Run(void *argument) {
+                                        ^
+../App/Src/app_environment.c(7): warning: In file included from...../App/Inc\app_bh1750.h(11): warning: padding struct 'Bh1750_Context' with 1 byte to align 'last_action' [-Wpadded]
+    uint32_t last_action;
+             ^
+../App/Src/app_environment.c(1): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(363): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_i2c.h(215): warning: padding struct 'I2C_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t              ErrorCode;      /*!< I2C Error code                           */
+                             ^
+../App/Src/app_environment.c(1): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+7 warnings generated.
+compiling app_environment.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c(289): warning: cast from function call of type 'uint32_t' (aka 'unsigned int') to non-matching type 'DMA_Base_Registers *' [-Wbad-function-cast]
+  regs = (DMA_Base_Registers *)DMA_CalcBaseAndBitshift(hdma);
+                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c(97): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c(351): warning: cast from function call of type 'uint32_t' (aka 'unsigned int') to non-matching type 'DMA_Base_Registers *' [-Wbad-function-cast]
+  regs = (DMA_Base_Registers *)DMA_CalcBaseAndBitshift(hdma);
+                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c(977): warning: enumeration value 'HAL_DMA_XFER_ALL_CB_ID' not explicitly handled in switch [-Wswitch-enum]
+    switch (CallbackID)
+            ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c(1073): warning: default label in switch which covers all enumeration values [-Wcovered-switch-default]
+    default:
+    ^
+5 warnings generated.
+compiling stm32f4xx_hal_dma.c...
+compiling stm32f4xx_hal_gpio.c...
+../App/Src/app_lcd.c(12): warning: cast from 'const unsigned char *' to 'unsigned char *' drops const qualifier [-Wcast-qual]
+    return !size || HAL_SPI_Transmit(&spi,(uint8_t *)bytes,size,150U)==HAL_OK;
+                                                     ^
+../App/Src/app_lcd.c(4): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(403): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_spi.h(134): warning: padding struct 'struct __SPI_HandleTypeDef' with 2 bytes to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t              ErrorCode;      /*!< SPI Error code                           */
+                             ^
+../App/Src/app_lcd.c(4): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../App/Src/app_lcd.c(6): warning: In file included from...../App/Inc\lcd_view.h(6): warning: In file included from...../App/Inc/app_environment.h(7): warning: padding struct 'EnvironmentSnapshot' with 2 bytes to align 'temp_x100' [-Wpadded]
+    int32_t temp_x100,humi_x100;
+            ^
+../App/Inc/app_environment.h(12): warning: padding struct 'EnvironmentSnapshot' with 1 byte to align 'bh1750_raw' [-Wpadded]
+    uint16_t bh1750_raw;
+             ^
+5 warnings generated.
+compiling app_lcd.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c(62): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(335): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_flash.h(60): warning: padding struct 'FLASH_ProcessTypeDef' with 3 bytes to align 'NbSectorsToErase' [-Wpadded]
+  __IO uint32_t               NbSectorsToErase;   /*Internal variable to save the remaining sectors to erase in IT context*/
+                              ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_flash.h(64): warning: padding struct 'FLASH_ProcessTypeDef' with 3 bytes to align 'Sector' [-Wpadded]
+  __IO uint32_t               Sector;             /*Internal variable to define the current sector which is erasing*/
+                              ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_flash.h(72): warning: padding struct 'FLASH_ProcessTypeDef' with 3 bytes to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t               ErrorCode;          /* FLASH error code                    */
+                              ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c(268): warning: implicit conversion loses integer precision: 'uint32_t' (aka 'unsigned int') to 'uint8_t' (aka 'unsigned char') [-Wimplicit-int-conversion]
+    FLASH_Erase_Sector(pEraseInit->Sector, pEraseInit->VoltageRange);
+    ~~~~~~~~~~~~~~~~~~                     ~~~~~~~~~~~~^~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c(310): warning: implicit conversion loses integer precision: 'uint32_t' (aka 'unsigned int') to 'uint8_t' (aka 'unsigned char') [-Wimplicit-int-conversion]
+    status = FLASH_OB_RDP_LevelConfig(pOBInit->RDPLevel);
+             ~~~~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~^~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c(324): warning: implicit conversion loses integer precision: 'uint32_t' (aka 'unsigned int') to 'uint8_t' (aka 'unsigned char') [-Wimplicit-int-conversion]
+    status = FLASH_OB_BOR_LevelConfig(pOBInit->BORLevel);
+             ~~~~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~^~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c(62): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(335): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_flash.h(295): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h(67): warning: padding size of 'FLASH_OBProgramInitTypeDef' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct
+        ^
+../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_flash_ex.h(99): warning: padding size of 'FLASH_AdvOBProgramInitTypeDef' with 2 bytes to alignment boundary [-Wpadded]
+typedef struct
+        ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c(948): warning: unused parameter 'Banks' [-Wunused-parameter]
+static void FLASH_MassErase(uint8_t VoltageRange, uint32_t Banks)
+                                                           ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c(1027): warning: unused parameter 'Banks' [-Wunused-parameter]
+static HAL_StatusTypeDef FLASH_OB_EnableWRP(uint32_t WRPSector, uint32_t Banks)
+                                                                         ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c(1063): warning: unused parameter 'Banks' [-Wunused-parameter]
+static HAL_StatusTypeDef FLASH_OB_DisableWRP(uint32_t WRPSector, uint32_t Banks)
+                                                                          ^
+11 warnings generated.
+compiling stm32f4xx_hal_flash_ex.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c(104): warning: no previous extern declaration for non-static variable 'pFlash' [-Wmissing-variable-declarations]
+FLASH_ProcessTypeDef pFlash  = {.ProcedureOnGoing = FLASH_PROC_NONE,
+                     ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c(104): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+FLASH_ProcessTypeDef pFlash  = {.ProcedureOnGoing = FLASH_PROC_NONE,
+^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c(76): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(335): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_flash.h(60): warning: padding struct 'FLASH_ProcessTypeDef' with 3 bytes to align 'NbSectorsToErase' [-Wpadded]
+  __IO uint32_t               NbSectorsToErase;   /*Internal variable to save the remaining sectors to erase in IT context*/
+                              ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_flash.h(64): warning: padding struct 'FLASH_ProcessTypeDef' with 3 bytes to align 'Sector' [-Wpadded]
+  __IO uint32_t               Sector;             /*Internal variable to define the current sector which is erasing*/
+                              ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_flash.h(72): warning: padding struct 'FLASH_ProcessTypeDef' with 3 bytes to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t               ErrorCode;          /* FLASH error code                    */
+                              ^
+4 warnings generated.
+compiling stm32f4xx_hal_flash.c...
+compiling stm32f4xx_hal_pwr.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c(81): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(407): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(343): warning: padding struct 'TIM_HandleTypeDef' with 3 bytes to align 'hdma' [-Wpadded]
+  DMA_HandleTypeDef                  *hdma[7];          /*!< DMA Handlers array
+                                      ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(337): warning: padding size of 'TIM_HandleTypeDef' with 1 byte to alignment boundary [-Wpadded]
+typedef struct
+        ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c(81): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+3 warnings generated.
+compiling stm32f4xx_hal_tim_ex.c...
+../App/Src/app_vision.c(9): warning: padding size of 'Sample' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct {uint32_t tick;uint8_t byte;} Sample;
+        ^
+../App/Src/app_vision.c(1): warning: In file included from...../App/Inc\app_vision.h(4): warning: In file included from...../App/Inc\vision_protocol.h(8): warning: padding struct 'EvVision' with 1 byte to align 'used' [-Wpadded]
+    uint16_t used;
+             ^
+../App/Inc\vision_protocol.h(11): warning: padding struct 'EvVision' with 2 bytes to align 'seq' [-Wpadded]
+    uint32_t seq, uptime, fresh_at, start_at, accepted, errors, rejected;
+             ^
+../App/Src/app_vision.c(1): warning: In file included from...../App/Inc\app_vision.h(3): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(411): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_uart.h(195): warning: padding struct 'struct __UART_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t                 ErrorCode;        /*!< UART Error code                    */
+                                ^
+../App/Src/app_vision.c(1): warning: In file included from...../App/Inc\app_vision.h(3): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../App/Src/app_vision.c(57): warning: function 'AppVision_Run' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+void AppVision_Run(UART_HandleTypeDef *uart) {
+                                             ^
+6 warnings generated.
+compiling app_vision.c...
+../App/Src/lcd_view.c(1): warning: In file included from...../App/Inc\lcd_view.h(6): warning: In file included from...../App/Inc/app_environment.h(7): warning: padding struct 'EnvironmentSnapshot' with 2 bytes to align 'temp_x100' [-Wpadded]
+    int32_t temp_x100,humi_x100;
+            ^
+../App/Inc/app_environment.h(12): warning: padding struct 'EnvironmentSnapshot' with 1 byte to align 'bh1750_raw' [-Wpadded]
+    uint16_t bh1750_raw;
+             ^
+2 warnings generated.
+compiling lcd_view.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c(301): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(363): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_i2c.h(215): warning: padding struct 'I2C_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t              ErrorCode;      /*!< I2C Error code                           */
+                             ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_i2c.c(301): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+2 warnings generated.
+compiling stm32f4xx_hal_i2c.c...
+../App/Src/vision_protocol.c(9): warning: implicit conversion changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+        for(unsigned b=0;b<8;b++) crc=(uint16_t)((crc&0x8000U) ? (crc<<1)^0x1021U : crc<<1);
+                                                                  ~~~^~~ ~
+../App/Src/vision_protocol.c(9): warning: operand of ? changes signedness: 'int' to 'unsigned int' [-Wsign-conversion]
+        for(unsigned b=0;b<8;b++) crc=(uint16_t)((crc&0x8000U) ? (crc<<1)^0x1021U : crc<<1);
+                                     ~                                              ~~~^~~
+../App/Src/vision_protocol.c(1): warning: In file included from...../App/Inc\vision_protocol.h(8): warning: padding struct 'EvVision' with 1 byte to align 'used' [-Wpadded]
+    uint16_t used;
+             ^
+../App/Inc\vision_protocol.h(11): warning: padding struct 'EvVision' with 2 bytes to align 'seq' [-Wpadded]
+    uint32_t seq, uptime, fresh_at, start_at, accepted, errors, rejected;
+             ^
+4 warnings generated.
+compiling vision_protocol.c...
+../App/Src/app_aht20.c(19): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(363): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_i2c.h(215): warning: padding struct 'I2C_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t              ErrorCode;      /*!< I2C Error code                           */
+                             ^
+../App/Src/app_aht20.c(19): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+2 warnings generated.
+compiling app_aht20.c...
+../App/Src/app_net.c(2): warning: In file included from...../App/Inc\app_net.h(3): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(411): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_uart.h(195): warning: padding struct 'struct __UART_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t                 ErrorCode;        /*!< UART Error code                    */
+                                ^
+../App/Src/app_net.c(2): warning: In file included from...../App/Inc\app_net.h(3): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../App/Src/app_net.c(3): warning: In file included from...../App/Inc\net_codec.h(7): warning: padding size of 'NetAtParser' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct {char line[512];size_t used;bool dropping;} NetAtParser;
+        ^
+../App/Src/app_net.c(46): warning: cast from 'const void *' to 'unsigned char *' drops const qualifier [-Wcast-qual]
+ return n<=65535U && HAL_UART_Transmit(&huart6,(uint8_t *)p,(uint16_t)n,600U)==HAL_OK;
+                                                          ^
+../App/Src/app_net.c(86): warning: cast from function call of type 'GPIO_PinState' to non-matching type 'unsigned int' [-Wbad-function-cast]
+  AppLog_Printf("[NET] AT probe baud=%lu result=%d rx_bytes=%lu rx_pin=%u\r\n",(unsigned long)rates[i],result,(unsigned long)(received_bytes-before),(unsigned)HAL_GPIO_ReadPin(GPIOG,GPIO_PIN_9));
+                                                                                                                                                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../App/Src/app_net.c(3): warning: In file included from...../App/Inc\net_codec.h(10): warning: padding struct 'NetConfig' with 1 byte to align 'port' [-Wpadded]
+ uint16_t port,ca_length;char ca[4097],legacy_topic[128],room[33];
+          ^
+../App/Src/app_net.c(5): warning: In file included from...../App/Inc\app_environment.h(7): warning: padding struct 'EnvironmentSnapshot' with 2 bytes to align 'temp_x100' [-Wpadded]
+    int32_t temp_x100,humi_x100;
+            ^
+../App/Inc\app_environment.h(12): warning: padding struct 'EnvironmentSnapshot' with 1 byte to align 'bh1750_raw' [-Wpadded]
+    uint16_t bh1750_raw;
+             ^
+../App/Src/app_net.c(6): warning: In file included from...../App/Inc\app_vision.h(4): warning: In file included from...../App/Inc/vision_protocol.h(8): warning: padding struct 'EvVision' with 1 byte to align 'used' [-Wpadded]
+    uint16_t used;
+             ^
+../App/Inc/vision_protocol.h(11): warning: padding struct 'EvVision' with 2 bytes to align 'seq' [-Wpadded]
+    uint32_t seq, uptime, fresh_at, start_at, accepted, errors, rejected;
+             ^
+../App/Src/app_net.c(3): warning: In file included from...../App/Inc\net_codec.h(16): warning: padding struct 'NetSample' with 1 byte to align 'light_raw16' [-Wpadded]
+ bool light_valid;uint16_t light_raw16;
+                           ^
+../App/Src/app_net.c(168): warning: function 'AppNet_Run' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+void AppNet_Run(void *argument) {
+                                ^
+12 warnings generated.
+compiling app_net.c...
+../App/Src/ir_protocol.c(1): warning: In file included from...../App/Inc\ir_protocol.h(20): warning: padding struct 'IrParser' with 2 bytes to align 'last_byte_ms' [-Wpadded]
+    uint32_t last_byte_ms;
+             ^
+../App/Inc\ir_protocol.h(28): warning: padding struct 'IrEvent' with 1 byte to align 'last_byte_ms' [-Wpadded]
+    uint32_t last_byte_ms;
+             ^
+2 warnings generated.
+compiling ir_protocol.c...
+compiling app_servo.c...
+../App/Src/app_log.c(43): warning: format string is not a string literal [-Wformat-nonliteral]
+    len = vsnprintf(s_log_buf, sizeof(s_log_buf), fmt, ap);
+                                                  ^~~
+../App/Src/app_log.c(7): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(411): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_uart.h(195): warning: padding struct 'struct __UART_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t                 ErrorCode;        /*!< UART Error code                    */
+                                ^
+../App/Src/app_log.c(7): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+3 warnings generated.
+compiling app_log.c...
+../App/Src/app_mq135.c(15): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(295): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(86): warning: padding struct 'ADC_InitTypeDef' with 3 bytes to align 'NbrOfConversion' [-Wpadded]
+  uint32_t NbrOfConversion;              /*!< Specifies the number of ranks that will be converted within the regular group sequencer.
+           ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(93): warning: padding struct 'ADC_InitTypeDef' with 3 bytes to align 'NbrOfDiscConversion' [-Wpadded]
+  uint32_t NbrOfDiscConversion;          /*!< Specifies the number of discontinuous conversions in which the  main sequence of regular group (parameter NbrOfConversion) will be subdivided.
+           ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(59): warning: padding size of 'ADC_InitTypeDef' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct
+        ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(208): warning: padding struct 'ADC_HandleTypeDef' with 3 bytes to align 'State' [-Wpadded]
+  __IO uint32_t                 State;                       /*!< ADC communication state */
+                                ^
+../App/Src/app_mq135.c(15): warning: In file included from...../Inc\main.h(30): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+5 warnings generated.
+compiling app_mq135.c...
+../App/Src/app_ir.c(19): warning: padding size of 'IrSample' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct {
+        ^
+../App/Src/app_ir.c(1): warning: In file included from...../App/Inc\app_ir.h(4): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(411): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_uart.h(195): warning: padding struct 'struct __UART_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t                 ErrorCode;        /*!< UART Error code                    */
+                                ^
+../App/Src/app_ir.c(1): warning: In file included from...../App/Inc\app_ir.h(4): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../App/Src/app_ir.c(8): warning: In file included from...../App/Inc\ir_protocol.h(20): warning: padding struct 'IrParser' with 2 bytes to align 'last_byte_ms' [-Wpadded]
+    uint32_t last_byte_ms;
+             ^
+../App/Src/app_ir.c(206): warning: function 'AppIr_Run' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+{
+^
+../App/Src/app_ir.c(8): warning: In file included from...../App/Inc\ir_protocol.h(28): warning: padding struct 'IrEvent' with 1 byte to align 'last_byte_ms' [-Wpadded]
+    uint32_t last_byte_ms;
+             ^
+6 warnings generated.
+compiling app_ir.c...
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(202): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(403): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_spi.h(134): warning: padding struct 'struct __SPI_HandleTypeDef' with 2 bytes to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t              ErrorCode;      /*!< SPI Error code                           */
+                             ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(202): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(838): warning: cast from 'const uint8_t *' (aka 'const unsigned char *') to 'const uint16_t *' (aka 'const unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+      hspi->Instance->DR = *((const uint16_t *)hspi->pTxBuffPtr);
+                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(848): warning: cast from 'const uint8_t *' (aka 'const unsigned char *') to 'const uint16_t *' (aka 'const unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+        hspi->Instance->DR = *((const uint16_t *)hspi->pTxBuffPtr);
+                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(1043): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+        *((uint16_t *)hspi->pRxBuffPtr) = (uint16_t)hspi->Instance->DR;
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(1219): warning: cast from 'const uint8_t *' (aka 'const unsigned char *') to 'const uint16_t *' (aka 'const unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+      hspi->Instance->DR = *((const uint16_t *)hspi->pTxBuffPtr);
+                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(1237): warning: cast from 'const uint8_t *' (aka 'const unsigned char *') to 'const uint16_t *' (aka 'const unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+        hspi->Instance->DR = *((const uint16_t *)hspi->pTxBuffPtr);
+                               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(1255): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+        *((uint16_t *)hspi->pRxBuffPtr) = (uint16_t)hspi->Instance->DR;
+          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(1309): warning: implicit conversion loses integer precision: 'volatile uint32_t' (aka 'volatile unsigned int') to 'uint8_t' (aka 'unsigned char') [-Wimplicit-int-conversion]
+        (*(uint8_t *)hspi->pRxBuffPtr) = hspi->Instance->DR;
+                                       ~ ~~~~~~~~~~~~~~~~^~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(3240): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+  *((uint16_t *)hspi->pRxBuffPtr) = (uint16_t)(hspi->Instance->DR);
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(3296): warning: cast from 'const uint8_t *' (aka 'const unsigned char *') to 'const uint16_t *' (aka 'const unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+  hspi->Instance->DR = *((const uint16_t *)hspi->pTxBuffPtr);
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(3411): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'uint16_t *' (aka 'unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+  *((uint16_t *)hspi->pRxBuffPtr) = (uint16_t)(hspi->Instance->DR);
+    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_spi.c(3470): warning: cast from 'const uint8_t *' (aka 'const unsigned char *') to 'const uint16_t *' (aka 'const unsigned short *') increases required alignment from 1 to 2 [-Wcast-align]
+  hspi->Instance->DR = *((const uint16_t *)hspi->pTxBuffPtr);
+                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+13 warnings generated.
+compiling stm32f4xx_hal_spi.c...
+../App/Src/app_led.c(1): warning: In file included from...../App/Inc\app_led.h(4): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(411): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_uart.h(195): warning: padding struct 'struct __UART_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t                 ErrorCode;        /*!< UART Error code                    */
+                                ^
+../App/Src/app_led.c(1): warning: In file included from...../App/Inc\app_led.h(4): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../App/Src/app_led.c(1): warning: In file included from...../App/Inc\app_led.h(4): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(407): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(343): warning: padding struct 'TIM_HandleTypeDef' with 3 bytes to align 'hdma' [-Wpadded]
+  DMA_HandleTypeDef                  *hdma[7];          /*!< DMA Handlers array
+                                      ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(337): warning: padding size of 'TIM_HandleTypeDef' with 1 byte to alignment boundary [-Wpadded]
+typedef struct
+        ^
+4 warnings generated.
+compiling app_led.c...
+../App/Src/app_bh1750.c(1): warning: In file included from...../App/Inc\app_bh1750.h(11): warning: padding struct 'Bh1750_Context' with 1 byte to align 'last_action' [-Wpadded]
+    uint32_t last_action;
+             ^
+../App/Src/app_bh1750.c(1): warning: In file included from...../App/Inc\app_bh1750.h(3): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(363): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_i2c.h(215): warning: padding struct 'I2C_HandleTypeDef' with 1 byte to align 'ErrorCode' [-Wpadded]
+  __IO uint32_t              ErrorCode;      /*!< I2C Error code                           */
+                             ^
+../App/Src/app_bh1750.c(1): warning: In file included from...../App/Inc\app_bh1750.h(3): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+../App/Src/app_bh1750.c(1): warning: In file included from...../App/Inc\app_bh1750.h(13): warning: padding struct 'Bh1750_Sample' with 2 bytes to align 'lux_x100' [-Wpadded]
+typedef struct { uint16_t raw; uint32_t lux_x100; } Bh1750_Sample;
+                                        ^
+4 warnings generated.
+compiling app_bh1750.c...
+../App/Src/app_light.c(2): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(295): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(86): warning: padding struct 'ADC_InitTypeDef' with 3 bytes to align 'NbrOfConversion' [-Wpadded]
+  uint32_t NbrOfConversion;              /*!< Specifies the number of ranks that will be converted within the regular group sequencer.
+           ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(93): warning: padding struct 'ADC_InitTypeDef' with 3 bytes to align 'NbrOfDiscConversion' [-Wpadded]
+  uint32_t NbrOfDiscConversion;          /*!< Specifies the number of discontinuous conversions in which the  main sequence of regular group (parameter NbrOfConversion) will be subdivided.
+           ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(59): warning: padding size of 'ADC_InitTypeDef' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct
+        ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_adc.h(208): warning: padding struct 'ADC_HandleTypeDef' with 3 bytes to align 'State' [-Wpadded]
+  __IO uint32_t                 State;                       /*!< ADC communication state */
+                                ^
+../App/Src/app_light.c(2): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+5 warnings generated.
+compiling app_light.c...
+compiling croutine.c...
+../App/Src/app_fan.c(1): warning: In file included from...../App/Inc\app_fan.h(4): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(407): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(343): warning: padding struct 'TIM_HandleTypeDef' with 3 bytes to align 'hdma' [-Wpadded]
+  DMA_HandleTypeDef                  *hdma[7];          /*!< DMA Handlers array
+                                      ^
+../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_tim.h(337): warning: padding size of 'TIM_HandleTypeDef' with 1 byte to alignment boundary [-Wpadded]
+typedef struct
+        ^
+../App/Src/app_fan.c(1): warning: In file included from...../App/Inc\app_fan.h(4): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal.h(29): warning: In file included from...../Inc\stm32f4xx_hal_conf.h(287): warning: In file included from...../Drivers/STM32F4xx_HAL_Driver/Inc\stm32f4xx_hal_dma.h(148): warning: padding struct 'struct __DMA_HandleTypeDef' with 2 bytes to align 'Parent' [-Wpadded]
+  void                       *Parent;                                                          /*!< Parent object state                    */ 
+                              ^
+3 warnings generated.
+compiling app_fan.c...
+../App/Src/app_reed.c(1): warning: In file included from...../App/Inc\app_reed.h(15): warning: padding struct 'AppReed_Snapshot' with 2 bytes to align 'sampled_at' [-Wpadded]
+    uint32_t sampled_at;
+             ^
+1 warning generated.
+compiling app_reed.c...
+compiling list.c...
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(98): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( pxEventGroupBuffer );
+                                                  ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(63): warning: padding size of 'struct EventGroupDef_t' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct EventGroupDef_t
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(106): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( xSize == sizeof( EventGroup_t ) );
+                                                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(37): warning: In file included from...../Middlewares/Third_Party/FreeRTOS/Source/include\FreeRTOS.h(1220): warning: padding size of 'struct xSTATIC_EVENT_GROUP' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct xSTATIC_EVENT_GROUP
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(198): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( ( uxBitsToWaitFor & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
+                                                                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(199): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( uxBitsToWaitFor != 0 );
+                                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(202): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+                                                                                                                     ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(255): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        portYIELD_WITHIN_API();
+                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(320): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( xEventGroup );
+                                   ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(321): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( ( uxBitsToWaitFor & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
+                                                                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(322): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( uxBitsToWaitFor != 0 );
+                                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(325): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+                                                                                                                     ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(403): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        portYIELD_WITHIN_API();
+                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(468): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( xEventGroup );
+                                   ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(469): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( ( uxBitsToClear & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
+                                                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(530): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( xEventGroup );
+                                   ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(531): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( ( uxBitsToSet & eventEVENT_BITS_CONTROL_BYTES ) == 0 );
+                                                                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/event_groups.c(626): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( pxTasksWaitingForBits->xListEnd.pxNext != ( const ListItem_t * ) &( pxTasksWaitingForBits->xListEnd ) );
+                                                                                                                                             ^
+18 warnings generated.
+compiling event_groups.c...
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(232): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( xBufferSizeBytes > sbBYTES_TO_STORE_MESSAGE_LENGTH );
+                                                                                          ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(238): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( xBufferSizeBytes > 0 );
+                                                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(240): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( xTriggerLevelBytes <= xBufferSizeBytes );
+                                                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(153): warning: padding struct 'struct StreamBufferDef_t' with 3 bytes to align 'uxStreamBufferNumber' [-Wpadded]
+                UBaseType_t uxStreamBufferNumber;               /* Used for tracing purposes. */
+                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(262): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'StreamBuffer_t *' (aka 'struct StreamBufferDef_t *') increases required alignment from 1 to 4 [-Wcast-align]
+                        prvInitialiseNewStreamBuffer( ( StreamBuffer_t * ) pucAllocatedMemory, /* Structure at the start of the allocated memory. */ /*lint !e9087 Safe cast as allocated memory is aligned. */ /*lint !e826 Area is not too small and alignment is guaranteed provided malloc() behaves as expected and returns aligned buffer. */
+                                                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(275): warning: cast from 'uint8_t *' (aka 'unsigned char *') to 'StreamBufferHandle_t' (aka 'struct StreamBufferDef_t *') increases required alignment from 1 to 4 [-Wcast-align]
+                return ( StreamBufferHandle_t ) pucAllocatedMemory; /*lint !e9087 !e826 Safe cast as allocated memory is aligned. */
+                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(38): warning: In file included from...../Middlewares/Third_Party/FreeRTOS/Source/include\FreeRTOS.h(1283): warning: padding struct 'struct xSTATIC_STREAM_BUFFER' with 3 bytes to align 'uxDummy4' [-Wpadded]
+                UBaseType_t uxDummy4;
+                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(293): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( pucStreamBufferStorageArea );
+                                                          ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(294): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( pxStaticStreamBuffer );
+                                                    ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(295): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( xTriggerLevelBytes <= xBufferSizeBytes );
+                                                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(319): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( xBufferSizeBytes > sbBYTES_TO_STORE_MESSAGE_LENGTH );
+                                                                                  ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(327): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( xSize == sizeof( StreamBuffer_t ) );
+                                                                         ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(363): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxStreamBuffer );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(401): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxStreamBuffer );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(446): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxStreamBuffer );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(475): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxStreamBuffer );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(499): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxStreamBuffer );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(516): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pvTxData );
+                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(517): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxStreamBuffer );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(528): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( xRequiredSpace > xDataLengthBytes );
+                                                                 ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(553): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        configASSERT( pxStreamBuffer->xTaskWaitingToSend == NULL );
+                                                                                                  ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(593): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        sbSEND_COMPLETED( pxStreamBuffer );
+                                                          ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(619): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pvTxData );
+                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(620): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxStreamBuffer );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(643): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        sbSEND_COMPLETE_FROM_ISR( pxStreamBuffer, pxHigherPriorityTaskWoken );
+                                                                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(721): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pvRxData );
+                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(722): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxStreamBuffer );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(757): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                configASSERT( pxStreamBuffer->xTaskWaitingToReceive == NULL );
+                                                                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(800): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        sbRECEIVE_COMPLETED( pxStreamBuffer );
+                                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(823): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxStreamBuffer );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(848): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( xBytesAvailable == 0 );
+                                                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(869): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pvRxData );
+                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(870): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxStreamBuffer );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(900): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        sbRECEIVE_COMPLETED_FROM_ISR( pxStreamBuffer, pxHigherPriorityTaskWoken );
+                                                                                                 ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(976): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxStreamBuffer );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(999): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxStreamBuffer );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(1034): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxStreamBuffer );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(1064): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxStreamBuffer );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(1092): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( xCount > ( size_t ) 0 );
+                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(1102): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( ( xNextHead + xFirstLength ) <= pxStreamBuffer->xLength );
+                                                                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(1110): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( ( xCount - xFirstLength ) <= pxStreamBuffer->xLength );
+                                                                                    ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(1152): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( xFirstLength <= xMaxCount );
+                                                         ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(1153): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( ( xNextTail + xFirstLength ) <= pxStreamBuffer->xLength );
+                                                                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(1161): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( xCount <= xMaxCount );
+                                                           ^
+../Middlewares/Third_Party/FreeRTOS/Source/stream_buffer.c(1224): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( memset( pucBuffer, ( int ) xWriteValue, xBufferSizeBytes ) == pucBuffer );
+                                                                                                       ^
+45 warnings generated.
+compiling stream_buffer.c...
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(275): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( xReturn );
+                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(36): warning: In file included from...../Middlewares/Third_Party/FreeRTOS/Source/include\FreeRTOS.h(1112): warning: padding size of 'struct xSTATIC_TCB' with 2 bytes to alignment boundary [-Wpadded]
+typedef struct xSTATIC_TCB
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(73): warning: padding size of 'struct tmrTimerControl' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct tmrTimerControl /* The old naming convention is used to prevent breaking kernel aware debuggers. */
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(324): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( xSize == sizeof( Timer_t ) );
+                                                                  ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(330): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( pxTimerBuffer );
+                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(36): warning: In file included from...../Middlewares/Third_Party/FreeRTOS/Source/include\FreeRTOS.h(1249): warning: padding size of 'struct xSTATIC_TIMER' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct xSTATIC_TIMER
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(357): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( ( xTimerPeriodInTicks > 0 ) );
+                                                   ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(386): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( xTimer );
+                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(428): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( ( xTimerTaskHandle != NULL ) );
+                                                    ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(437): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( xTimer );
+                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(446): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( xTimer );
+                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(467): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( xTimer );
+                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(492): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( xTimer );
+                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(502): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( xTimer );
+                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(529): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( xResult );
+                                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(549): warning: function 'prvTimerTask' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+{
+^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(628): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        portYIELD_WITHIN_API();
+                                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(753): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                configASSERT( pxCallback );
+                                                          ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(812): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                                        configASSERT( xResult );
+                                                                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(836): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        configASSERT( ( pxTimer->xTimerPeriodInTicks > 0 ) );
+                                                                                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(925): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                configASSERT( xResult );
+                                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(997): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( xTimer );
+                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(1022): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( xTimer );
+                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(1038): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( xTimer );
+                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(1082): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( xTimerQueue );
+                                           ^
+../Middlewares/Third_Party/FreeRTOS/Source/timers.c(36): warning: In file included from...../Middlewares/Third_Party/FreeRTOS/Source/include\FreeRTOS.h(1199): warning: padding struct 'struct xSTATIC_QUEUE' with 1 byte to align 'uxDummy8' [-Wpadded]
+                UBaseType_t uxDummy8;
+                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/include\FreeRTOS.h(1176): warning: padding size of 'struct xSTATIC_QUEUE' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct xSTATIC_QUEUE
+               ^
+27 warnings generated.
+compiling timers.c...
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(259): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxQueue );
+                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(281): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        queueYIELD_IF_USING_PREEMPTION();
+                                                                        ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(127): warning: padding struct 'struct QueueDefinition' with 1 byte to align 'uxQueueNumber' [-Wpadded]
+                UBaseType_t uxQueueNumber;
+                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(97): warning: padding size of 'struct QueueDefinition' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct QueueDefinition          /* The old naming convention is used to prevent breaking kernel aware debuggers. */
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(314): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( uxQueueLength > ( UBaseType_t ) 0 );
+                                                                 ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(318): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( pxStaticQueue != NULL );
+                                                     ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(322): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( !( ( pucQueueStorage != NULL ) && ( uxItemSize == 0 ) ) );
+                                                                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(323): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( !( ( pucQueueStorage == NULL ) && ( uxItemSize != 0 ) ) );
+                                                                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(331): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( xSize == sizeof( Queue_t ) );
+                                                                  ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(36): warning: In file included from...../Middlewares/Third_Party/FreeRTOS/Source/include\FreeRTOS.h(1199): warning: padding struct 'struct xSTATIC_QUEUE' with 1 byte to align 'uxDummy8' [-Wpadded]
+                UBaseType_t uxDummy8;
+                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/include\FreeRTOS.h(1176): warning: padding size of 'struct xSTATIC_QUEUE' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct xSTATIC_QUEUE
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(374): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( uxQueueLength > ( UBaseType_t ) 0 );
+                                                                 ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(567): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( xSemaphore );
+                                          ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(594): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( pxMutex );
+                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(649): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( pxMutex );
+                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(690): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( uxMaxCount != 0 );
+                                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(691): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( uxInitialCount <= uxMaxCount );
+                                                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(718): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( uxMaxCount != 0 );
+                                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(719): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( uxInitialCount <= uxMaxCount );
+                                                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(746): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxQueue );
+                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(747): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( !( ( pvItemToQueue == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
+                                                                                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(748): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( !( ( xCopyPosition == queueOVERWRITE ) && ( pxQueue->uxLength != 1 ) ) );
+                                                                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(751): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+                                                                                                                     ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(845): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                                        queueYIELD_IF_USING_PREEMPTION();
+                                                                                        ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(858): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                                queueYIELD_IF_USING_PREEMPTION();
+                                                                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(927): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        portYIELD_WITHIN_API();
+                                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(956): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxQueue );
+                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(957): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( !( ( pvItemToQueue == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
+                                                                                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(958): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( !( ( xCopyPosition == queueOVERWRITE ) && ( pxQueue->uxLength != 1 ) ) );
+                                                                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1124): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxQueue );
+                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1128): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxQueue->uxItemSize == 0 );
+                                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1133): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( !( ( pxQueue->uxQueueType == queueQUEUE_IS_MUTEX ) && ( pxQueue->u.xSemaphore.xMutexHolder != NULL ) ) );
+                                                                                                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1284): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( ( pxQueue ) );
+                                   ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1288): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( !( ( ( pvBuffer ) == NULL ) && ( ( pxQueue )->uxItemSize != ( UBaseType_t ) 0U ) ) );
+                                                                                                          ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1293): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+                                                                                                                     ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1323): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                                queueYIELD_IF_USING_PREEMPTION();
+                                                                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1382): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        portYIELD_WITHIN_API();
+                                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1429): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( ( pxQueue ) );
+                                   ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1433): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxQueue->uxItemSize == 0 );
+                                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1438): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+                                                                                                                     ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1485): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                                queueYIELD_IF_USING_PREEMPTION();
+                                                                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1509): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                                configASSERT( xInheritanceOccurred == pdFALSE );
+                                                                                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1573): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        portYIELD_WITHIN_API();
+                                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1644): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( ( pxQueue ) );
+                                   ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1648): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( !( ( ( pvBuffer ) == NULL ) && ( ( pxQueue )->uxItemSize != ( UBaseType_t ) 0U ) ) );
+                                                                                                          ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1653): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( !( ( xTaskGetSchedulerState() == taskSCHEDULER_SUSPENDED ) && ( xTicksToWait != 0 ) ) );
+                                                                                                                     ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1689): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                                queueYIELD_IF_USING_PREEMPTION();
+                                                                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1749): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        portYIELD_WITHIN_API();
+                                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1791): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxQueue );
+                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1792): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( !( ( pvBuffer == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
+                                                                                                  ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1883): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxQueue );
+                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1884): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( !( ( pvBuffer == NULL ) && ( pxQueue->uxItemSize != ( UBaseType_t ) 0U ) ) );
+                                                                                                  ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1885): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxQueue->uxItemSize != 0 ); /* Can't peek a semaphore. */
+                                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1934): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( xQueue );
+                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1951): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxQueue );
+                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1968): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxQueue );
+                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(1979): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxQueue );
+                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(2317): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxQueue );
+                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(2357): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxQueue );
+                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(162): warning: no previous extern declaration for non-static variable 'xQueueRegistry' [-Wmissing-variable-declarations]
+        PRIVILEGED_DATA QueueRegistryItem_t xQueueRegistry[ configQUEUE_REGISTRY_SIZE ];
+                                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/queue.c(162): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+        PRIVILEGED_DATA QueueRegistryItem_t xQueueRegistry[ configQUEUE_REGISTRY_SIZE ];
+                        ^
+60 warnings generated.
+compiling queue.c...
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c(227): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( uxCriticalNesting == ~0UL );
+                                                 ^
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c(291): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( configMAX_SYSCALL_INTERRUPT_PRIORITY );
+                                                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c(296): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( portCPUID != portCORTEX_M7_r0p1_ID );
+                                                          ^
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c(297): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( portCPUID != portCORTEX_M7_r0p0_ID );
+                                                          ^
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c(346): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( ( portMAX_PRIGROUP_BITS - ulMaxPRIGROUPValue ) == configPRIO_BITS );
+                                                                                                         ^
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c(357): warning: implicit conversion loses integer precision: 'volatile uint32_t' (aka 'volatile unsigned int') to 'uint8_t' (aka 'unsigned char') [-Wimplicit-int-conversion]
+                *pucFirstUserPriorityRegister = ulOriginalPriority;
+                                              ~ ^~~~~~~~~~~~~~~~~~
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c(399): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( uxCriticalNesting == 1000UL );
+                                                   ^
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c(415): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( ( portNVIC_INT_CTRL_REG & portVECTACTIVE_MASK ) == 0 );
+                                                                                    ^
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c(422): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( uxCriticalNesting );
+                                         ^
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c(754): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( ucCurrentPriority >= ucMaxSysCallPriority );
+                                                                                 ^
+../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F/port.c(770): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( ( portAIRCR_REG & portPRIORITY_GROUP_MASK ) <= ulMaxPRIGROUPValue );
+                                                                                                 ^
+11 warnings generated.
+compiling port.c...
+../Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c(151): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        configASSERT( ( xWantedSize & portBYTE_ALIGNMENT_MASK ) == 0 );
+                                                                                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c(196): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                                configASSERT( ( ( ( size_t ) pxNewBlockLink ) & portBYTE_ALIGNMENT_MASK ) == 0 );
+                                                                                                                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c(261): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( ( ( ( size_t ) pvReturn ) & ( size_t ) portBYTE_ALIGNMENT_MASK ) == 0 );
+                                                                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c(281): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( ( pxLink->xBlockSize & xBlockAllocatedBit ) != 0 );
+                                                                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/portable/MemMang/heap_4.c(282): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( pxLink->pxNextFreeBlock == NULL );
+                                                               ^
+5 warnings generated.
+compiling heap_4.c...
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(337): warning: no previous extern declaration for non-static variable 'pxCurrentTCB' [-Wmissing-variable-declarations]
+PRIVILEGED_DATA TCB_t * volatile pxCurrentTCB = NULL;
+                                 ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(337): note: declare 'static' if the variable is not intended to be used outside of this translation unit
+PRIVILEGED_DATA TCB_t * volatile pxCurrentTCB = NULL;
+                ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(252): warning: padding size of 'struct tskTaskControlBlock' with 2 bytes to alignment boundary [-Wpadded]
+typedef struct tskTaskControlBlock                      /* The old naming convention is used to prevent breaking kernel aware debuggers. */
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(592): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( puxStackBuffer != NULL );
+                                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(593): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( pxTaskBuffer != NULL );
+                                                    ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(601): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( xSize == sizeof( TCB_t ) );
+                                                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(38): warning: In file included from...../Middlewares/Third_Party/FreeRTOS/Source/include\FreeRTOS.h(1112): warning: padding size of 'struct xSTATIC_TCB' with 2 bytes to alignment boundary [-Wpadded]
+typedef struct xSTATIC_TCB
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(868): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( ( ( ( portPOINTER_SIZE_TYPE ) pxTopOfStack & ( portPOINTER_SIZE_TYPE ) portBYTE_ALIGNMENT_MASK ) == 0UL ) );
+                                                                                                                                         ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1134): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                prvAddTaskToReadyList( pxNewTCB );
+                                                 ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1146): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        taskYIELD_IF_USING_PREEMPTION();
+                                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1242): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                configASSERT( uxSchedulerSuspended == 0 );
+                                                                         ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1243): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                portYIELD_WITHIN_API();
+                                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1262): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( pxPreviousWakeTime );
+                                                  ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1263): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( ( xTimeIncrement > 0U ) );
+                                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1264): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( uxSchedulerSuspended == 0 );
+                                                         ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1328): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        portYIELD_WITHIN_API();
+                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1348): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( uxSchedulerSuspended == 0 );
+                                                                 ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1373): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        portYIELD_WITHIN_API();
+                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1392): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( pxTCB );
+                                     ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1546): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( ( uxNewPriority < configMAX_PRIORITIES ) );
+                                                                        ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1675): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        prvAddTaskToReadyList( pxTCB );
+                                                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1684): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        taskYIELD_IF_USING_PREEMPTION();
+                                                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1772): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                configASSERT( uxSchedulerSuspended == 0 );
+                                                                         ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1773): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                portYIELD_WITHIN_API();
+                                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1814): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( xTask );
+                                     ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1856): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( xTaskToResume );
+                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1871): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        prvAddTaskToReadyList( pxTCB );
+                                                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1879): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                                taskYIELD_IF_USING_PREEMPTION();
+                                                                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1911): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( xTaskToResume );
+                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(1952): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        prvAddTaskToReadyList( pxTCB );
+                                                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(2090): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( xReturn != errCOULD_NOT_ALLOCATE_REQUIRED_MEMORY );
+                                                                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(2201): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( uxSchedulerSuspended );
+                                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(2223): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        prvAddTaskToReadyList( pxTCB );
+                                                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(2285): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        taskYIELD_IF_USING_PREEMPTION();
+                                                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(2365): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxTCB );
+                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(39): warning: In file included from...../Middlewares/Third_Party/FreeRTOS/Source/include/task.h(143): warning: padding struct 'struct xTASK_STATUS' with 3 bytes to align 'uxCurrentPriority' [-Wpadded]
+        UBaseType_t uxCurrentPriority;  /* The priority at which the task was running (may be inherited) when the structure was populated. */
+                    ^
+../Middlewares/Third_Party/FreeRTOS/Source/include/task.h(137): warning: padding size of 'struct xTASK_STATUS' with 2 bytes to alignment boundary [-Wpadded]
+typedef struct xTASK_STATUS
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(2615): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( uxSchedulerSuspended == 0 );
+                                                 ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(2729): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        taskSWITCH_DELAYED_LISTS();
+                                                  ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(2794): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        prvAddTaskToReadyList( pxTCB );
+                                                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3041): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                taskSELECT_HIGHEST_PRIORITY_TASK(); /*lint !e9079 void * is used as this macro is used with timers and co-routines too.  Alignment is known to be fine as the type of the pointer stored and retrieved is the same. */
+                                                  ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3066): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxEventList );
+                                   ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3083): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxEventList );
+                                   ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3087): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( uxSchedulerSuspended != 0 );
+                                                 ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3109): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( pxEventList );
+                                           ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3157): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxUnblockedTCB );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3163): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                prvAddTaskToReadyList( pxUnblockedTCB );
+                                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3212): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( uxSchedulerSuspended != pdFALSE );
+                                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3220): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxUnblockedTCB );
+                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3241): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        prvAddTaskToReadyList( pxUnblockedTCB );
+                                               ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3256): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxTimeOut );
+                                 ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3278): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxTimeOut );
+                                 ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3279): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        configASSERT( pxTicksToWait );
+                                     ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3434): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                taskYIELD();
+                                           ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3393): warning: function 'prvIdleTask' could be declared with attribute 'noreturn' [-Wmissing-noreturn]
+{
+^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3773): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        listGET_OWNER_OF_NEXT_ENTRY( pxFirstTCB, pxList ); /*lint !e9079 void * is used as this macro is used with timers and co-routines too.  Alignment is known to be fine as the type of the pointer stored and retrieved is the same. */
+                                                                         ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3781): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                listGET_OWNER_OF_NEXT_ENTRY( pxNextTCB, pxList ); /*lint !e9079 void * is used as this macro is used with timers and co-routines too.  Alignment is known to be fine as the type of the pointer stored and retrieved is the same. */
+                                                                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(3933): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                configASSERT( pxTCB->ucStaticallyAllocated == tskSTATICALLY_ALLOCATED_STACK_AND_TCB     );
+                                                                                                                         ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4059): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        prvAddTaskToReadyList( pxMutexHolderTCB );
+                                                                                 ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4115): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( pxTCB == pxCurrentTCB );
+                                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4116): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( pxTCB->uxMutexesHeld );
+                                                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4149): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        prvAddTaskToReadyList( pxTCB );
+                                                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4194): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                        configASSERT( pxTCB->uxMutexesHeld );
+                                                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4221): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        configASSERT( pxTCB != pxCurrentTCB );
+                                                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4261): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                                prvAddTaskToReadyList( pxTCB );
+                                                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4656): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        portYIELD_WITHIN_API();
+                                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4729): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        portYIELD_WITHIN_API();
+                                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4789): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( xTaskToNotify );
+                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4838): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        configASSERT( pxTCB->ulNotifiedValue == ~0UL );
+                                                                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4834): warning: default label in switch which covers all enumeration values [-Wcovered-switch-default]
+                                default:
+                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4850): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                prvAddTaskToReadyList( pxTCB );
+                                                              ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4853): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                configASSERT( listLIST_ITEM_CONTAINER( &( pxTCB->xEventListItem ) ) == NULL );
+                                                                                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4875): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        taskYIELD_IF_USING_PREEMPTION();
+                                                                       ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4904): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( xTaskToNotify );
+                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4971): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        configASSERT( pxTCB->ulNotifiedValue == ~0UL );
+                                                                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4967): warning: default label in switch which covers all enumeration values [-Wcovered-switch-default]
+                                default:
+                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4982): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                configASSERT( listLIST_ITEM_CONTAINER( &( pxTCB->xEventListItem ) ) == NULL );
+                                                                                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(4987): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        prvAddTaskToReadyList( pxTCB );
+                                                                      ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(5032): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                configASSERT( xTaskToNotify );
+                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(5070): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                configASSERT( listLIST_ITEM_CONTAINER( &( pxTCB->xEventListItem ) ) == NULL );
+                                                                                                             ^
+../Middlewares/Third_Party/FreeRTOS/Source/tasks.c(5075): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+                                        prvAddTaskToReadyList( pxTCB );
+                                                                      ^
+80 warnings generated.
+compiling tasks.c...
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c(28): warning: In file included from...../Middlewares/Third_Party/FreeRTOS/Source/include\FreeRTOS.h(1112): warning: padding size of 'struct xSTATIC_TCB' with 2 bytes to alignment boundary [-Wpadded]
+typedef struct xSTATIC_TCB
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c(548): warning: default label in switch which covers all enumeration values [-Wcovered-switch-default]
+      default:         state = osThreadError;      break;
+      ^
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c(606): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+    taskYIELD();
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c(29): warning: In file included from...../Middlewares/Third_Party/FreeRTOS/Source/include/task.h(143): warning: padding struct 'struct xTASK_STATUS' with 3 bytes to align 'uxCurrentPriority' [-Wpadded]
+        UBaseType_t uxCurrentPriority;  /* The priority at which the task was running (may be inherited) when the structure was populated. */
+                    ^
+../Middlewares/Third_Party/FreeRTOS/Source/include/task.h(137): warning: padding size of 'struct xTASK_STATUS' with 2 bytes to alignment boundary [-Wpadded]
+typedef struct xTASK_STATUS
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c(746): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+      portYIELD_FROM_ISR (yield);
+                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c(28): warning: In file included from...../Middlewares/Third_Party/FreeRTOS/Source/include\FreeRTOS.h(1249): warning: padding size of 'struct xSTATIC_TIMER' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct xSTATIC_TIMER
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/include\FreeRTOS.h(1220): warning: padding size of 'struct xSTATIC_EVENT_GROUP' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct xSTATIC_EVENT_GROUP
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c(1170): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+      portYIELD_FROM_ISR (yield);
+                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c(28): warning: In file included from...../Middlewares/Third_Party/FreeRTOS/Source/include\FreeRTOS.h(1199): warning: padding struct 'struct xSTATIC_QUEUE' with 1 byte to align 'uxDummy8' [-Wpadded]
+                UBaseType_t uxDummy8;
+                            ^
+../Middlewares/Third_Party/FreeRTOS/Source/include\FreeRTOS.h(1176): warning: padding size of 'struct xSTATIC_QUEUE' with 3 bytes to alignment boundary [-Wpadded]
+typedef struct xSTATIC_QUEUE
+               ^
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c(1604): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        portYIELD_FROM_ISR (yield);
+                                  ^
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c(1637): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+      portYIELD_FROM_ISR (yield);
+                                ^
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c(1769): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        portYIELD_FROM_ISR (yield);
+                                  ^
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c(1810): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+        portYIELD_FROM_ISR (yield);
+                                  ^
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.c(2181): warning: empty expression statement has no effect; remove unnecessary ';' to silence this warning [-Wextra-semi-stmt]
+          portYIELD_FROM_ISR (yield);
+                                    ^
+16 warnings generated.
+compiling cmsis_os2.c...
+linking...
+Program Size: Code=59334 RO-data=5438 RW-data=36 ZI-data=94068  
+FromELF: creating hex file...
+"EcoVision_F413ZH\EcoVision_F413ZH.axf" - 0 Error(s), 456 Warning(s).
+Build Time Elapsed:  00:00:07
