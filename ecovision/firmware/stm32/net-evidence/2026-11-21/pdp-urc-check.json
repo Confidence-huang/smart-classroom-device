@@ -1,0 +1,16 @@
+[
+  {
+    "command": "AT+QIACT?",
+    "ok": true,
+    "active_context_seen": true
+  },
+  {
+    "command": "AT+CGDCONT?",
+    "ok": true,
+    "context1_apn_present": false
+  },
+  {
+    "command": "AT+QURCCFG=\"urcport\",\"uart1\"",
+    "ok": true
+  }
+]

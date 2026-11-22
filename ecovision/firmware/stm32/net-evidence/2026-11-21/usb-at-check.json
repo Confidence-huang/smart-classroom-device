@@ -1,0 +1,46 @@
+[
+  {
+    "command": "AT",
+    "response": "OK"
+  },
+  {
+    "command": "AT+CGMR",
+    "response": "EC200UCNAAR03A17M08\r\n\r\nOK"
+  },
+  {
+    "command": "AT+CPIN?",
+    "response": "+CPIN: READY\r\n\r\nOK"
+  },
+  {
+    "command": "AT+CEREG?",
+    "response": "+CEREG: 0,1\r\n\r\nOK"
+  },
+  {
+    "command": "AT+CGATT?",
+    "response": "+CGATT: 1\r\n\r\nOK"
+  },
+  {
+    "command": "AT+IPR?",
+    "response": "+IPR: 115200\r\n\r\nOK"
+  },
+  {
+    "command": "AT+IFC?",
+    "response": "+IFC: 0,0\r\n\r\nOK"
+  },
+  {
+    "command": "AT+QIACT?",
+    "response": "OK"
+  },
+  {
+    "command": "AT+QMTOPEN=?",
+    "response": "+QMTOPEN: (0-5),<host_name>,<port>\r\n\r\nOK"
+  },
+  {
+    "command": "AT+QSSLCFG=?",
+    "response": "+QSSLCFG: \"sslversion\",(0-5),(0-4)\r\n+QSSLCFG: \"dtls\",(0-5),(0,1)\r\n+QSSLCFG: \"ciphersuite\",(0-5),(0X0035,0X002F,0X0005,0X0004,0X000A,0X003D,0XC002,0XC003,0XC004,0XC005,0XC007,0XC008,0XC009,0XC00A,0XC011,0XC012,0XC013,0XC014,0XC00C,0XC00D,0XC00E,0XC00F,0XC023,0XC024,0XC025,0XC026,0XC027,0XC028,0XC029,0XC02A,0XC02F,0XC030,0XFFFF)\r\n+QSSLCFG: \"seclevel\",(0-5),(0-2)\r\n+QSSLCFG: \"cacert\",(0-5),<cacertpath>\r\n+QSSLCFG: \"clientcert\",(0-5),<client_cert_path>\r\n+QSSLCFG: \"clientkey\",(0-5),<client_key_path>,<key_pwd>\r\n+QSSLCFG: \"sni\",(0-5),(0,1)\r\n+QSSLCFG: \"ignorelocaltime\",(0-5),(0,1)\r\n+QSSLCFG: \"negotiatetime\",(0-5),(10-300)\r\n+QSSLCFG: \"ignoreinvalidcertsign\",(0-5),(0,1)\r\n+QSSLCFG: \"ignorecertitem\",(0-5),(0-1048575)\r\n+QSSLCFG: \"ignoremulticertchainverify\",(0-5),(0,1)\r\n+QSSLCFG: \"session_cache\",(0-5),(0,1)\r\n+QSSLCFG: \"dtlsversion\",(0-5),(0,1)\r\n+QSSLCFG: \"psk_enable\",(0-5),(0,1)\r\n+QSSLCFG: \"psk\",(0-5),<identity>,<key>\r\n+QSSLCFG: \"renegotiation\",(0-5),(0,1)\r\n+QSSLCFG: \"alpn\",(0-5),<protocolname>\r\n\r\nOK"
+  },
+  {
+    "command": "AT+CCLK?",
+    "response": "+CCLK: \"26/11/21,14:41:15+00\"\r\n\r\nOK"
+  }
+]

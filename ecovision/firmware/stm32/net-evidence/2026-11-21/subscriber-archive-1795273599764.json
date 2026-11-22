@@ -1,0 +1,70 @@
+{
+  "started_at": "2026-11-21T14:56:01.219Z",
+  "observer_only": true,
+  "connected": true,
+  "messages": [
+    {
+      "received_at": "2026-11-21T14:56:01.429Z",
+      "topic": "ecovision/f413zh-gen1pro-01/status",
+      "retain": true,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "787e2de1c59b2cd3c37e33accb985ae5",
+        "seq": 0,
+        "state": "online",
+        "reason": "connected",
+        "ts": 1795272587
+      }
+    },
+    {
+      "received_at": "2026-11-21T14:56:01.430Z",
+      "topic": "classroom/room01/telemetry",
+      "retain": true,
+      "payload": {
+        "type": "telemetry",
+        "simulated": false,
+        "people_count": null,
+        "schema_version": 1,
+        "source": "stm32_micropython_aht20_ldr",
+        "device_id": "f413zh-gen1pro-01",
+        "temperature_c": 26.3,
+        "seq": 848473069,
+        "captured_at": "2026-11-20T06:57:49Z",
+        "humidity_pct": 25.5,
+        "light_lux": null,
+        "light_raw_u16": 21701
+      }
+    },
+    {
+      "received_at": "2026-11-21T14:56:34.214Z",
+      "topic": "ecovision/f413zh-gen1pro-01/status",
+      "retain": false,
+      "payload": {
+        "v": "1.0.0",
+        "device_id": "f413zh-gen1pro-01",
+        "boot_id": "787e2de1c59b2cd3c37e33accb985ae5",
+        "seq": 1,
+        "state": "offline",
+        "reason": "lwt",
+        "ts": null
+      }
+    }
+  ],
+  "errors": [],
+  "grants": [
+    {
+      "topic": "ecovision/f413zh-gen1pro-01/telemetry",
+      "qos": 1
+    },
+    {
+      "topic": "ecovision/f413zh-gen1pro-01/status",
+      "qos": 1
+    },
+    {
+      "topic": "classroom/room01/telemetry",
+      "qos": 1
+    }
+  ],
+  "ended_at": "2026-11-21T14:57:51.317Z"
+}

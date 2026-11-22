@@ -1,0 +1,115 @@
+EcoVision F413ZH net-20261121.5, interface baseline 1.0.0
+[LED] READY level=0 OFF; ASCII 0..4 selects warm brightness
+[FAN] READY level=0; F0 OFF, F1..F4 PWM 40/60/80/100%
+[ENV] th_valid=1 temp_x100=2949 rh_x100=2583 adc_valid=1 adc12=844 adc16=13507 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[LCD] ST7735 SPI1 PA5/PA7 DC=PF12 CS=PD14 init=OK
+[VISION] WAIT link=8f9b174d3517ad86 (UART2 PD5 TX/PD6 RX, 115200 8N1)
+[VISION] heap_free=12144 bytes; task_stack_free=2468 bytes
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[NET] private_config=valid (values not logged)
+[NET] state=AT_WAIT
+[NET] AT probe baud=115200 result=0 rx_bytes=6 rx_pin=1
+[NET] state=SIM_CHECK
+[NET] state=REGISTER
+[NET] state=PDP
+[NET] state=TIME_SYNC
+[NET] trusted_utc=1795272951 source=NETWORK_NITZ
+[NET] state=TLS_CONFIG
+[NET] state=MQTT_CONNECT
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[ENV] th_valid=1 temp_x100=2947 rh_x100=2581 adc_valid=1 adc12=848 adc16=13571 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[ENV] th_valid=1 temp_x100=2948 rh_x100=2575 adc_valid=1 adc12=853 adc16=13651 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[ENV] th_valid=1 temp_x100=2947 rh_x100=2562 adc_valid=1 adc12=863 adc16=13811 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[ENV] th_valid=1 temp_x100=2946 rh_x100=2553 adc_valid=1 adc12=860 adc16=13763 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[ENV] th_valid=1 temp_x100=2943 rh_x100=2538 adc_valid=1 adc12=841 adc16=13459 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[NET] stage=MQTT_CONNECT failed; retry=0 (local tasks continue)
+[NET] state=OFFLINE
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[NET] state=AT_WAIT
+[NET] AT probe baud=115200 result=0 rx_bytes=6 rx_pin=1
+[NET] state=SIM_CHECK
+[NET] state=REGISTER
+[NET] state=PDP
+[NET] state=TIME_SYNC
+[NET] trusted_utc=1795272982 source=NETWORK_NITZ
+[NET] state=TLS_CONFIG
+[NET] state=MQTT_CONNECT
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[ENV] th_valid=1 temp_x100=2941 rh_x100=2515 adc_valid=1 adc12=846 adc16=13539 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[ENV] th_valid=1 temp_x100=2942 rh_x100=2512 adc_valid=1 adc12=868 adc16=13891 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[ENV] th_valid=1 temp_x100=2940 rh_x100=2508 adc_valid=1 adc12=852 adc16=13635 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[ENV] th_valid=1 temp_x100=2940 rh_x100=2499 adc_valid=1 adc12=846 adc16=13539 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[ENV] th_valid=1 temp_x100=2938 rh_x100=2485 adc_valid=1 adc12=847 adc16=13555 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[ENV] th_valid=1 temp_x100=2937 rh_x100=2477 adc_valid=1 adc12=848 adc16=13571 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[NET] stage=MQTT_CONNECT failed; retry=1 (local tasks continue)
+[NET] state=OFFLINE
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03
+[VISION] TX $EVQ,8f9b174d3517ad86*6A03

@@ -1,0 +1,90 @@
+[initial_boot] [NET] LEGACY PUBACK seq=848589088 source=C_HAL_REAL_4G
+[initial_boot] EcoVision F413ZH net-20261121.8, interface baseline 1.0.0
+[initial_boot] [LED] READY level=0 OFF; ASCII 0..4 selects warm brightness
+[initial_boot] [FAN] READY level=0; F0 OFF, F1..F4 PWM 40/60/80/100%
+[initial_boot] [ENV] th_valid=1 temp_x100=2917 rh_x100=2435 adc_valid=1 adc12=861 adc16=13779 err=0
+[initial_boot] [LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[initial_boot] [LCD] ST7735 SPI1 PA5/PA7 DC=PF12 CS=PD14 init=OK
+[initial_boot] [VISION] WAIT link=1450a80575adbf2d (UART2 PD5 TX/PD6 RX, 115200 8N1)
+[initial_boot] [VISION] heap_free=12144 bytes; task_stack_free=2468 bytes
+[initial_boot] [VISION] TX $EVQ,1450a80575adbf2d*E55F
+[initial_boot] [NET] private_config=valid (values not logged)
+[initial_boot] [NET] state=AT_WAIT
+[initial_boot] [NET] AT probe baud=115200 result=0 rx_bytes=6 rx_pin=1
+[initial_boot] [NET] state=SIM_CHECK
+[initial_boot] [NET] state=REGISTER
+[initial_boot] [NET] state=PDP
+[initial_boot] [NET] modem result=ERROR
+[initial_boot] [NET] state=TIME_SYNC
+[initial_boot] [NET] trusted_utc=1795273894 source=NETWORK_NITZ
+[initial_boot] [NET] state=TLS_CONFIG
+[initial_boot] [NET] state=MQTT_CONNECT
+[initial_boot] [NET] modem result=ERROR
+[initial_boot] [VISION] TX $EVQ,1450a80575adbf2d*E55F
+[initial_boot] [VISION] TX $EVQ,1450a80575adbf2d*E55F
+[initial_boot] [NET] state=ONLINE
+[initial_boot] [NET] PUBACK seq=0 bytes=463 temp_valid=1 vision_valid=0
+[initial_boot] [NET] LEGACY PUBACK seq=848589095 source=C_HAL_REAL_4G
+[initial_boot] [VISION] TX $EVQ,1450a80575adbf2d*E55F
+[initial_boot] [VISION] TX $EVQ,1450a80575adbf2d*E55F
+[initial_boot] [ENV] th_valid=1 temp_x100=2918 rh_x100=2436 adc_valid=1 adc12=852 adc16=13635 err=0
+[initial_boot] [LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[initial_boot] [VISION] TX $EVQ,1450a80575adbf2d*E55F
+[initial_boot] [VISION] TX $EVQ,1450a80575adbf2d*E55F
+[initial_boot] [VISION] TX $EVQ,1450a80575adbf2d*E55F
+[initial_boot] [NET] PUBACK seq=1 bytes=463 temp_valid=1 vision_valid=0
+[initial_boot] [NET] LEGACY PUBACK seq=848589100 source=C_HAL_REAL_4G
+[initial_boot] [VISION] TX $EVQ,1450a80575adbf2d*E55F
+[initial_boot] [VISION] TX $EVQ,1450a80575adbf2d*E55F
+[initial_boot] [VISION] TX $EVQ,1450a80575adbf2d*E55F
+[initial_boot] [ENV] th_valid=1 temp_x100=2918 rh_x100=2430 adc_valid=1 adc12=854 adc16=13667 err=0
+[initial_boot] [LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[initial_boot] [VISION] TX $EVQ,1450a80575adbf2d*E55F
+[initial_boot] [VISION] TX $EVQ,1450a80575adbf2d*E55F
+[initial_boot] [NET] PUBACK seq=2 bytes=464 temp_valid=1 vision_valid=0
+[initial_boot] [NET] LEGACY PUBACK seq=848589105 source=C_HAL_REAL_4G
+[after_mcu_reset] [VISION] TX $EVQ,1450a80575adbf2d*E55F
+[after_mcu_reset] EcoVision F413ZH net-20261121.8, interface baseline 1.0.0
+[after_mcu_reset] [LED] READY level=0 OFF; ASCII 0..4 selects warm brightness
+[after_mcu_reset] [FAN] READY level=0; F0 OFF, F1..F4 PWM 40/60/80/100%
+[after_mcu_reset] [ENV] th_valid=1 temp_x100=2916 rh_x100=2425 adc_valid=1 adc12=853 adc16=13651 err=0
+[after_mcu_reset] [LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[after_mcu_reset] [LCD] ST7735 SPI1 PA5/PA7 DC=PF12 CS=PD14 init=OK
+[after_mcu_reset] [VISION] WAIT link=c07a50d2e74b3da7 (UART2 PD5 TX/PD6 RX, 115200 8N1)
+[after_mcu_reset] [VISION] heap_free=12144 bytes; task_stack_free=2468 bytes
+[after_mcu_reset] [VISION] TX $EVQ,c07a50d2e74b3da7*579F
+[after_mcu_reset] [NET] private_config=valid (values not logged)
+[after_mcu_reset] [NET] state=AT_WAIT
+[after_mcu_reset] [NET] AT probe baud=115200 result=0 rx_bytes=6 rx_pin=1
+[after_mcu_reset] [NET] state=SIM_CHECK
+[after_mcu_reset] [NET] state=REGISTER
+[after_mcu_reset] [NET] state=PDP
+[after_mcu_reset] [NET] modem result=ERROR
+[after_mcu_reset] [NET] state=TIME_SYNC
+[after_mcu_reset] [NET] trusted_utc=1795273909 source=NETWORK_NITZ
+[after_mcu_reset] [NET] state=TLS_CONFIG
+[after_mcu_reset] [NET] state=MQTT_CONNECT
+[after_mcu_reset] [NET] modem result=ERROR
+[after_mcu_reset] [VISION] TX $EVQ,c07a50d2e74b3da7*579F
+[after_mcu_reset] [VISION] TX $EVQ,c07a50d2e74b3da7*579F
+[after_mcu_reset] [NET] state=ONLINE
+[after_mcu_reset] [NET] PUBACK seq=0 bytes=463 temp_valid=1 vision_valid=0
+[after_mcu_reset] [NET] LEGACY PUBACK seq=848589110 source=C_HAL_REAL_4G
+[after_mcu_reset] [VISION] TX $EVQ,c07a50d2e74b3da7*579F
+[after_mcu_reset] [VISION] TX $EVQ,c07a50d2e74b3da7*579F
+[after_mcu_reset] [ENV] th_valid=1 temp_x100=2916 rh_x100=2426 adc_valid=1 adc12=855 adc16=13683 err=0
+[after_mcu_reset] [LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[after_mcu_reset] [VISION] TX $EVQ,c07a50d2e74b3da7*579F
+[after_mcu_reset] [VISION] TX $EVQ,c07a50d2e74b3da7*579F
+[after_mcu_reset] [VISION] TX $EVQ,c07a50d2e74b3da7*579F
+[after_mcu_reset] [NET] PUBACK seq=1 bytes=463 temp_valid=1 vision_valid=0
+[after_mcu_reset] [VISION] TX $EVQ,c07a50d2e74b3da7*579F
+[after_mcu_reset] [NET] LEGACY PUBACK seq=848589115 source=C_HAL_REAL_4G
+[after_mcu_reset] [VISION] TX $EVQ,c07a50d2e74b3da7*579F
+[after_mcu_reset] [VISION] TX $EVQ,c07a50d2e74b3da7*579F
+[after_mcu_reset] [ENV] th_valid=1 temp_x100=2917 rh_x100=2432 adc_valid=1 adc12=850 adc16=13603 err=0
+[after_mcu_reset] [LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[after_mcu_reset] [VISION] TX $EVQ,c07a50d2e74b3da7*579F
+[after_mcu_reset] [VISION] TX $EVQ,c07a50d2e74b3da7*579F
+[after_mcu_reset] [NET] PUBACK seq=2 bytes=464 temp_valid=1 vision_valid=0
+[after_mcu_reset] [NET] LEGACY PUBACK seq=848589120 source=C_HAL_REAL_4G

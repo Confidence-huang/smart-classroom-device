@@ -1,0 +1,39 @@
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[NET] state=AT_WAIT
+[ENV] th_valid=1 temp_x100=2765 rh_x100=2688 adc_valid=1 adc12=672 adc16=10754 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[NET] AT failed=-2 UART6 PG14/PG9; check module power/J308
+[NET] stage=AT_WAIT failed; retry=1 (local tasks continue)
+[NET] state=OFFLINE
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[ENV] th_valid=1 temp_x100=2766 rh_x100=2698 adc_valid=1 adc12=658 adc16=10530 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[NET] state=AT_WAIT
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[NET] AT failed=-2 UART6 PG14/PG9; check module power/J308
+[NET] stage=AT_WAIT failed; retry=2 (local tasks continue)
+[NET] state=OFFLINE
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[ENV] th_valid=1 temp_x100=2769 rh_x100=2702 adc_valid=1 adc12=660 adc16=10562 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[ENV] th_valid=1 temp_x100=2769 rh_x100=2698 adc_valid=1 adc12=670 adc16=10722 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[NET] state=AT_WAIT
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83
+[VISION] TX $EVQ,e9ae5bc3cd3c2330*DE83

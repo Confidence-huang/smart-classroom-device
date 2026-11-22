@@ -1,0 +1,14 @@
+[
+  {
+    "command": "AT+QIDNSCFG=1",
+    "response": "+QIDNSCFG: 1,\"[IP-redacted]\",\"[IP-redacted]\",\"[IPv6-redacted]\",\"[IPv6-redacted]\"\r\n\r\nOK"
+  },
+  {
+    "command": "AT+QIACT?",
+    "response": "+QIACT: 1,1,3,\"[IP-redacted]\",\"[IPv6-redacted]\"\r\n\r\nOK"
+  },
+  {
+    "command": "AT+CGPADDR=1",
+    "response": "+CGPADDR: 1,\"[IP-redacted],[IPv6-redacted]\"\r\n\r\nOK"
+  }
+]

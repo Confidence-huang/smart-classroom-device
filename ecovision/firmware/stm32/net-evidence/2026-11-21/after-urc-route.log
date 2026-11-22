@@ -1,0 +1,38 @@
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[ENV] th_valid=1 temp_x100=2947 rh_x100=2629 adc_valid=1 adc12=875 adc16=14003 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[ENV] th_valid=1 temp_x100=2946 rh_x100=2656 adc_valid=1 adc12=874 adc16=13987 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[ENV] th_valid=1 temp_x100=2948 rh_x100=2684 adc_valid=1 adc12=855 adc16=13683 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[ENV] th_valid=1 temp_x100=2951 rh_x100=2667 adc_valid=1 adc12=849 adc16=13587 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[NET] state=AT_WAIT
+[NET] AT probe baud=115200 result=0 rx_bytes=6 rx_pin=1
+[NET] state=SIM_CHECK
+[NET] state=REGISTER
+[NET] state=PDP
+[NET] state=TIME_SYNC
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516

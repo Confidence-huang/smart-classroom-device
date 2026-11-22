@@ -1,0 +1,93 @@
+      -------------------------------------------------------------------
+                       STM32CubeProgrammer v2.22.0                  
+      -------------------------------------------------------------------
+
+ST-LINK FW  : V2J46M32
+Board       : --
+Voltage     : 3.25V
+SWD freq    : 4000 KHz
+Connect mode: Under Reset
+Reset mode  : Hardware reset
+Device ID   : 0x463
+Revision ID : Rev A
+Device name : STM32F413/F423
+NVM size  : 1.5 MBytes
+Device type : MCU
+Device CPU  : Cortex-M4
+BL Version  : 0x90
+
+
+
+Opening and parsing file: EcoVision-net-20261121.5.hex
+
+
+Memory Programming ...
+  File          : EcoVision-net-20261121.5.hex
+  Size          : 61.80 KB 
+  Address       : 0x08000000
+
+
+Erasing memory corresponding to segment 0:
+Erasing internal memory sectors [0 3]
+Download in Progress:
+�������������������������������������������������� 0%
+�������������������������������������������������� 100%
+
+File download complete
+Time elapsed during download operation: 00:00:01.604
+
+
+
+Verifying...
+
+
+Read progress:
+�������������������������������������������������� 50%
+�������������������������������������������������� 100%
+
+Time elapsed during verifying operation: 00:00:00.404
+
+
+Download verified successfully
+
+
+
+
+Opening and parsing file: network-config.bin
+
+
+Memory Programming ...
+  File          : network-config.bin
+  Size          : 1.87 KB 
+  Address       : 0x08160000
+
+
+Erasing memory corresponding to segment 0:
+Erasing internal memory sector 15
+Download in Progress:
+�������������������������������������������������� 50%
+�������������������������������������������������� 100%
+
+File download complete
+Time elapsed during download operation: 00:00:01.011
+
+
+
+Verifying...
+
+
+File size < 32KB legacy verify will be used
+Read progress:
+�������������������������������������������������� 50%
+�������������������������������������������������� 100%
+
+Time elapsed during verifying operation: 00:00:00.013
+
+
+Download verified successfully
+
+
+
+MCU Reset
+
+Software reset is performed

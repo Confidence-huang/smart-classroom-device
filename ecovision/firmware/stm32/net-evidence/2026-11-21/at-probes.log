@@ -1,0 +1,23 @@
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[ENV] th_valid=1 temp_x100=2945 rh_x100=2528 adc_valid=1 adc12=852 adc16=13635 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[ENV] th_valid=1 temp_x100=2943 rh_x100=2523 adc_valid=1 adc12=846 adc16=13539 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=-1
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[ENV] th_valid=1 temp_x100=2946 rh_x100=2523 adc_valid=1 adc12=871 adc16=13939 err=0
+[LIGHT] source=BH1750 addr=0x00 valid=0 raw=0 lux=0.00 status=1
+[VISION] TX $EVQ,9aac9896e12df12d*E516
+[VISION] TX $EVQ,9aac9896e12df12d*E516

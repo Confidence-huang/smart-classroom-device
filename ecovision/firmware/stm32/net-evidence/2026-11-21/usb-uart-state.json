@@ -1,0 +1,14 @@
+[
+  {
+    "command": "AT+QSCLK?",
+    "response": "+QSCLK: 0\r\n\r\nOK"
+  },
+  {
+    "command": "AT+CMUX?",
+    "response": "+CMUX: 0,0,5,31,10,3,30,10,2\r\n\r\nOK"
+  },
+  {
+    "command": "AT+QURCCFG=\"urcport\"",
+    "response": "+QURCCFG: \"urcport\",\"usbat\"\r\n\r\nOK"
+  }
+]

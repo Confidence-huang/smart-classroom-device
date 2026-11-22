@@ -1,4 +1,17 @@
-# Gen1 Pro 智慧教室板端 MicroPython
+# Smart Classroom 设备工程
+
+本轮 D01 引入 `ecovision/firmware/stm32/EcoVision_F413ZH/` 下的 C/HAL 工程，保留根 `src/` 的原 MicroPython 基线。两套固件独立，禁止为运行旧示例直接覆盖当前实板。
+
+- C/HAL 构建、配置区、软件验证与未完成项：[ecovision/README.md](ecovision/README.md)。
+- 本轮软件结果与硬件验证门槛：[D01 验证记录](ecovision/validation/D01.md)。
+- 当前网页：https://confidence-huang.github.io/smart-classroom-web/ 。网页存在不代表收到新鲜实测。
+- 本轮仅独立准备与验证，没有烧录、推 main 或创建 PR。硬件当前未连接，真实上报与 1 小时验收仍待执行。
+
+## 以下为原 MicroPython 基线说明（保留历史）
+
+以下验收记录针对原 MicroPython 固件及当时设备配置，不代表当前 C/HAL 新增硬件通过。
+
+### Gen1 Pro 智慧教室板端 MicroPython
 
 本仓库保存新写的板端环境监测程序。目标硬件为 NUCLEO-F413ZH、UniKnect Gen1 Pro EC200U 扩展板及官方 160×128 ST7735S LCD。板载 AHT20 温湿度与 PC5 光敏 ADC 已实测可读；K230 尚未接入，人数明确留空。程序不会上报 CO₂。组长的 C 工程、固件和相关文件均未复制到本仓库。
 

@@ -1,0 +1,13 @@
+{
+  "v": "1.0.0",
+  "device_id": "ev001",
+  "boot_id": "0000000000000001",
+  "control_epoch": 0,
+  "cmd_id": "demo-auto",
+  "issued_at": 1794657600,
+  "ttl_s": 15,
+  "mode": "AUTO",
+  "fan_out": null,
+  "led_out": null,
+  "hold_s": 0
+}
