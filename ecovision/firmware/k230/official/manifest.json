@@ -1,0 +1,25 @@
+{
+  "image_name": "CanMV_K230_LCKFB_micropython_v1.8-66-g2d060be_nncase_v2.11.0.img",
+  "image_sha256": "b78e04e4020b8b3ab0c925638e8635ae0cfc4a407ca313fd9a160ad2eff88952",
+  "assets": [
+    {
+      "file": "person_detection.py",
+      "image_path": "/examples/05-AI-Demo/person_detection.py",
+      "size": 6195,
+      "sha256": "7117eeff7fd2cb81d98fabe1bcc9e4b0e292adf4eb71034c6602f159eff28063"
+    },
+    {
+      "file": "person_detect_yolov5n.kmodel",
+      "image_path": "/examples/kmodel/person_detect_yolov5n.kmodel",
+      "size": 2375584,
+      "sha256": "512325f2b5924bf4502c8b88006c50fb801a2bc93101148df92b30fbc4c8682a"
+    },
+    {
+      "file": "firmware_revision.txt",
+      "image_path": "/revision.txt",
+      "size": 1307,
+      "sha256": "d8be2abfd877ada9e63a46edbe01710ccaaccb0e7eef8c86d0db56f44afdd05e"
+    }
+  ],
+  "origin": "user-provided local firmware image; no model training or conversion"
+}

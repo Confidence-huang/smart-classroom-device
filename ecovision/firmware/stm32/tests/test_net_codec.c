@@ -68,6 +68,17 @@ int main(void) {
     assert(strstr(json,"2026-11-21T14:49:46Z") && strstr(json,"\"light_lux\":null"));
     s.temp_valid=false;
     assert(Net_LegacyTelemetry(json,sizeof json,"ev001","room01",&s)<0);
+    s.temp_valid=true;s.occupancy=1;s.control_epoch=42;
+    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)>0);
+    assert(strstr(json,"\"occupancy\":\"OCCUPIED\"") && strstr(json,"\"control_epoch\":42"));
+    s.local_off=true;s.fan=0;s.led=0;
+    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)>0);
+    assert(strstr(json,"\"mode\":\"LOCAL_OFF\""));
+    s.fan=1;
+    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)<0);
+    s.fan=0;
+    s.occupancy=3;
+    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)<0);
     puts("PASS: AT framing/overflow, URC bounds, UTC/timezone/calendar, APN preservation, private config CRC/bounds, formal validity and legacy compatibility");
     return 0;
 }
