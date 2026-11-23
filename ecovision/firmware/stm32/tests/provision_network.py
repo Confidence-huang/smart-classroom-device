@@ -11,6 +11,8 @@ import struct
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--legacy-compat', action='store_true')
+    parser.add_argument('--remote-control', action='store_true',
+                        help='Enable after confirming this Broker rejects retained commands and permits device cmd/ack ACLs')
     args = parser.parse_args()
     private = Path(__file__).resolve().parents[1] / '.private'
     settings = json.loads((private / 'recovered-settings.json').read_text(encoding='utf-8'))
@@ -37,10 +39,12 @@ def main():
         if not re.fullmatch(r'[a-z0-9][a-z0-9_-]{0,31}', settings['ROOM_ID']):
             raise ValueError('Invalid room ID')
         payload += field(topic, 128) + field(settings['ROOM_ID'], 33)
+    if args.remote_control:
+        payload += b'\xd3'
     record = b'EVNET01\0' + struct.pack('<II', len(payload), binascii.crc32(payload)) + payload
     (private / 'network-config.bin').write_bytes(record)
     print(json.dumps({'private_record_bytes': len(record), 'legacy_compatibility': args.legacy_compat,
-                      'values_logged': False, 'flash_written': False}))
+                      'remote_control': args.remote_control, 'values_logged': False, 'flash_written': False}))
 
 
 if __name__ == '__main__':

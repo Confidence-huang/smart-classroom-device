@@ -47,10 +47,15 @@ static bool identifier(const char *s,size_t max) {
 }
 bool Net_ConfigDecode(const uint8_t *p,size_t size,NetConfig *out) {
  if(!p || !out || size<16 || memcmp(p,"EVNET01",8))return false;
- uint32_t n=le32(p+8);if(n<422 || n>4678 || n>size-16 || Net_Crc32(p+16,n)!=le32(p+12))return false;
+ uint32_t n=le32(p+8);if(n<422 || n>4679 || n>size-16 || Net_Crc32(p+16,n)!=le32(p+12))return false;
  uint16_t ca=(uint16_t)(p[435]|((uint16_t)p[436]<<8));
- if(ca==0 || ca>4096 || (n!=421U+ca && n!=582U+ca))return false;
- memset(out,0,sizeof *out);memcpy(out->host,p+16,128);memcpy(out->user,p+144,128);
+ if(ca==0 || ca>4096)return false;
+ /* The optional marker enables remote control and preserves both legacy record lengths. */
+ bool remote=n==422U+ca || n==583U+ca;
+ if(remote && p[16U+n-1U]!=0xd3U)return false;
+ if(remote)n--;
+ if(n!=421U+ca && n!=582U+ca)return false;
+ memset(out,0,sizeof *out);out->remote_enabled=remote;memcpy(out->host,p+16,128);memcpy(out->user,p+144,128);
  memcpy(out->password,p+272,128);memcpy(out->device,p+400,33);
  out->port=(uint16_t)(p[433]|((uint16_t)p[434]<<8));out->ca_length=ca;memcpy(out->ca,p+437,ca);
  if(!safe_at(out->host,sizeof out->host)||!safe_at(out->user,sizeof out->user)||!safe_at(out->password,sizeof out->password)||
@@ -99,7 +104,8 @@ static void decimal(char *out,size_t size,int32_t value) {
 }
 int Net_Telemetry(char *out,size_t size,const char *device,const char *boot,const NetSample *s) {
  if(!out||!s||!identifier(device,32)||!identifier(boot,32)||s->count>20||s->occupancy>2||
-    (s->local_off && (s->fan || s->led)))return -1;
+    (s->local_off && (s->remote || s->fan || s->led)) ||
+    (s->remote ? s->hold_remaining_s==0 || s->hold_remaining_s>300 : s->hold_remaining_s!=0))return -1;
  bool vv=s->vision_valid && s->vision_age<5000U;
  bool tv=s->temp_valid && s->temp_age<10000U && s->temp_x100>=-4000 && s->temp_x100<=8500 && s->rh_x100>=0 && s->rh_x100<=10000;
  char count[12]="null",temp[24]="null",rh[24]="null",va[24]="null",ta[24]="null",ts[24]="null";
@@ -109,8 +115,14 @@ int Net_Telemetry(char *out,size_t size,const char *device,const char *boot,cons
  if(tv){decimal(temp,sizeof temp,s->temp_x100);decimal(rh,sizeof rh,s->rh_x100);}
  if(s->time_valid)(void)snprintf(ts,sizeof ts,"%lu",(unsigned long)s->utc);
  static const char *occupancy[]={"UNKNOWN","OCCUPIED","VACANT"};
- int n=snprintf(out,size,"{\"v\":\"1.0.0\",\"device_id\":\"%s\",\"boot_id\":\"%s\",\"seq\":%lu,\"uptime_ms\":%lu,\"ts\":%s,\"time_valid\":%s,\"control_epoch\":%lu,\"count\":%s,\"vision_valid\":%s,\"vision_age_ms\":%s,\"temp_c\":%s,\"temp_valid\":%s,\"temp_age_ms\":%s,\"humidity_pct\":%s,\"humidity_valid\":%s,\"occupancy\":\"%s\",\"mode\":\"%s\",\"fan_out\":%u,\"led_out\":%u,\"hold_remaining_s\":0,\"net_state\":\"ONLINE\",\"last_cmd_id\":null,\"faults\":[%s%s%s]}",
- device,boot,(unsigned long)s->seq,(unsigned long)s->uptime,ts,boolean(s->time_valid),(unsigned long)s->control_epoch,count,boolean(vv),va,temp,boolean(tv),ta,rh,boolean(tv),occupancy[s->occupancy],s->local_off?"LOCAL_OFF":"AUTO",s->fan?1U:0U,s->led?1U:0U,
+ char last[67]="null";
+ if(s->last_command[0]) {
+  /* The controller saves only validated command ids after driver confirmation. */
+  (void)snprintf(last,sizeof last,"\"%s\"",s->last_command);
+ }
+ int n=snprintf(out,size,"{\"v\":\"1.0.0\",\"device_id\":\"%s\",\"boot_id\":\"%s\",\"seq\":%lu,\"uptime_ms\":%lu,\"ts\":%s,\"time_valid\":%s,\"control_epoch\":%lu,\"count\":%s,\"vision_valid\":%s,\"vision_age_ms\":%s,\"temp_c\":%s,\"temp_valid\":%s,\"temp_age_ms\":%s,\"humidity_pct\":%s,\"humidity_valid\":%s,\"occupancy\":\"%s\",\"mode\":\"%s\",\"fan_out\":%u,\"led_out\":%u,\"hold_remaining_s\":%u,\"net_state\":\"ONLINE\",\"last_cmd_id\":%s,\"faults\":[%s%s%s]}",
+ device,boot,(unsigned long)s->seq,(unsigned long)s->uptime,ts,boolean(s->time_valid),(unsigned long)s->control_epoch,count,boolean(vv),va,temp,boolean(tv),ta,rh,boolean(tv),occupancy[s->occupancy],s->local_off?"LOCAL_OFF":s->remote?"REMOTE":"AUTO",s->fan?1U:0U,s->led?1U:0U,
+ (unsigned)s->hold_remaining_s,last,
  vv?"":"\"VISION_FAULT\"",(!vv&&!tv)?",":"",tv?"":"\"SENSOR_FAULT\"");
  return n<0 || (size_t)n>=size || n>1500 ? -1:n;
 }

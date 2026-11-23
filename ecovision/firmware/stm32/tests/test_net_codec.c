@@ -31,7 +31,7 @@ int main(void) {
     assert(Net_IPv4Profile(profile,sizeof profile,"+QICSGP: 3,\"carrier\",\"\",\"\",0\rAT")<0);
     assert(Net_IPv4Profile(profile,8,"+QICSGP: 3,\"\",\"\",\"\",0")<0);
     memset(&p,0,sizeof p);
-    for(unsigned i=0;i<600;i++) (void)NetAt_Feed(&p,'A');
+    for(unsigned i=0;i<sizeof p.line+10;i++) (void)NetAt_Feed(&p,'A');
     assert(NetAt_Feed(&p,'\n')==NET_AT_DROPPED);
     assert(NetAt_Feed(&p,'O')==NET_AT_NONE);
     assert(NetAt_Feed(&p,'K')==NET_AT_NONE);
@@ -56,12 +56,16 @@ int main(void) {
     memcpy(fixture+437,"-----BEGIN CERTIFICATE-----\n",28);
     uint32_t length=449;memcpy(fixture+8,&length,4);
     uint32_t crc=Net_Crc32(fixture+16,length);memcpy(fixture+12,&crc,4);
-    assert(Net_ConfigDecode(fixture,465,&decoded) && decoded.port==8883 && decoded.legacy_topic[0]==0);
+    assert(Net_ConfigDecode(fixture,465,&decoded) && decoded.port==8883 && decoded.legacy_topic[0]==0 && !decoded.remote_enabled);
     strcpy((char *)fixture+465,"classroom/room01/telemetry");strcpy((char *)fixture+593,"room01");
     length+=161;memcpy(fixture+8,&length,4);crc=Net_Crc32(fixture+16,length);memcpy(fixture+12,&crc,4);
     assert(Net_ConfigDecode(fixture,626,&decoded) && !strcmp(decoded.room,"room01"));
+    /* A new private record must opt in while previous records remain telemetry-only. */
+    fixture[626]=0xd3;
+    length++;memcpy(fixture+8,&length,4);crc=Net_Crc32(fixture+16,length);memcpy(fixture+12,&crc,4);
+    assert(Net_ConfigDecode(fixture,627,&decoded) && decoded.remote_enabled && !strcmp(decoded.room,"room01"));
     fixture[280]^=1;
-    assert(!Net_ConfigDecode(fixture,626,&decoded));
+    assert(!Net_ConfigDecode(fixture,627,&decoded));
     s.time_valid=true;s.utc=1795272586U;s.light_valid=true;s.light_raw16=12000;
     assert(Net_LegacyTelemetry(json,sizeof json,"ev001","room01",&s)>0);
     assert(strstr(json,"\"simulated\":false") && strstr(json,"\"people_count\":0"));
@@ -76,6 +80,11 @@ int main(void) {
     assert(strstr(json,"\"mode\":\"LOCAL_OFF\""));
     s.fan=1;
     assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)<0);
+    s.local_off=false;s.remote=true;s.hold_remaining_s=120;
+    strcpy(s.last_command,"fan-on");
+    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)>0);
+    assert(strstr(json,"\"mode\":\"REMOTE\"") && strstr(json,"\"hold_remaining_s\":120") &&
+           strstr(json,"\"last_cmd_id\":\"fan-on\""));
     s.fan=0;
     s.occupancy=3;
     assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)<0);
