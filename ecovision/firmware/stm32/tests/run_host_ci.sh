@@ -16,7 +16,7 @@ run_c_test() {
     shift
     printf '\n=== %s ===\n' "$name"
     # Keep GCC warnings visible while gating on compilation and test failures.
-    cc -std=c11 -Wall -Wextra -O2 -I "$app/Inc" "$@" -o "$build/$name"
+    cc -std=c11 -Wall -Wextra -O2 "$@" -I "$app/Inc" -o "$build/$name"
     "$build/$name"
 }
 
@@ -36,3 +36,7 @@ python3 -B -m unittest discover -s tests/integration -p 'test_*.py' -v
 if [[ -f firmware/k230/figurine_uart.py ]]; then
     python3 -B -m unittest discover -s tests/vision -p 'test_*.py' -v
 fi
+
+run_c_test ir_decode "$tests/test_ir_pulse_decode.c" "$app/Src/ir_pulse_codec.c"
+run_c_test ir_encode "$tests/test_ir_pulse_encode.c" "$app/Src/ir_pulse_codec.c"
+run_c_test ir_driver -I "$tests/ir_pulse_host" "$tests/test_ir_pulse_driver.c" "$app/Src/app_ir_pulse.c" "$app/Src/ir_pulse_codec.c"

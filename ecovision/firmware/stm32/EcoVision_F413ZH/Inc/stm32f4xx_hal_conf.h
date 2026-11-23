@@ -18,6 +18,10 @@
   *
   ******************************************************************************
   */
+/* SPI is owned by the LCD driver; preserve it across CubeMX regeneration. */
+#ifndef HAL_SPI_MODULE_ENABLED
+#define HAL_SPI_MODULE_ENABLED
+#endif
 /* USER CODE END Header */
 
 /* Define to prevent recursive inclusion -------------------------------------*/

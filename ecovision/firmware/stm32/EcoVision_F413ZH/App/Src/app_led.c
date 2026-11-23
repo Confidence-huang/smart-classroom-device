@@ -3,6 +3,7 @@
 #include "app_fan.h"
 #include "app_vision.h"
 #include "app_control.h"
+#include "app_ir_pulse.h"
 #include "cmsis_os.h"
 
 #include <stdbool.h>
@@ -20,6 +21,8 @@ static volatile uint8_t rx_head;
 static volatile uint8_t rx_tail;
 static volatile bool rx_error;
 static bool fan_prefix;
+static bool ir_prefix;
+static uint32_t ir_prefix_at;
 static uint32_t fan_prefix_at;
 /* R, G, B. Warm pale yellow, scaled equally across four brightness steps. */
 static const uint8_t levels[5][3] = {
@@ -142,6 +145,9 @@ void AppLed_Run(UART_HandleTypeDef *console)
 
     for (;;)
     {
+        if(ir_prefix && HAL_GetTick()-ir_prefix_at>=500U) {
+            ir_prefix=false;AppLog_Printf("[IRP] incomplete I command\r\n");
+        }
         if (fan_prefix && HAL_GetTick() - fan_prefix_at >= 500U)
         {
             fan_prefix = false;
@@ -149,6 +155,7 @@ void AppLed_Run(UART_HandleTypeDef *console)
         }
         if (rx_error)
         {
+            ir_prefix=false;
             fan_prefix = false;
             HAL_NVIC_DisableIRQ(USART3_IRQn);
             rx_error = false;
@@ -162,7 +169,11 @@ void AppLed_Run(UART_HandleTypeDef *console)
         {
             const uint8_t command = rx_data[rx_tail];
             rx_tail = (uint8_t)((rx_tail + 1U) % RX_SIZE);
-            if (fan_prefix)
+            if(ir_prefix) {
+                ir_prefix=false;
+                AppLog_Printf(AppIrPulse_Request(command)?"[IRP] request queued\r\n":"[IRP] invalid/busy request\r\n");
+            }
+            else if (fan_prefix)
             {
                 fan_prefix = false;
                 if (command >= '0' && command <= '4')
@@ -174,6 +185,9 @@ void AppLed_Run(UART_HandleTypeDef *console)
                 {
                     AppLog_Printf("[FAN] ERROR use F0..F4\r\n");
                 }
+            }
+            else if(command=='I') {
+                ir_prefix=true;ir_prefix_at=HAL_GetTick();
             }
             else if (command == 'F')
             {

@@ -29,6 +29,7 @@
 #include "app_environment.h"
 #include "app_reed.h"
 #include "app_net.h"
+#include "app_ir_pulse.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -72,6 +73,7 @@ const osThreadAttr_t ledTask_attributes = {
   .stack_size = 384 * 4,
   .priority = (osPriority_t) osPriorityLow,
 };
+/* USER CODE BEGIN PV */
 osThreadId_t environmentTaskHandle;
 const osThreadAttr_t environmentTask_attributes={
  .name="environmentTask", .stack_size=2048, .priority=osPriorityLow
@@ -80,9 +82,9 @@ osThreadId_t visionTaskHandle;
 const osThreadAttr_t visionTask_attributes = {
   .name="visionTask", .stack_size=3072, .priority=osPriorityBelowNormal
 };
-/* USER CODE BEGIN PV */
+
 static const uint8_t boot_message[] =
-    "EcoVision F413ZH local-auto-20261122.4, interface baseline 1.0.0\r\n"
+    "EcoVision F413ZH ir-pulse-main-20261123.1, interface baseline 1.0.0\r\n"
     "FreeRTOS heartbeat running; HAL TIM6 tick OK\r\n";
 /* USER CODE END PV */
 
@@ -94,13 +96,13 @@ static void MX_I2C1_Init(void);
 static void MX_USART6_UART_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_USART3_UART_Init(void);
-void StartVisionTask(void *argument);
 static void MX_UART4_Init(void);
 static void MX_TIM3_Init(void);
 void StartHeartbeatTask(void *argument);
 void StartLedTask(void *argument);
 
 /* USER CODE BEGIN PFP */
+void StartVisionTask(void *argument);
 
 /* USER CODE END PFP */
 
@@ -170,6 +172,7 @@ int main(void)
   /* USER CODE END RTOS_TIMERS */
 
   /* USER CODE BEGIN RTOS_QUEUES */
+  if(!AppIrPulse_Init())Error_Handler();
   /* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
 
@@ -181,6 +184,8 @@ int main(void)
   ledTaskHandle = osThreadNew(StartLedTask, NULL, &ledTask_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
+  const osThreadAttr_t ir_attr={.name="irPulseTask",.stack_size=1536,.priority=osPriorityBelowNormal};
+  if(osThreadNew(AppIrPulse_Run,NULL,&ir_attr)==NULL)Error_Handler();
   const osThreadAttr_t network_attr={.name="networkTask",.stack_size=4096,.priority=osPriorityLow};
   if(osThreadNew(AppNet_Run,NULL,&network_attr)==NULL)Error_Handler();
   environmentTaskHandle=osThreadNew(AppEnvironment_Run,NULL,&environmentTask_attributes);
@@ -458,11 +463,7 @@ static void MX_USART2_UART_Init(void)
   huart2.Init.OverSampling=UART_OVERSAMPLING_16;
   if(HAL_UART_Init(&huart2)!=HAL_OK) Error_Handler();
 }
-void StartVisionTask(void *argument)
-{
-  (void)argument;
-  AppVision_Run(&huart2);
-}
+
 
 
 
@@ -563,6 +564,11 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void StartVisionTask(void *argument)
+{
+  (void)argument;
+  AppVision_Run(&huart2);
+}
 
 /* USER CODE END 4 */
 

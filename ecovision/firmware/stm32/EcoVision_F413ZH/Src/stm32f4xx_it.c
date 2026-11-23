@@ -22,6 +22,7 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "app_ir_pulse.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -206,7 +207,20 @@ void TIM6_DAC_IRQHandler(void)
   /* USER CODE END TIM6_DAC_IRQn 1 */
 }
 
-/* USER CODE BEGIN 1 */
+void TIM4_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM4_IRQn 0 */
+  AppIrPulse_Timer4IRQ();
+  /* USER CODE END TIM4_IRQn 0 */
+}
+void TIM5_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM5_IRQn 0 */
+  AppIrPulse_Timer5IRQ();
+  /* USER CODE END TIM5_IRQn 0 */
+}
 void USART2_IRQHandler(void) { HAL_UART_IRQHandler(&huart2); }
+
+/* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */

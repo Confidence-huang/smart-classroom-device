@@ -12,3 +12,6 @@ ecovision/firmware/stm32/tb6612-evidence/
 
 # Coordinator diagnostic project copies are not release targets.
 ecovision/firmware/stm32/EcoVision_F413ZH/MDK-ARM/EcoVision_AT*.uvprojx
+
+# Local IR build outputs: no objects, machine logs or private board state in PR.
+ecovision/firmware/stm32/ir-merge-evidence/

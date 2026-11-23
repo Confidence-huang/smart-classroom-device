@@ -584,6 +584,16 @@
               <FilePath>../App/Src/app_ir.c</FilePath>
             </File>
             <File>
+              <FileName>app_ir_pulse.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\Src\app_ir_pulse.c</FilePath>
+            </File>
+            <File>
+              <FileName>ir_pulse_codec.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\Src\ir_pulse_codec.c</FilePath>
+            </File>
+            <File>
               <FileName>ir_protocol.c</FileName>
               <FileType>1</FileType>
               <FilePath>../App/Src/ir_protocol.c</FilePath>
