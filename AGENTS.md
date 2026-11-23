@@ -66,3 +66,9 @@
 ### 详细规则
 - 完整规则与回退命令见 git 纪律技能 `git-discipline`（`SKILL.md` + `references/`）。
 <!-- GLOBAL-PROJECT-LOG-RULES:END -->
+
+## PR 检查与实板证据
+
+- 接手 PR 时先核对目标仓工作流、触发条件及 PR 当前 head。设备仓的 `Device host tests / Host tests` 应在目标为 `main` 的 PR 上运行。打开运行详情，确认检查对应待合内容；缺失、等待中、失败或只覆盖旧提交时先处理。CI 通过并完成评审后再合并。
+- 主机 CI 运行现有 C 和协议测试，待合代码包含 K230 模块时也运行其测试。Keil 构建与实板验收按范围另记候选提交、HEX 哈希和结果。如果同步分支只新增规则或 CI 文件，复核固件代码及 HEX 是否变化，再确定需要补做哪些实板用例。
+- 参照 [Git 纪律 Skill 的 PR CI 核对规则](https://github.com/Confidence-huang/agent-git-discipline/blob/85371e5c5f5933024525bc9977dc3d29dbbac308/skills/git-discipline/SKILL.md)。
