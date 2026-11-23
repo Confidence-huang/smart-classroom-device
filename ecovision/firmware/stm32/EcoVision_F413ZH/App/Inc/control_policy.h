@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 typedef enum { CONTROL_UNKNOWN, CONTROL_OCCUPIED, CONTROL_VACANT } ControlOccupancy;
-typedef enum { CONTROL_AUTO, CONTROL_LOCAL_OFF } ControlMode;
+typedef enum { CONTROL_AUTO, CONTROL_LOCAL_OFF, CONTROL_REMOTE } ControlMode;
 typedef struct {
     bool vision_valid, new_vision_frame, new_vision_session;
     uint8_t count;
@@ -19,9 +19,12 @@ typedef struct {
     ControlMode mode;
     uint32_t control_epoch;
     bool led, fan, requires_new_boot;
+    uint16_t hold_remaining_s; /* Rounded up while a remote command owns the outputs. */
 } ControlOutput;
 typedef struct {
     ControlOutput output;
+    bool auto_led, auto_fan; /* AUTO keeps evaluating its own outputs during a remote lease. */
+    uint32_t remote_started_at, remote_duration_ms;
     uint8_t positives;
     bool zero_active, hot_active, cold_active, fault_active;
     uint32_t zero_at, hot_at, cold_at, fault_at;
@@ -32,4 +35,10 @@ typedef struct {
 void Control_Init(ControlPolicy *policy);
 void Control_Update(ControlPolicy *policy, uint32_t now, const ControlInput *input);
 void Control_LocalOff(ControlPolicy *policy);
+
+/* hold_s == 0 requests AUTO. Only the task that reads B1 can apply a request. */
+bool Control_Request(ControlPolicy *policy, uint32_t now, uint32_t epoch,
+                     uint16_t hold_s, bool fan, bool led);
+
+const char *Control_ModeName(ControlMode mode);
 #endif

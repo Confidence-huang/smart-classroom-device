@@ -40,6 +40,51 @@ static void invalid_between_polls_resets_confirmation(void) {
     assert(out.occupancy==CONTROL_OCCUPIED && out.led);
 }
 
+/* A matching MQTT request only becomes APPLIED after the driver writes. */
+static void remote_mailbox_and_button(void) {
+    AppControl_Init();
+    button_pressed=false;
+    tick=10000;
+    ControlCommand request={.epoch=0,.expires_at=11000,.hold_s=30,.fan=true,.id="fan-on"};
+    ControlReply reply;
+    ControlOutput snapshot;
+    char last_command[65];
+    assert(AppControl_Queue(&request) && !AppControl_Queue(&request));
+    ControlOutput out=AppControl_Poll();
+    assert(out.mode==CONTROL_REMOTE && out.fan && out.hold_remaining_s==30);
+    assert(!AppControl_TakeReply(&reply));
+    AppControl_GetRemoteSnapshot(&snapshot,last_command);
+    assert(snapshot.mode==CONTROL_AUTO && !last_command[0]);
+    AppControl_PublishApplied(&out);
+    assert(AppControl_TakeReply(&reply) && reply.result==CONTROL_APPLIED && reply.output.fan);
+    AppControl_GetRemoteSnapshot(&snapshot,last_command);
+    assert(snapshot.fan && strcmp(last_command,"fan-on")==0);
+
+    button_pressed=true;
+    tick=10100; AppControl_Poll();
+    tick=10140; AppControl_Poll();
+    tick=12100;
+    request.expires_at=13000;
+    assert(AppControl_Queue(&request));
+    out=AppControl_Poll();
+    assert(out.mode==CONTROL_LOCAL_OFF && out.control_epoch==1 && !out.fan);
+    AppControl_PublishApplied(&out);
+    assert(AppControl_TakeReply(&reply) && reply.result==CONTROL_EPOCH_MISMATCH);
+
+    request.epoch=1;request.hold_s=0; /* A cloud AUTO request cannot clear LOCAL_OFF. */
+    assert(AppControl_Queue(&request));
+    out=AppControl_Poll();
+    AppControl_PublishApplied(&out);
+    assert(AppControl_TakeReply(&reply) && reply.result==CONTROL_LOCAL_LOCKED);
+    request.expires_at=tick;
+    assert(AppControl_Queue(&request));
+    out=AppControl_Poll();
+    AppControl_PublishApplied(&out);
+    assert(AppControl_TakeReply(&reply) && reply.result==CONTROL_EXPIRED);
+    AppControl_GetRemoteSnapshot(&snapshot,last_command);
+    assert(snapshot.mode==CONTROL_LOCAL_OFF && strcmp(last_command,"fan-on")==0);
+}
+
 int main(void) {
     AppControl_Init();memcpy(vision.link,"0000000000000001",17);memcpy(vision.boot,"0000000000000002",17);vision.count=1;
     ControlOutput out=frame(0,0);assert(!out.led);
@@ -58,6 +103,7 @@ int main(void) {
     assert(out.mode==CONTROL_LOCAL_OFF && !out.led && !out.fan && out.control_epoch==1);
     AppControl_PublishApplied(&out);AppControl_GetSnapshot(&published);assert(published.mode==CONTROL_LOCAL_OFF);
     invalid_between_polls_resets_confirmation();
+    remote_mailbox_and_button();
     assert(critical_depth==0);
     puts("PASS: adapter frame identity, invalid sample between polls, applied-only snapshot, safety OFF and critical-section balance");
     return 0;

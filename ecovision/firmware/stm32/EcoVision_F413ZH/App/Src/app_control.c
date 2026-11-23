@@ -7,6 +7,11 @@
 
 static ControlPolicy policy;
 static ControlOutput applied;
+/* The network task submits; the output task decides and completes after writing both drivers. */
+static enum { COMMAND_IDLE, COMMAND_QUEUED, COMMAND_WRITING, COMMAND_DONE } command_state;
+static ControlCommand command;
+static ControlReply reply;
+static char applied_command[65];
 static char last_link[17],last_boot[17];
 static uint32_t last_seq,last_errors,last_rejected;
 static uint32_t last_invalid_frames; /* Last interruption already handled by AUTO. */
@@ -14,8 +19,43 @@ static bool have_seq;
 
 void AppControl_Init(void) {
     Control_Init(&policy);applied=policy.output;
+    command_state=COMMAND_IDLE;
+    applied_command[0]=0;
     memset(last_link,0,sizeof last_link);memset(last_boot,0,sizeof last_boot);
     have_seq=false;last_errors=0;last_rejected=0;last_invalid_frames=0;
+}
+
+bool AppControl_Queue(const ControlCommand *new_command) {
+    taskENTER_CRITICAL();
+    bool available=command_state==COMMAND_IDLE;
+    if(available) {
+        command=*new_command;
+        command_state=COMMAND_QUEUED;
+    }
+    taskEXIT_CRITICAL();
+    return available;
+}
+
+bool AppControl_TakeReply(ControlReply *result) {
+    taskENTER_CRITICAL();
+    bool done=command_state==COMMAND_DONE;
+    if(done) {
+        *result=reply;
+        command_state=COMMAND_IDLE;
+    }
+    taskEXIT_CRITICAL();
+    return done;
+}
+
+static void choose_command(uint32_t now) {
+    /* Polling B1 before this function ensures a same-cycle button action wins. */
+    if(command_state!=COMMAND_QUEUED)return;
+    if((int32_t)(now-command.expires_at)>=0)reply.result=CONTROL_EXPIRED;
+    else if(policy.output.control_epoch!=command.epoch)reply.result=CONTROL_EPOCH_MISMATCH;
+    else if(!Control_Request(&policy,now,command.epoch,command.hold_s,command.fan,command.led))
+        reply.result=CONTROL_LOCAL_LOCKED;
+    else reply.result=CONTROL_APPLIED;
+    command_state=COMMAND_WRITING;
 }
 
 ControlOutput AppControl_Poll(void) {
@@ -46,13 +86,29 @@ ControlOutput AppControl_Poll(void) {
     input.button_pressed=HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_13)==GPIO_PIN_SET;
     taskENTER_CRITICAL();
     Control_Update(&policy,now,&input);
+    choose_command(now);
     ControlOutput output=policy.output;
     taskEXIT_CRITICAL();
     return output;
 }
 
 void AppControl_PublishApplied(const ControlOutput *output) {
-    taskENTER_CRITICAL();applied=*output;taskEXIT_CRITICAL();
+    taskENTER_CRITICAL();
+    applied=*output;
+    if(command_state==COMMAND_WRITING) {
+        /* The caller reaches here only after both driver operations succeeded. */
+        if(reply.result==CONTROL_APPLIED)memcpy(applied_command,command.id,sizeof applied_command);
+        reply.output=applied;
+        command_state=COMMAND_DONE;
+    }
+    taskEXIT_CRITICAL();
+}
+
+void AppControl_GetRemoteSnapshot(ControlOutput *output,char last_command[65]) {
+    taskENTER_CRITICAL();
+    *output=applied;
+    memcpy(last_command,applied_command,sizeof applied_command);
+    taskEXIT_CRITICAL();
 }
 
 void AppControl_GetSnapshot(ControlOutput *output) {

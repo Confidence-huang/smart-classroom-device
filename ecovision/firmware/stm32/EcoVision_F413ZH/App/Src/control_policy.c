@@ -16,9 +16,12 @@ static void bump_epoch(ControlPolicy *p) {
     }
 }
 
+/* Local takeover cancels the lease even if an old command is retransmitted. */
 void Control_LocalOff(ControlPolicy *p) {
     p->output.mode=CONTROL_LOCAL_OFF;
     p->output.led=false;p->output.fan=false;
+    p->output.hold_remaining_s=0;
+    p->auto_led=false;p->auto_fan=false;
     p->hot_active=false;p->cold_active=false;
     bump_epoch(p);
 }
@@ -38,6 +41,7 @@ static void button(ControlPolicy *p,uint32_t now,bool pressed) {
                 Control_LocalOff(p);
             } else {
                 p->output.mode=CONTROL_AUTO;
+                p->output.hold_remaining_s=0;
                 p->hot_active=false;p->cold_active=false;
                 bump_epoch(p);
             }
@@ -75,27 +79,63 @@ void Control_Update(ControlPolicy *p,uint32_t now,const ControlInput *in) {
     } else p->fault_active=false;
 
     if(p->output.mode==CONTROL_LOCAL_OFF || p->output.requires_new_boot) {
-        p->output.led=false;p->output.fan=false;
+        p->output.led=false;p->output.fan=false;p->output.hold_remaining_s=0;
         p->hot_active=false;p->cold_active=false;
         return;
     }
+    /* Maintain the AUTO decision separately so remote settings never become AUTO's remembered outputs. */
     if(p->output.occupancy==CONTROL_VACANT) {
-        p->output.led=false;p->output.fan=false;
+        p->auto_led=false;p->auto_fan=false;
         p->hot_active=false;p->cold_active=false;
     } else if(p->output.occupancy==CONTROL_OCCUPIED) {
-        p->output.led=true;
+        p->auto_led=true;
         if(!temperature) {p->hot_active=false;p->cold_active=false;}
         else if(in->temperature_x100>=2800) {
             p->cold_active=false;
             if(!p->hot_active){p->hot_active=true;p->hot_at=now;}
-            if((uint32_t)(now-p->hot_at)>=5000U)p->output.fan=true;
+            if((uint32_t)(now-p->hot_at)>=5000U)p->auto_fan=true;
         } else if(in->temperature_x100<=2700) {
             p->hot_active=false;
             if(!p->cold_active){p->cold_active=true;p->cold_at=now;}
-            if((uint32_t)(now-p->cold_at)>=5000U)p->output.fan=false;
+            if((uint32_t)(now-p->cold_at)>=5000U)p->auto_fan=false;
         } else {p->hot_active=false;p->cold_active=false;}
     } else {p->hot_active=false;p->cold_active=false;}
     if(p->fault_active && (uint32_t)(now-p->fault_at)>=60000U) {
-        p->output.led=false;p->output.fan=false;
+        p->auto_led=false;p->auto_fan=false;
     }
+
+    if(p->output.mode==CONTROL_REMOTE) {
+        /* Unsigned elapsed time remains correct across a tick wrap during a short lease. */
+        uint32_t elapsed=now-p->remote_started_at;
+        if(elapsed<p->remote_duration_ms) {
+            p->output.hold_remaining_s=(uint16_t)((p->remote_duration_ms-elapsed+999U)/1000U);
+            return;
+        }
+        p->output.mode=CONTROL_AUTO;
+    }
+    p->output.hold_remaining_s=0;
+    p->output.fan=p->auto_fan;p->output.led=p->auto_led;
+}
+
+/* B1 was evaluated in this poll; neither an old epoch nor a current lock can take the outputs. */
+bool Control_Request(ControlPolicy *p,uint32_t now,uint32_t epoch,uint16_t hold_s,bool fan,bool led) {
+    if(p->output.mode==CONTROL_LOCAL_OFF || p->output.requires_new_boot ||
+       p->output.control_epoch!=epoch || (hold_s!=0U && (hold_s<30U || hold_s>300U)))return false;
+
+    p->output.hold_remaining_s=hold_s;
+    if(hold_s==0U) {
+        p->output.mode=CONTROL_AUTO;
+        p->output.fan=p->auto_fan;p->output.led=p->auto_led;
+    } else {
+        p->output.mode=CONTROL_REMOTE;
+        p->remote_started_at=now;p->remote_duration_ms=(uint32_t)hold_s*1000U;
+        p->output.fan=fan;p->output.led=led;
+    }
+    return true;
+}
+
+const char *Control_ModeName(ControlMode mode) {
+    if(mode==CONTROL_LOCAL_OFF)return "LOCAL_OFF";
+    if(mode==CONTROL_REMOTE)return "REMOTE";
+    return "AUTO";
 }

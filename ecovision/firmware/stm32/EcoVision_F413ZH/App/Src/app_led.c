@@ -168,7 +168,7 @@ void AppLed_Run(UART_HandleTypeDef *console)
                 if (command >= '0' && command <= '4')
                 {
                     if(command=='0')AppControl_SafetyOff();
-                    else AppLog_Printf("[CTRL] REJECTED bench speed: AUTO owns outputs; B1 short resumes AUTO\r\n");
+                    else AppLog_Printf("[CTRL] REJECTED bench speed: controller owns outputs; B1 short resumes AUTO\r\n");
                 }
                 else
                 {
@@ -187,7 +187,7 @@ void AppLed_Run(UART_HandleTypeDef *console)
             else if (command >= '0' && command <= '4')
             {
                 if(command=='0')AppControl_SafetyOff();
-                else AppLog_Printf("[CTRL] REJECTED bench brightness: AUTO owns outputs; B1 short resumes AUTO\r\n");
+                else AppLog_Printf("[CTRL] REJECTED bench brightness: controller owns outputs; B1 short resumes AUTO\r\n");
             }
             else if (command != '\r' && command != '\n' && command != ' ' && command != '\t')
             {
@@ -212,7 +212,7 @@ void AppLed_Run(UART_HandleTypeDef *console)
                before.control_epoch!=next.control_epoch || before.led!=next.led || before.fan!=next.fan) {
                 static const char *names[]={"UNKNOWN","OCCUPIED","VACANT"};
                 AppLog_Printf("[CTRL] mode=%s occupancy=%s fan=%u led=%u epoch=%lu stack_free=%lu\r\n",
-                    next.mode==CONTROL_LOCAL_OFF?"LOCAL_OFF":"AUTO",names[next.occupancy],
+                    Control_ModeName(next.mode),names[next.occupancy],
                     next.fan?1U:0U,next.led?1U:0U,(unsigned long)next.control_epoch,
                     (unsigned long)osThreadGetStackSpace(osThreadGetId()));
             }
