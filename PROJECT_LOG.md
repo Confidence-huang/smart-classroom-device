@@ -2,7 +2,7 @@
 
 ## 当前快照
 
-- 2026-11-23 模块PR候选：从远端main 8cba6ef建立独立分支，移植独立红外收发并交付灯环/TB6612/干簧管/BH1750统一内侧排母接线表；SHT仅预留。9组C、LED退出、17项契约、32项K230及AC6全量64对象通过，HEX SHA256 0b7dff93…0b04fc。未烧录、未做新硬件测试；待队友确认模块电平、接线与逐项验收，PR不自动合并。入口ecovision/firmware/stm32/MODULE-WIRING.md。
+- 2026-11-23 模块PR候选：从远端main 8cba6ef建立独立分支，移植独立红外收发并交付灯环/TB6612/干簧管/BH1750统一内侧排母接线表；SHT仅预留。9组C、LED退出、17项契约、32项K230及AC6全量64对象通过，HEX SHA256 0b7dff93…0b04fc。未烧录、未做新硬件测试；待队友确认模块电平、接线与逐项验收，Draft PR #5已创建，首轮CI成功；清理新增红外缩进警告后重跑红外与全量构建通过、HEX未变，最新head的CI见PR。PR不自动合并。入口ecovision/firmware/stm32/MODULE-WIRING.md。
 
 - 2026-11-22 D02联合候选：已在原分支同步main ee86e0c，源码提交fd67c80同时包含LED安全退出与无效帧中断确认；控制/视觉/LED退出、17项契约及32项K230主机回归通过；Keil0错误481告警，HEX 1682b085…ffd47。候选见ecovision/validation/candidates/D02-combined-20261122/和CANDIDATE.json；本步只交付HEX，未烧录/硬件短测，D02待后续短测与队友合并。
 

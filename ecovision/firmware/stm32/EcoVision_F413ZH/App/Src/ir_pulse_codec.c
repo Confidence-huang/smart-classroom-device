@@ -20,7 +20,9 @@ bool IrPulse_Decode24(const IrPulseFrame *f,uint8_t *cmd,uint8_t *param) {
         data[i/8]=(uint8_t)((data[i/8]<<1)|(space>=1400U?1U:0U));
     }
     if((uint8_t)(data[0]^data[1]^0x5aU)!=data[2]||!parameter_valid(data[0],data[1]))return false;
-    if(cmd)*cmd=data[0];if(param)*param=data[1];return true;
+    if(cmd) { *cmd=data[0]; }
+    if(param) { *param=data[1]; }
+    return true;
 }
 bool IrPulse_Encode24(uint8_t cmd,uint8_t param,IrPulseFrame *f) {
     if(!f||!parameter_valid(cmd,param))return false;

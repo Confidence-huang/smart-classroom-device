@@ -160,7 +160,9 @@ void AppIrPulse_Run(void *argument) {
     for(;;) {
         ControlOutput control;AppControl_GetSnapshot(&control);
         if(control.mode==CONTROL_LOCAL_OFF) {
-            if(tx_busy)stop_tx();learning=false;(void)osMessageQueueReset(commands);
+            if(tx_busy) { stop_tx(); }
+            learning=false;
+            (void)osMessageQueueReset(commands);
         } else {
             if(tx_done){tx_done=false;AppLog_Printf("[IRP] waveform completed; target execution unconfirmed\r\n");}
             uint8_t key;if(osMessageQueueGet(commands,&key,NULL,0)==osOK)handle_request(key);
