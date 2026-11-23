@@ -8,6 +8,7 @@
 #include "app_vision.h"
 #include "app_fan.h"
 #include "app_led.h"
+#include "app_control.h"
 #include "cmsis_os.h"
 #include <stdio.h>
 #include <string.h>
@@ -236,7 +237,11 @@ void AppNet_Run(void *argument) {
    NetSample sample={0};sample.uptime=now;sample.seq=sequence++;sample.utc=utc_now();sample.time_valid=clock_valid;
    sample.vision_valid=vis.active&&vis.valid;sample.count=vis.count;sample.have_vision=have_vision;sample.vision_age=now-previous_vision_at;
    sample.temp_valid=env.th_valid;sample.temp_x100=env.temp_x100;sample.rh_x100=env.humi_x100;sample.have_temp=have_temp;sample.temp_age=now-previous_temp_at;
-   sample.fan=AppFan_GetLevel()!=0;sample.led=AppLed_GetLevel()!=0;
+   ControlOutput control;AppControl_GetSnapshot(&control);
+   /* One applied snapshot avoids mixing pre/post LOCAL_OFF driver values. */
+   sample.fan=control.fan;sample.led=control.led;
+   sample.occupancy=(uint8_t)control.occupancy;
+   sample.local_off=control.mode==CONTROL_LOCAL_OFF;sample.control_epoch=control.control_epoch;
    sample.light_valid=env.light_valid;sample.light_raw16=env.light_raw16;
    if(Net_Telemetry(payload,sizeof payload,config.device,boot,&sample)<0)break;
    (void)snprintf(topic,sizeof topic,"ecovision/%s/telemetry",config.device);

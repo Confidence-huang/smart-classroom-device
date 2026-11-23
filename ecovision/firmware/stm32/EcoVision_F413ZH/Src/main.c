@@ -82,7 +82,7 @@ const osThreadAttr_t visionTask_attributes = {
 };
 /* USER CODE BEGIN PV */
 static const uint8_t boot_message[] =
-    "EcoVision F413ZH net-20261122.11, interface baseline 1.0.0\r\n"
+    "EcoVision F413ZH local-auto-20261122.4, interface baseline 1.0.0\r\n"
     "FreeRTOS heartbeat running; HAL TIM6 tick OK\r\n";
 /* USER CODE END PV */
 
@@ -527,7 +527,9 @@ static void MX_GPIO_Init(void)
   /*Configure GPIO pin : PC13 */
   GPIO_InitStruct.Pin = GPIO_PIN_13;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  /* MB1137 B1 connects to VDD; its 220k external pulldown is too weak
+   * against an internal pull-up. Match ST's BSP polling-mode pulldown. */
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /*Configure GPIO pins : LD1_Pin FAN_AIN1_Pin LD3_Pin LD2_Pin */

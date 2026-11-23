@@ -1,0 +1,8 @@
+{
+  "hex_sha256": "1682b08549e2e47a8a2d0fb24f074293bf05baf398b7e6999f5fc769bc7ffd47",
+  "data_low": "0x8000000",
+  "data_high_exclusive": "0x8010908",
+  "readback_size": 67848,
+  "image_sha256": "aaf046fae5ea31757e9237bd5626cb258d24c483d8ea685af6a12b9c07c47645",
+  "config_region_not_included": true
+}

@@ -1,0 +1,22 @@
+test_ack_fixture_correlations (test_contracts.ContractTests.test_ack_fixture_correlations) ... ok
+test_all_json_strictly_readable (test_contracts.ContractTests.test_all_json_strictly_readable) ... ok
+test_command_fixture_mode_and_lease (test_contracts.ContractTests.test_command_fixture_mode_and_lease) ... ok
+test_duplicate_fixtures_preserve_content (test_contracts.ContractTests.test_duplicate_fixtures_preserve_content) ... ok
+test_expired_fixture_uses_exclusive_boundary (test_contracts.ContractTests.test_expired_fixture_uses_exclusive_boundary) ... ok
+test_fixture_messages_fit_payload_budget (test_contracts.ContractTests.test_fixture_messages_fit_payload_budget) ... ok
+test_fragment_fixture_reconstructs_exact_bytes (test_contracts.ContractTests.test_fragment_fixture_reconstructs_exact_bytes) ... ok
+test_intentionally_invalid_command (test_contracts.ContractTests.test_intentionally_invalid_command) ... ok
+test_lwt_sequence_follows_online (test_contracts.ContractTests.test_lwt_sequence_follows_online) ... ok
+test_network_loss_fixture_spans_lease (test_contracts.ContractTests.test_network_loss_fixture_spans_lease) ... ok
+test_policy_matches_schema_limits_and_topics (test_contracts.ContractTests.test_policy_matches_schema_limits_and_topics) ... ok
+test_positive_message_shapes (test_contracts.ContractTests.test_positive_message_shapes) ... ok
+test_present_k230_protocol_matches_public_vectors (test_contracts.ContractTests.test_present_k230_protocol_matches_public_vectors) ... ok
+test_scenario_input_shapes (test_contracts.ContractTests.test_scenario_input_shapes) ... ok
+test_strict_shape_rejects_mistakes (test_contracts.ContractTests.test_strict_shape_rejects_mistakes) ... ok
+test_uart_crc_and_frame_vectors (test_contracts.ContractTests.test_uart_crc_and_frame_vectors) ... ok
+test_validity_and_units_in_telemetry_fixtures (test_contracts.ContractTests.test_validity_and_units_in_telemetry_fixtures) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.078s
+
+OK
