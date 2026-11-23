@@ -1,0 +1,9 @@
+test_control_policy.c
+control_policy.c
+正在生成代码...
+PASS: AUTO occupancy, duplicates, 30s absence, invalid/session/freshness, hysteresis, 60s fault, button boundaries, wrap and epoch exhaustion
+test_control_adapter.c
+control_policy.c
+app_control.c
+正在生成代码...
+Assertion failed: out.occupancy==CONTROL_UNKNOWN && !out.led, file D:\???????\chatgpt work\docs\verification\2026-11-22\d02\ecovision\firmware\stm32\tests/test_control_adapter.c, line 34

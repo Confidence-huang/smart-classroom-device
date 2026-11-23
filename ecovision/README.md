@@ -1,6 +1,8 @@
-# D01：STM32 C/HAL 与 EC200U 上报工程
+# D02：K230 UART与最小本地AUTO
 
 从远端 main `0f8b9d6` 准备独立功能范围，源码取自 checkpoint `5c74253`。只引入必要 STM32 工程、SDK/RTOS、契约、主机检查和网络历史证据；不引入整条 checkpoint 的算法、训练、云端和沙盒。
+
+当前新增本地控制入口和限制见 [D02验证记录](validation/D02.md)；STM32候选local-auto-20261122.2，未实现远控/业务ACK。下文D01构建/配置分区流程仍适用。
 
 ## 构建与软件检查
 
@@ -20,7 +22,7 @@ python -B -m unittest discover -s tests/integration -p 'test_*.py' -v
 
 build_fan.ps1 沿用历史脚本名称，实际重建完整 C/HAL 工程，不是只编译风扇。它不烧录。CubeMX .ioc 与源码一起保存，当前验证是跟踪源码的 Keil 复建，不代表重新生成代码已经验证；再次生成前保护当前源码并审查 diff。
 
-协议权威：[统一接口](docs/INTERFACES.md)、[公共结构](contracts/README.md)。D01 未引入 K230 模块，公共检查中的一项 K230 实现对照应 SKIP，不能记成全部 17 项 PASS；D02 补齐。
+协议权威：[统一接口](docs/INTERFACES.md)、[公共结构](contracts/README.md)。本D02副本已引入K230运行包与模型，视觉32项、公共契约17项通过；软件通过不替代本地负载、空场景与稳定性验收。
 
 ## 配置、运行与证据
 

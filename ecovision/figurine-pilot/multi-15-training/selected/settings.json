@@ -1,0 +1,38 @@
+{
+  "name": "multi_epoch10",
+  "path": "figurine-pilot\\multi-15-training\\runs\\multi320\\weights\\epoch10.pt",
+  "exact": 32,
+  "total": 32,
+  "low_exact": 27,
+  "low_total": 27,
+  "high_exact": 5,
+  "high_total": 5,
+  "high_counts": [
+    {
+      "actual": 10,
+      "predicted": 10
+    },
+    {
+      "actual": 15,
+      "predicted": 15
+    },
+    {
+      "actual": 14,
+      "predicted": 14
+    },
+    {
+      "actual": 9,
+      "predicted": 9
+    },
+    {
+      "actual": 7,
+      "predicted": 7
+    }
+  ],
+  "MAE": 0.0,
+  "errors": [],
+  "confidence": 0.35,
+  "nms": 0.5,
+  "imgsz": 320,
+  "note": "Pilot: 20 representative images annotated out of 58; reused validation selection; unreviewed 38 are not labeled"
+}

@@ -1,0 +1,32 @@
+{
+  "board": "LCKFB-LSPI-K230-1G; PCB revision pending visual confirmation",
+  "camera": "GC2093; historical capture, pending current recheck",
+  "firmware": "v1.8-66-g2d060be; nncase 2.11.0; pending live recheck",
+  "example_source": "matching local CanMV_K230_LCKFB firmware image; official/manifest.json",
+  "example_version": "2d060bef54b161c3ac65a1c4c1e2789d4ea8a544",
+  "model_source": "same firmware image /examples/kmodel/person_detect_yolov5n.kmodel",
+  "model_version": "nncase_kmodels_v2_11=0843f558a9cd9b9da1ddf45b214bd570ac628fc5",
+  "official_test_record": null,
+  "official_example_passed": false,
+  "example_dir": "/sdcard/ecovision/official",
+  "model_path": "/sdcard/ecovision/official/person_detect_yolov5n.kmodel",
+  "example_sha256": "7117eeff7fd2cb81d98fabe1bcc9e4b0e292adf4eb71034c6602f159eff28063",
+  "model_sha256": "512325f2b5924bf4502c8b88006c50fb801a2bc93101148df92b30fbc4c8682a",
+  "display_mode": "auto",
+  "display_size": null,
+  "rgb888p_size": [1280, 720],
+  "camera_create": {"sensor_id": 2},
+  "model_input_size": [640, 640],
+  "labels": ["person"],
+  "anchors": [10, 13, 16, 30, 33, 23, 30, 61, 62, 45, 59, 119, 116, 90, 156, 198, 373, 326],
+  "confidence_threshold": 0.2,
+  "nms_threshold": 0.6,
+  "uart": {
+    "enabled": false,
+    "pinmap_confirmed": false,
+    "electrical_confirmed": false,
+    "id": null,
+    "tx_pin": null,
+    "rx_pin": null
+  }
+}

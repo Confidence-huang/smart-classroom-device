@@ -2,6 +2,7 @@
 #include "app_log.h"
 #include "app_fan.h"
 #include "app_vision.h"
+#include "app_control.h"
 #include "cmsis_os.h"
 
 #include <stdbool.h>
@@ -135,8 +136,9 @@ void AppLed_Run(UART_HandleTypeDef *console)
     command_uart = console;
     receive_byte();
     HAL_NVIC_EnableIRQ(USART3_IRQn);
-    AppLog_Printf("[LED] READY level=0 OFF; ASCII 0..4 selects warm brightness\r\n");
-    AppLog_Printf("[FAN] READY level=0; F0 OFF, F1..F4 PWM 40/60/80/100%%\r\n");
+    AppControl_Init();
+    AppLog_Printf("[CTRL] AUTO READY; B1 long=LOCAL_OFF short=AUTO; console 0/F0=safety OFF, V=handshake\r\n");
+    uint32_t control_at=HAL_GetTick()-20U;
 
     for (;;)
     {
@@ -165,16 +167,8 @@ void AppLed_Run(UART_HandleTypeDef *console)
                 fan_prefix = false;
                 if (command >= '0' && command <= '4')
                 {
-                    const uint8_t level = (uint8_t)(command - '0');
-                    if (AppFan_SetLevel(level))
-                    {
-                        AppLog_Printf("[FAN] OK level=%u duty=%u%%\r\n",
-                                      level, AppFan_DutyPercent(level));
-                    }
-                    else
-                    {
-                        AppLog_Printf("[FAN] ERROR driver not ready\r\n");
-                    }
+                    if(command=='0')AppControl_SafetyOff();
+                    else AppLog_Printf("[CTRL] REJECTED bench speed: AUTO owns outputs; B1 short resumes AUTO\r\n");
                 }
                 else
                 {
@@ -192,20 +186,39 @@ void AppLed_Run(UART_HandleTypeDef *console)
             }
             else if (command >= '0' && command <= '4')
             {
-                const uint8_t level = (uint8_t)(command - '0');
-                if (show_level(level))
-                {
-                    AppLog_Printf("[LED] OK level=%u RGB=%u,%u,%u\r\n",
-                                  level, levels[level][0], levels[level][1], levels[level][2]);
-                }
-                else
-                {
-                    AppLog_Printf("[LED] ERROR DMA transfer; output unknown\r\n");
-                }
+                if(command=='0')AppControl_SafetyOff();
+                else AppLog_Printf("[CTRL] REJECTED bench brightness: AUTO owns outputs; B1 short resumes AUTO\r\n");
             }
             else if (command != '\r' && command != '\n' && command != ' ' && command != '\t')
             {
-                AppLog_Printf("[LED] ERROR byte=0x%02X; use 0..4 or F0..F4\r\n", command);
+                AppLog_Printf("[CTRL] ERROR byte=0x%02X; use B1, 0/F0 or V\r\n", command);
+            }
+        }
+        uint32_t now=HAL_GetTick();
+        if((uint32_t)(now-control_at)>=20U) {
+            control_at=now;
+            ControlOutput before;AppControl_GetSnapshot(&before);
+            ControlOutput next=AppControl_Poll();
+            uint8_t fan_level=next.fan?2U:0U,led_level=next.led?2U:0U;
+            bool fan_ok=AppFan_GetLevel()==fan_level || AppFan_SetLevel(fan_level);
+            bool led_ok=AppLed_GetLevel()==led_level || show_level(led_level);
+            if(!fan_ok || !led_ok) {
+                AppLog_Printf("[CTRL] actuator write failed; safety OFF and reset\r\n");
+                (void)AppFan_SetLevel(0U);(void)show_level(0U);
+                NVIC_SystemReset();
+            }
+            AppControl_PublishApplied(&next);
+            if(before.occupancy!=next.occupancy || before.mode!=next.mode ||
+               before.control_epoch!=next.control_epoch || before.led!=next.led || before.fan!=next.fan) {
+                static const char *names[]={"UNKNOWN","OCCUPIED","VACANT"};
+                AppLog_Printf("[CTRL] mode=%s occupancy=%s fan=%u led=%u epoch=%lu stack_free=%lu\r\n",
+                    next.mode==CONTROL_LOCAL_OFF?"LOCAL_OFF":"AUTO",names[next.occupancy],
+                    next.fan?1U:0U,next.led?1U:0U,(unsigned long)next.control_epoch,
+                    (unsigned long)osThreadGetStackSpace(osThreadGetId()));
+            }
+            if(next.requires_new_boot) {
+                AppLog_Printf("[CTRL] epoch exhausted; reboot for a new boot_id\r\n");
+                NVIC_SystemReset();
             }
         }
         osDelay(1U);

@@ -68,6 +68,7 @@ static void parse(EvVision *v,uint32_t now)
        (v->have_seq && ((uint32_t)(seq-v->seq)==0 || (uint32_t)(seq-v->seq)>=0x80000000U))) {v->rejected++;return;}
     v->have_seq=true;v->seq=seq;v->uptime=uptime;v->count=(uint8_t)people;v->valid=valid!=0;v->accepted++;
     if(v->valid) v->fresh_at=now;
+    else v->invalid_frames++; /* Keep the interruption visible after the next valid frame replaces this sample. */
 }
 void EvVision_Feed(EvVision *v,uint8_t byte,uint32_t now)
 {

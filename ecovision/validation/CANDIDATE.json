@@ -1,22 +1,65 @@
 {
-  "candidate": "net-20261122.11+review-led-exit",
-  "hex_sha256": "97cd57644809805e22d956fadc86e8c3db488c8f1664f4613343a41c9fd60840",
+  "candidate": "local-auto-20261122.4+combined-review-20261122",
+  "hex_sha256": "1682b08549e2e47a8a2d0fb24f074293bf05baf398b7e6999f5fc769bc7ffd47",
   "build_errors": 0,
-  "build_warnings": 459,
+  "build_warnings": 481,
   "added_diagnostics": "UART baud/BRR/RxState/RxCount/NVIC/arm failures/hardware error count; no public contract changes",
   "hardware_validation_complete": false,
-  "previous_hardware_evidence_version": "net-20261122.9",
+  "previous_hardware_evidence_version": "local-auto-20261122.2",
   "pr_ready": false,
-  "change": "StartLedTask exits via osThreadExit if AppLed_Run returns; no public contract changes",
-  "user_decision": "Apply review patches on original PR branches; D01 Keil build first; short combined D02 hardware checks after maintainer merges D01",
+  "change": "Combined D01 safe LED-task exit and D02 invalid-frame interruption tracking; public contract unchanged",
+  "user_decision": "Deliver combined HEX on original D02 branch first; no flash or hardware checks in this step",
   "pr_preparation_authorized": true,
   "pr_creation_authorized": true,
-  "review_basis": "Fresh RED/GREEN host regression and Keil rebuild; new hardware verification pending; old evidence retained",
-  "review_comment": "https://github.com/Confidence-huang/smart-classroom-device/pull/1#issuecomment-7080788516",
+  "review_basis": "Fresh merged-tree control/vision/LED-exit regressions, 17 contract and 32 K230 host tests, and Keil 0 errors/481 warnings; no hardware validation",
+  "review_comment": "https://github.com/Confidence-huang/smart-classroom-device/pull/2#issuecomment-7080789667",
   "previous_candidate": {
-    "candidate": "net-20261122.11",
-    "hex_sha256": "eae7b5112b6539581f4540b0da28d8690ef047e13f5ae8cdf712a86e9039b26d"
+    "candidate": "local-auto-20261122.4",
+    "hex_sha256": "d65cfd6897be9ba1fc0b83811cbf5d28a717eaf525de95656276a964fa92dc6a",
+    "build_errors": 0,
+    "build_warnings": 480
   },
-  "startup_banner": "net-20261122.11 (unchanged); identify reviewed image by commit SHA plus HEX SHA256",
-  "review_build_hex": "ecovision/firmware/stm32/tb6612-evidence/D01-REVIEW-20261122/EcoVision_F413ZH-fan-rebuild.hex"
+  "review_tests": {
+    "control_red": "assertion reproduced",
+    "control_green": "pass",
+    "vision_c": "pass",
+    "contracts": 17,
+    "k230_host": 32
+  },
+  "build_status": "PASS: fresh combined Keil rebuild; hardware NOT_RUN",
+  "source_main_sha": "ee86e0c9151b1cdc791ab5a58dcda86ddc314ac2",
+  "d02_before_sync_sha": "ade40642018399f5aaa7b8190cd8295a57c4415f",
+  "integrated_d01_review": {
+    "fix_commit": "dbbb873f13af8416e7f9f68713c441afba397aac",
+    "review_comment": "https://github.com/Confidence-huang/smart-classroom-device/pull/1#issuecomment-7080788516",
+    "previous_d01_hex_reference_only": "97cd57644809805e22d956fadc86e8c3db488c8f1664f4613343a41c9fd60840"
+  },
+  "combined_regression": {
+    "control_policy": "PASS",
+    "control_adapter": "PASS",
+    "vision_c": "PASS",
+    "led_task_exit": "PASS",
+    "contracts_passed": 17,
+    "k230_host_passed": 32,
+    "hardware": "NOT_RUN"
+  },
+  "build_completed_at_beijing": "2026-11-22T23:37:56.183124+08:00",
+  "source_commit_sha": "fd67c806b660dc6e215ad5e561ebc5ada71bad98",
+  "source_project_tree_sha": "7cf7bf564eafc58a87174cd4956afd8731854de7",
+  "hex_path": "ecovision/validation/candidates/D02-combined-20261122/EcoVision_F413ZH.hex",
+  "build_evidence_dir": "ecovision/validation/candidates/D02-combined-20261122",
+  "startup_banner": "local-auto-20261122.4 (unchanged); identify combined candidate by source commit and HEX SHA256",
+  "build_command": "ecovision/firmware/stm32/tests/build_fan.ps1 -EvidenceName D02-COMBINED-20261122",
+  "application_data_start": "0x8000000",
+  "application_data_end_exclusive": "0x8010908",
+  "application_span_bytes": 67848,
+  "private_config_region_included": false,
+  "flash_status": "NOT_RUN; this step delivers combined HEX only",
+  "hardware_short_check": "NOT_RUN; future tests must use this exact HEX",
+  "program_size": {
+    "code": 61938,
+    "ro_data": 5862,
+    "rw_data": 44,
+    "zi_data": 94196
+  }
 }

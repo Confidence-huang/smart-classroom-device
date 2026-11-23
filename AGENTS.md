@@ -4,7 +4,7 @@
 
 ## C/HAL 验证入口
 
-当前功能分支仅准备 D01：STM32 C/HAL 与真实 EC200U 上报。构建和软件核对不等于新增硬件通过；K230 本地灯扇闭环、远控业务 ACK 与长测分别验收。看 ecovision/README.md 和 ecovision/validation/D01.md；原 src/ 不改动。不要把历史日志中的 COM 号、固件身份或测试结论当作当前现场事实。
+当前功能分支准备 D02：在 D01 基础上加入 K230 UART 与经用户批准提前实现的最小本地 AUTO。构建和软件核对不等于新增硬件通过；K230 本地灯扇闭环、远控业务 ACK 与长测分别验收。看 ecovision/README.md 和 ecovision/validation/D01.md；原 src/ 不改动。不要把历史日志中的 COM 号、固件身份或测试结论当作当前现场事实。
 
 <!-- GLOBAL-PROJECT-LOG-RULES:START v5 -->
 ## GLOBAL-PROJECT-LOG-RULES 托管规则块（v5）

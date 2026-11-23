@@ -11,7 +11,7 @@ static EnvironmentSnapshot latest;
 extern I2C_HandleTypeDef hi2c1;
 void AppEnvironment_GetSnapshot(EnvironmentSnapshot *out) {
     taskENTER_CRITICAL();*out=latest;taskEXIT_CRITICAL();
-    if((uint32_t)(HAL_GetTick()-out->sampled_at)>=3000U) {
+    if((uint32_t)(HAL_GetTick()-out->sampled_at)>=10000U) {
         out->th_valid=false;out->light_valid=false;out->lux_valid=false;
     }
 }
