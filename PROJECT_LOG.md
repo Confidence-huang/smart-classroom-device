@@ -2,6 +2,8 @@
 
 ## 当前快照
 
+- 2026-11-24 优化上传：功能分支已上传并创建Draft PR #13（https://github.com/Confidence-huang/smart-classroom-device/pull/13），目标main、依赖模块PR #5；上传前267个源码清单文件及HEX 5b901b05…731aab复核一致。仅同步上传交接文档，固件源码未变；最新head的CI以PR检查为准。未烧录、硬件待验，未合并main。
+
 - 2026-11-24 离线优化：独立本地分支feat/stm32-dma-watchdog-20261124，基于模块PR #5的d120970；UART2/6循环DMA+HT/TC/IDLE接收、错误丢弃恢复及任务健康IWDG已接入。13组C、17项契约、32项视觉、LED退出及AC6全量68对象通过；业务-Wall/-Wextra构建0诊断，CubeMX副本再生成与全量链接通过。正式HEX 5b901b05…731aab，配置区保留；未连接板卡、未烧录、未上传或更新PR。11月25日测试入口ecovision/firmware/stm32/OPTIMIZATION-20261124.md。
 
 - 2026-11-23 模块PR候选：从远端main 8cba6ef建立独立分支，移植独立红外收发并交付灯环/TB6612/干簧管/BH1750统一内侧排母接线表；SHT仅预留。9组C、LED退出、17项契约、32项K230及AC6全量64对象通过，HEX SHA256 0b7dff93…0b04fc。未烧录、未做新硬件测试；待队友确认模块电平、接线与逐项验收，Draft PR #5已创建，首轮CI成功；清理新增红外缩进警告后重跑红外与全量构建通过、HEX未变，最新head的CI见PR。PR不自动合并。入口ecovision/firmware/stm32/MODULE-WIRING.md。
@@ -41,6 +43,8 @@
 - `check_syntax.py`：不运行板端代码的主机语法检查。
 
 ## 近期任务记录
+
+- 2026-11-24：按用户明确授权上传优化分支，创建Draft PR #13并注明#5依赖、复现记录与实板清单；本轮不更改固件行为、不合并main，CI核验结果见PR。
 
 - 2026-11-24：按用户授权完成DMA/IDLE与健康看门狗离线优化，保留既有接线和公共契约，另存候选、哈希、原始软件日志及上板清单；不把主机测试当硬件验收，不同时启用队友AppHealth看门狗。
 

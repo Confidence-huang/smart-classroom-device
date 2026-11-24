@@ -1,5 +1,7 @@
 # 2026-11-24 离线优化候选与上板清单
 
+> 上传阶段更新：已按用户授权上传功能分支并创建 [Draft PR #13](https://github.com/Confidence-huang/smart-classroom-device/pull/13)，目标main、依赖尚未合并的模块PR #5。以下“未上传”等表述是先前离线准备阶段的记录；本次上传未改变固件源码或HEX哈希。当前CI看PR最新head，硬件仍待验，未合并main。
+
 基于模块PR #5候选 d120970，新建本地分支 `feat/stm32-dma-watchdog-20261124`。未上传、未合并main、未修改原PR。原模块候选和工作区保留，可回退到原镜像。全部接线沿用 MODULE-WIRING.md，不新增外部引脚。
 
 ## 已完成
