@@ -1,0 +1,18 @@
+[
+  {
+    "Hash": "FB8A961E83874C458D6CDBDC296AC6138BCB2005663A269C7D6808D5B9275103",
+    "Path": "D:\\移远杯项目文档\\chatgpt work\\firmware\\stm32\\f103-oled-spi\\baseline-before-ir\\build.py"
+  },
+  {
+    "Hash": "EFCD7102D2B80363CD80DA4BB54792F319427EC30DA4A1F047C3AAD4A30691D1",
+    "Path": "D:\\移远杯项目文档\\chatgpt work\\firmware\\stm32\\f103-oled-spi\\baseline-before-ir\\f103-oled-ssd1306.hex"
+  },
+  {
+    "Hash": "27806A0DA73CA4B7F2A6D04D24EC79C29A81CA986533FC5215D4F28A90C5D3B5",
+    "Path": "D:\\移远杯项目文档\\chatgpt work\\firmware\\stm32\\f103-oled-spi\\baseline-before-ir\\main.c"
+  },
+  {
+    "Hash": "862122F3579FE808F3530FC7956D58798D4078B152E790C16E60C52AEA94C3DA",
+    "Path": "D:\\移远杯项目文档\\chatgpt work\\firmware\\stm32\\f103-oled-spi\\baseline-before-ir\\README.md"
+  }
+]
