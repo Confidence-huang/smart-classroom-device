@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--generated-core', type=Path)
 parser.add_argument('--toolchain', type=Path, default=Path('D:/k51/ARM/ARMCLANG/bin'))
 parser.add_argument('--output', type=Path)
+parser.add_argument('--name', default='EcoVision-dma-watchdog-20261124.1')
 args = parser.parse_args()
 project = root / 'firmware/stm32/EcoVision_F413ZH/MDK-ARM'
 output = args.output or root / 'firmware/stm32/ir-merge-evidence/2026-11-23'
@@ -50,7 +51,8 @@ with (output / 'ac6-build.log').open('w', encoding='utf-8') as log:
         if source.suffix.lower() == '.c':
             run('armclang', ['--target=arm-arm-none-eabi', '-mcpu=cortex-m4', '-mthumb',
                              '-mfpu=fpv4-sp-d16', '-mfloat-abi=hard', '-std=c99', '-Oz',
-                             '-ffunction-sections', '-fdata-sections', *defines, *includes,
+                             '-ffunction-sections', '-fdata-sections',
+                             *(['-Wall','-Wextra'] if 'App' in source.parts else []), *defines, *includes,
                              '-c', source, '-o', obj], log)
         elif source.suffix.lower() == '.s':
             run('armasm', ['--cpu=Cortex-M4.fp', '--apcs=/hardfp', '-o', obj, source], log)
@@ -62,10 +64,10 @@ with (output / 'ac6-build.log').open('w', encoding='utf-8') as log:
     scatter = project / 'application.sct'
     if 'LR_IROM1 0x08000000 0x00160000' not in scatter.read_text():
         raise SystemExit('Application scatter file does not preserve configuration sector')
-    elf = build / 'EcoVision-ir-pulse-main-20261123.1.axf'
+    elf = build / (args.name + '.axf')
     print(run('armlink', [*objects, '--strict', '--scatter', scatter, '--info=summarysizes',
                           '--entry=Reset_Handler', '-o', elf], log).strip())
-    image = output / 'EcoVision-ir-pulse-main-20261123.1.hex'
+    image = output / (args.name + '.hex')
     run('fromelf', ['--i32combined', '--output=' + str(image), elf], log)
     upper, lowest, highest = 0, None, 0
     for line in image.read_text().splitlines():

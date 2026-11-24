@@ -589,6 +589,26 @@
               <FilePath>..\App\Src\app_ir_pulse.c</FilePath>
             </File>
             <File>
+              <FileName>app_uart_dma.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\Src\app_uart_dma.c</FilePath>
+            </File>
+            <File>
+              <FileName>rx_cursor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\Src\rx_cursor.c</FilePath>
+            </File>
+            <File>
+              <FileName>health_policy.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\Src\health_policy.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_watchdog.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\Src\app_watchdog.c</FilePath>
+            </File>
+            <File>
               <FileName>ir_pulse_codec.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\App\Src\ir_pulse_codec.c</FilePath>

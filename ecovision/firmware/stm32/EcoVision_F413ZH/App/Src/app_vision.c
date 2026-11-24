@@ -1,5 +1,7 @@
 #include "app_vision.h"
 #include "app_log.h"
+#include "app_uart_dma.h"
+#include "app_watchdog.h"
 #include "app_lcd.h"
 #include "vision_protocol.h"
 #include "cmsis_os.h"
@@ -8,7 +10,6 @@
 enum { RING_SIZE=1024 };
 typedef struct {uint32_t tick;uint8_t byte;} Sample;
 static UART_HandleTypeDef *port;
-static uint8_t rx_byte;
 static volatile Sample ring[RING_SIZE];
 static volatile uint16_t head, tail;
 static volatile uint32_t faults;
@@ -22,14 +23,15 @@ void AppVision_GetSnapshot(EvVision *out) {
 }
 void AppVision_Rehandshake(void) {restart=true;}
 static void arm(void) {
-    if(HAL_UART_Receive_IT(port,&rx_byte,1)!=HAL_OK) faults|=0x10000U;
+    if(!AppUartDma_Start(port)) faults|=0x10000U;
 }
-void AppVision_RxComplete(UART_HandleTypeDef *uart) {
-    if(uart!=port) return;
-    uint16_t next=(uint16_t)((head+1U)%RING_SIZE);
-    if(next==tail) faults|=0x20000U;
-    else {ring[head].tick=HAL_GetTick();ring[head].byte=rx_byte;head=next;}
-    arm();
+void AppVision_RxComplete(UART_HandleTypeDef *uart) {(void)uart;}
+void AppVision_RxBytes(const uint8_t *data,uint16_t length,uint32_t now) {
+    for(uint16_t i=0;i<length;i++) {
+        uint16_t next=(uint16_t)((head+1U)%RING_SIZE);
+        if(next==tail){faults|=0x20000U;return;}
+        ring[head].tick=now;ring[head].byte=data[i];__DMB();head=next;
+    }
 }
 void AppVision_RxError(UART_HandleTypeDef *uart) {
     if(uart==port) faults|=uart->ErrorCode ? uart->ErrorCode : 0x40000U;
@@ -63,7 +65,7 @@ void AppVision_Run(UART_HandleTypeDef *uart) {
     RNG->CR=RNG_CR_RNGEN;
     if(!begin(HAL_GetTick())) {
         AppLog_Printf("[VISION] RNG failed; no session created\r\n");
-        for(;;) osDelay(1000U);
+        for(;;) AppWatchdog_Delay(HEALTH_VISION,1000U);
     }
     arm();
     AppLog_Printf("[VISION] heap_free=%lu bytes; task_stack_free=%lu bytes\r\n",
@@ -72,14 +74,15 @@ void AppVision_Run(UART_HandleTypeDef *uart) {
     uint32_t last_errors=0;
     uint32_t lcd_at=HAL_GetTick()-1000U;
     for(;;) {
+        AppWatchdog_Beat(HEALTH_VISION);
         uint32_t now=HAL_GetTick();
         if(faults) {
-            HAL_NVIC_DisableIRQ(USART2_IRQn);
+            taskENTER_CRITICAL();
             uint32_t error=faults;
             (void)HAL_UART_AbortReceive(port);
             tail=head;faults=0;
-            HAL_NVIC_EnableIRQ(USART2_IRQn);
-            arm();restart=true;
+            arm();
+            taskEXIT_CRITICAL();restart=true;
             AppLog_Printf("[VISION] RX fault=0x%lx; discard and rehandshake\r\n",(unsigned long)error);
         }
         if(restart || EvVision_Expired(&state,now)) {
@@ -88,14 +91,14 @@ void AppVision_Run(UART_HandleTypeDef *uart) {
             if(!begin(now)) {
                 state.active=false;state.valid=false;
                 AppLog_Printf("[VISION] RNG failed; UART session disabled\r\n");
-                for(;;) osDelay(1000U);
+                for(;;) AppWatchdog_Delay(HEALTH_VISION,1000U);
             }
             query_at=now-1000U;last_errors=0;
         }
         while(tail!=head) {
             uint8_t byte=ring[tail].byte;
             uint32_t at=ring[tail].tick;
-            tail=(uint16_t)((tail+1U)%RING_SIZE);
+            __DMB();tail=(uint16_t)((tail+1U)%RING_SIZE);
             bool was_active=state.active;
             uint32_t accepted=state.accepted;
             EvVision_Feed(&state,byte,at);

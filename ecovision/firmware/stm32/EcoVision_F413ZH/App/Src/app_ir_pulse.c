@@ -1,3 +1,4 @@
+#include "app_watchdog.h"
 /* Port/review of wzy F407 IR package v0.3, adapted to F413 resources.
  * TIM1 CH2 PE11 carrier; TIM4 envelope; TIM5 CH3 PA2 active-low receiver.
  * IRQ priority 6: no FreeRTOS API, logging, decoding or frame memcpy in IRQ. */
@@ -158,6 +159,7 @@ void AppIrPulse_Run(void *argument) {
     (void)argument;osDelay(800U);
     AppLog_Printf("[IRP] READY TX=PE11 D5 RX=PA2 A8; Is/Io/I+/I-/Im/If/Il/Ir/Ix\r\n");
     for(;;) {
+        AppWatchdog_Beat(HEALTH_IR);
         ControlOutput control;AppControl_GetSnapshot(&control);
         if(control.mode==CONTROL_LOCAL_OFF) {
             if(tx_busy) { stop_tx(); }

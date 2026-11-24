@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "app_ir_pulse.h"
+#include "app_uart_dma.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -221,6 +222,16 @@ void TIM5_IRQHandler(void)
 }
 void USART2_IRQHandler(void) { HAL_UART_IRQHandler(&huart2); }
 
+void DMA1_Stream5_IRQHandler(void) {
+ /* USER CODE BEGIN DMA1_Stream5_IRQn 0 */
+ AppUartDma_Irq(0);
+ /* USER CODE END DMA1_Stream5_IRQn 0 */
+}
+void DMA2_Stream1_IRQHandler(void) {
+ /* USER CODE BEGIN DMA2_Stream1_IRQn 0 */
+ AppUartDma_Irq(1);
+ /* USER CODE END DMA2_Stream1_IRQn 0 */
+}
 /* USER CODE BEGIN 1 */
 
 /* USER CODE END 1 */

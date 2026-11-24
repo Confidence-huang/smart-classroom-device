@@ -1,3 +1,4 @@
+#include "app_watchdog.h"
 #include "main.h"
 #include "app_environment.h"
 #include "app_aht20.h"
@@ -22,6 +23,7 @@ void AppEnvironment_Run(void *argument) {
     Bh1750_Context bh1750={0};
     uint32_t previous_log=HAL_GetTick()-5000U;
     for(;;) {
+        AppWatchdog_Beat(HEALTH_ENV);
         EnvironmentSnapshot next;memset(&next,0,sizeof next);
         Bh1750_Sample light={0};
         next.light_error=Bh1750_Poll(&bh1750,&hi2c1,&light);

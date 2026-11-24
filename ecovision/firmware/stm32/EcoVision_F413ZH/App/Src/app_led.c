@@ -1,3 +1,4 @@
+#include "app_watchdog.h"
 #include "app_led.h"
 #include "app_log.h"
 #include "app_fan.h"
@@ -208,6 +209,7 @@ void AppLed_Run(UART_HandleTypeDef *console)
                 AppLog_Printf("[CTRL] ERROR byte=0x%02X; use B1, 0/F0 or V\r\n", command);
             }
         }
+        AppWatchdog_Beat(HEALTH_CONTROL);
         uint32_t now=HAL_GetTick();
         if((uint32_t)(now-control_at)>=20U) {
             control_at=now;

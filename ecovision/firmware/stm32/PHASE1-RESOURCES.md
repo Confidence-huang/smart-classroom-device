@@ -1,3 +1,7 @@
+# DMA优化候选资源（2026-11-24）
+
+USART2 RX=DMA1 Stream5 Channel4；USART6 RX=DMA2 Stream1 Channel5；512字节循环，HT/TC/IDLE、IRQ6。灯环DMA1 Stream7保持。IWDG无外部引脚，由单一任务健康监督者在启动宽限后启用，不在CubeMX自动初始化。接线不变，硬件未测；详情与候选见 [优化与上板清单](OPTIMIZATION-20261124.md)。
+
 # 本轮模块接线入口（2026-11-23）
 
 以 [MODULE-WIRING.md](MODULE-WIRING.md) 为本PR固定资源与队友接线入口。以下旧台架记录保留历史含义，串口五档命令不代表当前main支持；当前AUTO规则见新表。红外改用PE11/TIM1与PA2/TIM5，TIM4包络，旧TIM1舵机候选有冲突，暂不接。

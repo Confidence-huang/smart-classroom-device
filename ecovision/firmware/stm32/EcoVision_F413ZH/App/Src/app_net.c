@@ -1,5 +1,7 @@
 /* EC200U network waits run only in this task; no credential or AT echo logging. */
 #include "app_net.h"
+#include "app_uart_dma.h"
+#include "app_watchdog.h"
 #include "net_codec.h"
 #include "net_publish.h"
 #include "net_recovery.h"
@@ -20,7 +22,7 @@ static volatile uint16_t head,tail;
 static volatile bool rx_fault;
 static volatile uint32_t received_bytes;
 static volatile uint32_t receive_arm_failures,receive_errors,last_receive_error;
-static uint8_t ring[RX_CAP],rx_byte;
+static uint8_t ring[RX_CAP];
 static NetAtParser parser;
 static NetConfig config;
 static char command_buffer[640],payload[1501],topic[96],boot[33];
@@ -33,17 +35,20 @@ static char matched_line[512];
 
 const char *AppNet_State(void){return state;}
 static void stage(const char *value){state=value;AppLog_Printf("[NET] state=%s\r\n",value);}
-static void arm(void){if(HAL_UART_Receive_IT(&huart6,&rx_byte,1)!=HAL_OK){receive_arm_failures++;rx_fault=true;}}
-void AppNet_RxComplete(UART_HandleTypeDef *uart) {
- if(uart!=&huart6)return;
- uint16_t next=(uint16_t)((head+1U)%RX_CAP);
- received_bytes++;
- if(next==tail)rx_fault=true;else{ring[head]=rx_byte;head=next;}arm();
+static void arm(void){if(!AppUartDma_Start(&huart6)){receive_arm_failures++;rx_fault=true;}}
+void AppNet_RxComplete(UART_HandleTypeDef *uart) {(void)uart;}
+void AppNet_RxBytes(const uint8_t *data,uint16_t length,uint32_t at) {
+ (void)at;received_bytes+=length;
+ for(uint16_t i=0;i<length;i++) {
+  uint16_t next=(uint16_t)((head+1U)%RX_CAP);
+  if(next==tail){rx_fault=true;return;}
+  ring[head]=data[i];__DMB();head=next;
+ }
 }
 void AppNet_RxError(UART_HandleTypeDef *uart){if(uart==&huart6){last_receive_error=uart->ErrorCode;receive_errors++;rx_fault=true;}}
 static void discard(void) {
- HAL_NVIC_DisableIRQ(USART6_IRQn);tail=head;rx_fault=false;
- (void)HAL_UART_AbortReceive(&huart6);arm();HAL_NVIC_EnableIRQ(USART6_IRQn);
+ taskENTER_CRITICAL();tail=head;rx_fault=false;
+ (void)HAL_UART_AbortReceive(&huart6);arm();taskEXIT_CRITICAL();
  memset(&parser,0,sizeof parser);
 }
 static bool transmit(const void *p,size_t n) {
@@ -60,7 +65,7 @@ static int transaction(const char *command,const char *expected,uint32_t timeout
  while((uint32_t)(HAL_GetTick()-start)<timeout) {
   if(rx_fault){discard();return -3;}
   while(tail!=head) {
-   uint8_t byte=ring[tail];tail=(uint16_t)((tail+1U)%RX_CAP);
+   uint8_t byte=ring[tail];__DMB();tail=(uint16_t)((tail+1U)%RX_CAP);
    NetAtEvent event=NetAt_Feed(&parser,byte);
    if(event==NET_AT_DROPPED)return -3;
    if(event==NET_AT_PROMPT && prompt)return 0;
@@ -75,7 +80,7 @@ static int transaction(const char *command,const char *expected,uint32_t timeout
    }
    if(ok && match && !prompt)return 0;
   }
-  osDelay(2U);
+  AppWatchdog_Delay(HEALTH_NET,2U);
  }
  AppLog_Printf("[NET] timeout expect=%s ok=%u match=%u rx=%lu SR=%lx CR1=%lx err=%lx used=%u drop=%u\r\n",expected?expected:"OK",ok?1U:0U,match?1U:0U,(unsigned long)(received_bytes-received_before),(unsigned long)huart6.Instance->SR,(unsigned long)huart6.Instance->CR1,(unsigned long)huart6.ErrorCode,(unsigned)parser.used,parser.dropping?1U:0U);
  AppLog_Printf("[NET] UART baud=%lu brr=%lx CR3=%lx RxState=%lx RxCount=%u irq=%u arm_fail=%lu errors=%lu last_err=%lx\r\n",(unsigned long)huart6.Init.BaudRate,(unsigned long)huart6.Instance->BRR,(unsigned long)huart6.Instance->CR3,(unsigned long)huart6.RxState,(unsigned)huart6.RxXferCount,(unsigned)NVIC_GetEnableIRQ(USART6_IRQn),(unsigned long)receive_arm_failures,(unsigned long)receive_errors,(unsigned long)last_receive_error);
@@ -102,7 +107,7 @@ static int probe_at(void *context,uint32_t baud) {
 static bool escape_initial_ppp(void *context) {
  (void)context;
  /* Compatibility with the original MicroPython PPP entry is startup-only. */
- osDelay(1200U);(void)transmit("+++",3);osDelay(1500U);
+ AppWatchdog_Delay(HEALTH_NET,1200U);(void)transmit("+++",3);AppWatchdog_Delay(HEALTH_NET,1500U);
  int result=transaction("AT",NULL,1800U);
  AppLog_Printf("[NET] initial guarded data-mode escape result=%d\r\n",result);
  if(!result){(void)transaction("ATH",NULL,3000U);return true;}
@@ -121,7 +126,7 @@ static bool random_id(void) {
  for(unsigned i=0;i<4;i++) {
   uint32_t start=HAL_GetTick();while(!(RNG->SR&RNG_SR_DRDY)) {
    if(HAL_GetTick()-start>=100U || (RNG->SR&(RNG_SR_CECS|RNG_SR_SECS)))return false;
-   osDelay(1U);
+   AppWatchdog_Delay(HEALTH_NET,1U);
   }
   uint32_t v=RNG->DR;(void)snprintf(boot+i*8,9,"%08lx",(unsigned long)v);
  }
@@ -164,7 +169,7 @@ static bool configure_tls(void) {
  /* The modem remains powered across MCU reset: close the previous socket
   * before replacing its CA file or changing the active TLS context. */
  (void)transaction("AT+QMTCLOSE=0","+QMTCLOSE:",10000U);
- osDelay(100U);
+ AppWatchdog_Delay(HEALTH_NET,100U);
  (void)transaction("AT+QFDEL=\"UFS:ev-ca.pem\"",NULL,5000U);
  (void)snprintf(command_buffer,sizeof command_buffer,"AT+QFUPL=\"UFS:ev-ca.pem\",%u,10",config.ca_length);
  if(transaction(command_buffer,"CONNECT",5000U)||!transmit(config.ca,config.ca_length)||transaction(NULL,NULL,15000U))return false;
@@ -196,10 +201,10 @@ static bool connect_cloud(void) {
  return publish(topic,payload,true);
 }
 void AppNet_Run(void *argument) {
- (void)argument;osDelay(1600U);arm();
+ (void)argument;AppWatchdog_Delay(HEALTH_NET,1600U);arm();
  bool configured=Net_ConfigDecode((const uint8_t *)0x08160000U,8192U,&config);
  AppLog_Printf("[NET] private_config=%s (values not logged)\r\n",configured?"valid":"invalid");
- if(!random_id()){stage("RNG_ERROR");for(;;)osDelay(1000U);}
+ if(!random_id()){stage("RNG_ERROR");for(;;)AppWatchdog_Delay(HEALTH_NET,1000U);}
  uint32_t retry=0;uint32_t previous_temp_at=0,previous_vision_at=0;bool have_temp=false,have_vision=false;
  static const uint32_t delays[]={2000,5000,10000,30000,60000};
  for(;;) {
@@ -211,7 +216,7 @@ void AppNet_Run(void *argument) {
   stage("REGISTER");
   if(transaction("AT+CEREG?","+CEREG:",5000U))goto backoff;
   int n,registered;if(sscanf(matched_line,"+CEREG: %d,%d",&n,&registered)!=2 || (registered!=1&&registered!=5))goto backoff;
-  if(!configured){stage("CONFIG_REQUIRED");osDelay(60000U);continue;}
+  if(!configured){stage("CONFIG_REQUIRED");AppWatchdog_Delay(HEALTH_NET,60000U);continue;}
   stage("PDP");
   if(transaction("AT+QICSGP=1","+QICSGP:",5000U))goto backoff;
   int pdp_type=0;if(sscanf(matched_line,"+QICSGP: %d",&pdp_type)!=1)goto backoff;
@@ -254,12 +259,12 @@ void AppNet_Run(void *argument) {
     if(publish(config.legacy_topic,payload,true))AppLog_Printf("[NET] LEGACY PUBACK seq=%lu source=C_HAL_REAL_4G\r\n",(unsigned long)(sample.utc-946684800U));
     else AppLog_Printf("[NET] legacy consumer publish failed; official path remains primary\r\n");
    }
-   uint32_t until=now+5000U;while((int32_t)(HAL_GetTick()-until)<0)osDelay(20U);
+   uint32_t until=now+5000U;while((int32_t)(HAL_GetTick()-until)<0)AppWatchdog_Delay(HEALTH_NET,20U);
   }
 backoff:
   AppLog_Printf("[NET] stage=%s failed; retry=%lu (local tasks continue)\r\n",state,(unsigned long)retry);
   stage("OFFLINE");uint32_t delay=delays[retry<5U?retry:4U];if(retry<5U)retry++;
   uint32_t jitter=(Net_Crc32((const uint8_t *)boot,32)^HAL_GetTick())%201U;
-  osDelay(delay+(delay*jitter)/1000U);
+  AppWatchdog_Delay(HEALTH_NET,delay+(delay*jitter)/1000U);
  }
 }

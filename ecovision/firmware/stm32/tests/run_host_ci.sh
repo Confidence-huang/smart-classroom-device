@@ -40,3 +40,10 @@ fi
 run_c_test ir_decode "$tests/test_ir_pulse_decode.c" "$app/Src/ir_pulse_codec.c"
 run_c_test ir_encode "$tests/test_ir_pulse_encode.c" "$app/Src/ir_pulse_codec.c"
 run_c_test ir_driver -I "$tests/ir_pulse_host" "$tests/test_ir_pulse_driver.c" "$app/Src/app_ir_pulse.c" "$app/Src/ir_pulse_codec.c"
+
+run_c_test rx_cursor "$tests/test_rx_cursor.c" "$app/Src/rx_cursor.c"
+run_c_test health_policy "$tests/test_health_policy.c" "$app/Src/health_policy.c"
+
+run_c_test uart_dma -I "$tests/uart_dma_host" "$tests/test_uart_dma.c" "$app/Src/app_uart_dma.c" "$app/Src/rx_cursor.c"
+
+run_c_test watchdog -I "$tests/health_host" "$tests/test_watchdog.c" "$app/Src/app_watchdog.c" "$app/Src/health_policy.c"

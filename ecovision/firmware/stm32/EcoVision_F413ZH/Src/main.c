@@ -30,6 +30,7 @@
 #include "app_reed.h"
 #include "app_net.h"
 #include "app_ir_pulse.h"
+#include "app_watchdog.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -84,7 +85,7 @@ const osThreadAttr_t visionTask_attributes = {
 };
 
 static const uint8_t boot_message[] =
-    "EcoVision F413ZH ir-pulse-main-20261123.1, interface baseline 1.0.0\r\n"
+    "EcoVision F413ZH dma-watchdog-20261124.1, interface baseline 1.0.0\r\n"
     "FreeRTOS heartbeat running; HAL TIM6 tick OK\r\n";
 /* USER CODE END PV */
 
@@ -603,6 +604,7 @@ void StartHeartbeatTask(void *argument)
   for (;;)
   {
     AppReed_Poll();
+    AppWatchdog_Poll();
     if ((uint32_t)(HAL_GetTick() - heartbeat_at) >= 500U)
     {
       heartbeat_at = HAL_GetTick();

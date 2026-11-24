@@ -7,6 +7,7 @@
 #include <setjmp.h>
 #include <stdio.h>
 #include <stdarg.h>
+void AppWatchdog_Beat(unsigned id){(void)id;}
 MockTimer mock_tim1,mock_tim4,mock_tim5;
 MockGpio mock_gpioa,mock_gpioe;MockRcc mock_rcc;
 static uint32_t tick;
