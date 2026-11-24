@@ -67,7 +67,8 @@ static const char *boolean(bool v){return v?"true":"false";}
 int Net_IPv4Profile(char *out,size_t size,const char *line) {
  const char *prefix="+QICSGP:";if(!line||!out||strncmp(line,prefix,strlen(prefix)))return -1;
  const char *p=line+strlen(prefix);while(*p==' ')p++;
- if(*p<'1'||*p>'3'||p[1]!=',')return -1;p++;const char *tail=p;
+ if(*p<'1'||*p>'3'||p[1]!=',')return -1;
+ p++;const char *tail=p;
  for(unsigned i=0;i<3;i++) {
   if(*p++!=','||*p++!='"')return -1;
   size_t n=0;while(*p && *p!='"'){if((unsigned char)*p<32||(unsigned char)*p>126||*p=='\\'||++n>100)return -1;p++;}
@@ -77,7 +78,8 @@ int Net_IPv4Profile(char *out,size_t size,const char *line) {
  int n=snprintf(out,size,"AT+QICSGP=1,1%s",tail);return n<0||(size_t)n>=size ? -1:n;
 }
 bool Net_ClockUTC(const char *line,uint32_t *utc) {
- if(!line||!utc)return false;const char *p=strchr(line,'"');if(!p)return false;p++;
+ if(!line||!utc)return false;
+ const char *p=strchr(line,'"');if(!p)return false;p++;
  int y,m,d,h,mi,s,tz,used=0;char sign;
  if(sscanf(p,"%d/%d/%d,%d:%d:%d%c%d%n",&y,&m,&d,&h,&mi,&s,&sign,&tz,&used)!=8)return false;
  if(y<100)y+=2000;

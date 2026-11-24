@@ -6,7 +6,7 @@ uint16_t EvVision_Crc(const uint8_t *data, size_t size)
     uint16_t crc=0xffffU;
     for(size_t i=0;i<size;i++) {
         crc ^= (uint16_t)((uint16_t)data[i]<<8);
-        for(unsigned b=0;b<8;b++) crc=(uint16_t)((crc&0x8000U) ? (crc<<1)^0x1021U : crc<<1);
+        for(unsigned b=0;b<8;b++) crc=(uint16_t)((crc&0x8000U) ? ((uint32_t)crc<<1)^0x1021U : (uint32_t)crc<<1);
     }
     return crc;
 }
