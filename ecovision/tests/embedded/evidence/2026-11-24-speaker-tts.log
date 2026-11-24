@@ -1,0 +1,15 @@
+Port: COM25
+Initial QAUDMOD: 2
+Initial CLVL: 3
+AT+QTTS=1,"7EFF667A5FAE89C6FF0C8BED97F36D4B8BD5"
+
+OK
+
++QTTS: 0
+
+AT+QTTS?
++QTTS: 0
+
+OK
+Acoustic result: PASS - user confirmed hearing the spoken test phrase on 2026-11-24
+
