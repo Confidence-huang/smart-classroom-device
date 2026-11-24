@@ -45,20 +45,20 @@ static void remote_mailbox_and_button(void) {
     AppControl_Init();
     button_pressed=false;
     tick=10000;
-    ControlCommand request={.epoch=0,.expires_at=11000,.hold_s=30,.fan=true,.id="fan-on"};
+    ControlCommand request={.epoch=0,.expires_at=11000,.hold_s=30,.fan_level=CONTROL_FAN_MAX,.id="fan-on"};
     ControlReply reply;
     ControlOutput snapshot;
     char last_command[65];
     assert(AppControl_Queue(&request) && !AppControl_Queue(&request));
     ControlOutput out=AppControl_Poll();
-    assert(out.mode==CONTROL_REMOTE && out.fan && out.hold_remaining_s==30);
+    assert(out.mode==CONTROL_REMOTE && out.fan_level==CONTROL_FAN_MAX && out.hold_remaining_s==30);
     assert(!AppControl_TakeReply(&reply));
     AppControl_GetRemoteSnapshot(&snapshot,last_command);
     assert(snapshot.mode==CONTROL_AUTO && !last_command[0]);
     AppControl_PublishApplied(&out);
-    assert(AppControl_TakeReply(&reply) && reply.result==CONTROL_APPLIED && reply.output.fan);
+    assert(AppControl_TakeReply(&reply) && reply.result==CONTROL_APPLIED && reply.output.fan_level==CONTROL_FAN_MAX);
     AppControl_GetRemoteSnapshot(&snapshot,last_command);
-    assert(snapshot.fan && strcmp(last_command,"fan-on")==0);
+    assert(snapshot.fan_level && strcmp(last_command,"fan-on")==0);
 
     button_pressed=true;
     tick=10100; AppControl_Poll();
@@ -67,7 +67,7 @@ static void remote_mailbox_and_button(void) {
     request.expires_at=13000;
     assert(AppControl_Queue(&request));
     out=AppControl_Poll();
-    assert(out.mode==CONTROL_LOCAL_OFF && out.control_epoch==1 && !out.fan);
+    assert(out.mode==CONTROL_LOCAL_OFF && out.control_epoch==1 && !out.fan_level);
     AppControl_PublishApplied(&out);
     assert(AppControl_TakeReply(&reply) && reply.result==CONTROL_EPOCH_MISMATCH);
 
@@ -100,7 +100,7 @@ int main(void) {
     out=frame(4000,4);assert(out.occupancy==CONTROL_UNKNOWN);
     out=frame(5000,5);assert(out.occupancy==CONTROL_OCCUPIED);
     AppControl_SafetyOff();out=AppControl_Poll();
-    assert(out.mode==CONTROL_LOCAL_OFF && !out.led && !out.fan && out.control_epoch==1);
+    assert(out.mode==CONTROL_LOCAL_OFF && !out.led && !out.fan_level && out.control_epoch==1);
     AppControl_PublishApplied(&out);AppControl_GetSnapshot(&published);assert(published.mode==CONTROL_LOCAL_OFF);
     invalid_between_polls_resets_confirmation();
     remote_mailbox_and_button();

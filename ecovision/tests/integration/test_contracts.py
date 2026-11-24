@@ -30,7 +30,7 @@ def check_shape(value, schema):
     """
     supported = {"$schema", "$id", "title", "type", "additionalProperties", "required",
                  "properties", "const", "enum", "minimum", "maximum", "pattern",
-                 "anyOf", "items", "uniqueItems", "maxItems"}
+                 "anyOf", "items", "uniqueItems", "maxItems", "description", "dependentSchemas"}
     assert not set(schema) - supported, f"Unsupported schema keywords: {set(schema)-supported}"
     if "anyOf" in schema:
         matches = []
@@ -58,13 +58,17 @@ def check_shape(value, schema):
         assert value <= schema["maximum"]
     if "pattern" in schema:
         assert re.fullmatch(schema["pattern"].removeprefix("^").removesuffix("$"), value)
-    if kind == "object":
+    if type(value) is dict:
         assert set(schema.get("required", [])) <= value.keys(), "Missing fields"
         if schema.get("additionalProperties") is False:
             assert value.keys() <= schema["properties"].keys(), "Unknown fields"
         for key, child in schema.get("properties", {}).items():
             if key in value:
                 check_shape(value[key], child)
+        # Apply optional MQTT extensions only when their triggering field is present.
+        for key, dependency in schema.get("dependentSchemas", {}).items():
+            if key in value:
+                check_shape(value, dependency)
     if kind == "array":
         assert len(value) <= schema.get("maxItems", len(value))
         if schema.get("uniqueItems"):

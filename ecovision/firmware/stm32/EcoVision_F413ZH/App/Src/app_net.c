@@ -229,10 +229,10 @@ static bool publish_ack(const ReceivedCommand *item, const ControlOutput *output
  int size=snprintf(payload,sizeof payload,
   "{\"v\":\"1.0.0\",\"device_id\":\"%s\",\"boot_id\":\"%s\",\"cmd_id\":\"%s\","
   "\"status\":\"%s\",\"reason\":\"%s\",\"received_at\":%s,\"uptime_ms\":%lu,"
-  "\"control_epoch\":%lu,\"mode\":\"%s\",\"fan_out\":%u,\"led_out\":%u,\"hold_remaining_s\":%u}",
+  "\"control_epoch\":%lu,\"mode\":\"%s\",\"fan_out\":%u,\"fan_level\":%u,\"led_out\":%u,\"hold_remaining_s\":%u}",
   config.device,boot,item->command.id,strcmp(reason,"OK")==0?"APPLIED":"REJECTED",
   reason,received_at,(unsigned long)item->tick,(unsigned long)output->control_epoch,
-  Control_ModeName(output->mode),output->fan?1U:0U,output->led?1U:0U,(unsigned)output->hold_remaining_s);
+  Control_ModeName(output->mode),output->fan_level?1U:0U,(unsigned)output->fan_level,output->led?1U:0U,(unsigned)output->hold_remaining_s);
  if(size<0 || (size_t)size>=sizeof payload)return false;
  bool sent=publish(ack_topic,payload,false);
  AppLog_Printf("[NET] command ACK reason=%s puback=%u\r\n",reason,sent?1U:0U);
@@ -300,7 +300,7 @@ static bool service_commands(bool *refresh) {
  if(free_slot==COMMAND_CACHE)return publish_ack(&working,&current,"BUSY");
 
  ControlCommand request={.epoch=cmd->epoch,.expires_at=expires_tick,.hold_s=cmd->hold_s,
-                         .fan=cmd->fan==1,.led=cmd->led==1};
+                         .fan_level=cmd->hold_s?(uint8_t)cmd->fan_level:CONTROL_FAN_OFF,.led=cmd->led==1};
  memcpy(request.id,cmd->id,sizeof request.id);
  if(!AppControl_Queue(&request))return publish_ack(&working,&current,"BUSY");
  reserved_cache=free_slot;
@@ -404,7 +404,7 @@ void AppNet_Run(void *argument) {
    sample.remote=control.mode==CONTROL_REMOTE;
    sample.hold_remaining_s=control.hold_remaining_s;
    /* One applied snapshot avoids mixing pre/post LOCAL_OFF driver values. */
-   sample.fan=control.fan;sample.led=control.led;
+   sample.fan_level=control.fan_level;sample.led=control.led;
    sample.occupancy=(uint8_t)control.occupancy;
    sample.local_off=control.mode==CONTROL_LOCAL_OFF;sample.control_epoch=control.control_epoch;
    sample.light_valid=env.light_valid;sample.light_raw16=env.light_raw16;
@@ -425,7 +425,7 @@ void AppNet_Run(void *argument) {
     if(command_subscribed && (!drain_online_uart() || !service_commands(&refresh)))goto backoff;
     ControlOutput latest;AppControl_GetSnapshot(&latest);
     if(refresh || latest.mode!=control.mode || latest.control_epoch!=control.control_epoch ||
-       latest.fan!=control.fan || latest.led!=control.led)break;
+       latest.fan_level!=control.fan_level || latest.led!=control.led)break;
     osDelay(20U);
    }
   }

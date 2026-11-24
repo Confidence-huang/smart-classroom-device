@@ -1,5 +1,6 @@
 /* Decode the flat v1.0.0 MQTT command before any access to the output task. */
 #include "net_command.h"
+#include "control_policy.h" /* Legacy ON default and supported fan level range. */
 #include <string.h>
 
 static void whitespace(const char **p) {
@@ -120,11 +121,11 @@ static bool output_value(const char **p,int8_t *output) {
 }
 
 enum CommandField {
-    VERSION, DEVICE, BOOT, EPOCH, ID, ISSUED, TTL, MODE, FAN, LED, HOLD, FIELD_COUNT
+    VERSION, DEVICE, BOOT, EPOCH, ID, ISSUED, TTL, MODE, FAN, LED, HOLD, FAN_LEVEL, FIELD_COUNT
 };
 static const char *const fields[FIELD_COUNT]={
     "v","device_id","boot_id","control_epoch","cmd_id","issued_at","ttl_s","mode",
-    "fan_out","led_out","hold_s"
+    "fan_out","led_out","hold_s","fan_level"
 };
 
 static bool field_value(enum CommandField key,const char **p,NetCommand *cmd,
@@ -154,6 +155,10 @@ static bool field_value(enum CommandField key,const char **p,NetCommand *cmd,
         return *remote || strcmp(word,"AUTO")==0;
     case FAN: return output_value(p,&cmd->fan);
     case LED: return output_value(p,&cmd->led);
+    case FAN_LEVEL:
+        if(!unsigned_value(p,CONTROL_FAN_MAX,&value))return false;
+        cmd->fan_level=(int8_t)value;
+        return true;
     case HOLD:
         if(!unsigned_value(p,300,&value))return false;
         cmd->hold_s=(uint16_t)value;
@@ -177,12 +182,18 @@ NetCommandParse Net_ParseCommand(const char *json,NetCommand *cmd) {
         seen|=1U<<key;
     } while(take(&json,','));
 
-    if(seen!=(1U<<FIELD_COUNT)-1U || !take(&json,'}'))return NET_COMMAND_INVALID;
+    /* Existing clients still send the original required fields without fan_level. */
+    const unsigned required=(1U<<FAN_LEVEL)-1U;
+    const bool has_level=(seen&(1U<<FAN_LEVEL))!=0;
+    if((seen&required)!=required || !take(&json,'}'))return NET_COMMAND_INVALID;
     whitespace(&json);
     if(*json)return NET_COMMAND_INVALID;
     if(!supported)return NET_COMMAND_UNSUPPORTED;
     if(remote && (cmd->fan<0 || cmd->led<0 || cmd->hold_s<30))return NET_COMMAND_INVALID;
-    if(!remote && (cmd->fan!=-1 || cmd->led!=-1 || cmd->hold_s!=0))return NET_COMMAND_INVALID;
+    if(!remote && (cmd->fan!=-1 || cmd->led!=-1 || cmd->hold_s!=0 || has_level))return NET_COMMAND_INVALID;
+    /* Keep the binary wire status consistent with the optional absolute level. */
+    if(has_level && (cmd->fan_level>0)!=(cmd->fan==1))return NET_COMMAND_INVALID;
+    if(!has_level)cmd->fan_level=!remote?-1:cmd->fan?CONTROL_FAN_DEFAULT:CONTROL_FAN_OFF;
     return NET_COMMAND_OK;
 }
 
@@ -190,5 +201,5 @@ bool Net_SameCommand(const NetCommand *a,const NetCommand *b) {
     return strcmp(a->device,b->device)==0 && strcmp(a->boot,b->boot)==0 &&
            strcmp(a->id,b->id)==0 && a->issued_at==b->issued_at &&
            a->epoch==b->epoch && a->hold_s==b->hold_s && a->ttl_s==b->ttl_s &&
-           a->fan==b->fan && a->led==b->led;
+           a->fan_level==b->fan_level && a->led==b->led;
 }

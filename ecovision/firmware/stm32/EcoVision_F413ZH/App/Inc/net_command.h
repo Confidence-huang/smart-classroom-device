@@ -13,7 +13,8 @@ typedef struct {
     uint32_t epoch;
     uint16_t hold_s;
     uint8_t ttl_s;
-    int8_t fan, led; /* -1 for AUTO, absolute output otherwise. */
+    int8_t fan, led; /* -1 for AUTO, binary outputs otherwise. */
+    int8_t fan_level; /* Absolute PWM level, or -1 for AUTO. */
 } NetCommand;
 
 typedef enum {

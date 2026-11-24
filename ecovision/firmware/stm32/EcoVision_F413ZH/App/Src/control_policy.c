@@ -10,7 +10,7 @@ static void bump_epoch(ControlPolicy *p) {
     if(p->output.control_epoch==UINT32_MAX) {
         p->output.requires_new_boot=true;
         p->output.mode=CONTROL_LOCAL_OFF;
-        p->output.led=false;p->output.fan=false;
+        p->output.led=false;p->output.fan_level=CONTROL_FAN_OFF;
     } else {
         p->output.control_epoch++;
     }
@@ -19,7 +19,7 @@ static void bump_epoch(ControlPolicy *p) {
 /* Local takeover cancels the lease even if an old command is retransmitted. */
 void Control_LocalOff(ControlPolicy *p) {
     p->output.mode=CONTROL_LOCAL_OFF;
-    p->output.led=false;p->output.fan=false;
+    p->output.led=false;p->output.fan_level=CONTROL_FAN_OFF;
     p->output.hold_remaining_s=0;
     p->auto_led=false;p->auto_fan=false;
     p->hot_active=false;p->cold_active=false;
@@ -79,7 +79,7 @@ void Control_Update(ControlPolicy *p,uint32_t now,const ControlInput *in) {
     } else p->fault_active=false;
 
     if(p->output.mode==CONTROL_LOCAL_OFF || p->output.requires_new_boot) {
-        p->output.led=false;p->output.fan=false;p->output.hold_remaining_s=0;
+        p->output.led=false;p->output.fan_level=CONTROL_FAN_OFF;p->output.hold_remaining_s=0;
         p->hot_active=false;p->cold_active=false;
         return;
     }
@@ -114,22 +114,25 @@ void Control_Update(ControlPolicy *p,uint32_t now,const ControlInput *in) {
         p->output.mode=CONTROL_AUTO;
     }
     p->output.hold_remaining_s=0;
-    p->output.fan=p->auto_fan;p->output.led=p->auto_led;
+    p->output.fan_level=p->auto_fan?CONTROL_FAN_DEFAULT:CONTROL_FAN_OFF;
+    p->output.led=p->auto_led;
 }
 
 /* B1 was evaluated in this poll; neither an old epoch nor a current lock can take the outputs. */
-bool Control_Request(ControlPolicy *p,uint32_t now,uint32_t epoch,uint16_t hold_s,bool fan,bool led) {
+bool Control_Request(ControlPolicy *p,uint32_t now,uint32_t epoch,uint16_t hold_s,uint8_t fan_level,bool led) {
     if(p->output.mode==CONTROL_LOCAL_OFF || p->output.requires_new_boot ||
-       p->output.control_epoch!=epoch || (hold_s!=0U && (hold_s<30U || hold_s>300U)))return false;
+       p->output.control_epoch!=epoch || fan_level>CONTROL_FAN_MAX || (hold_s!=0U && (hold_s<30U || hold_s>300U)))return false;
 
     p->output.hold_remaining_s=hold_s;
     if(hold_s==0U) {
         p->output.mode=CONTROL_AUTO;
-        p->output.fan=p->auto_fan;p->output.led=p->auto_led;
+        p->output.fan_level=p->auto_fan?CONTROL_FAN_DEFAULT:CONTROL_FAN_OFF;
+        p->output.led=p->auto_led;
     } else {
         p->output.mode=CONTROL_REMOTE;
         p->remote_started_at=now;p->remote_duration_ms=(uint32_t)hold_s*1000U;
-        p->output.fan=fan;p->output.led=led;
+        /* The manual lease owns the selected level until AUTO or local OFF takes over. */
+        p->output.fan_level=fan_level;p->output.led=led;
     }
     return true;
 }

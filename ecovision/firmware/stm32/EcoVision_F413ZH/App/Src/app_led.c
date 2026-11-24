@@ -199,7 +199,8 @@ void AppLed_Run(UART_HandleTypeDef *console)
             control_at=now;
             ControlOutput before;AppControl_GetSnapshot(&before);
             ControlOutput next=AppControl_Poll();
-            uint8_t fan_level=next.fan?2U:0U,led_level=next.led?2U:0U;
+            /* Fan control exposes five PWM levels. The ring still uses its fixed ON brightness. */
+            uint8_t fan_level=next.fan_level,led_level=next.led?2U:0U;
             bool fan_ok=AppFan_GetLevel()==fan_level || AppFan_SetLevel(fan_level);
             bool led_ok=AppLed_GetLevel()==led_level || show_level(led_level);
             if(!fan_ok || !led_ok) {
@@ -209,11 +210,11 @@ void AppLed_Run(UART_HandleTypeDef *console)
             }
             AppControl_PublishApplied(&next);
             if(before.occupancy!=next.occupancy || before.mode!=next.mode ||
-               before.control_epoch!=next.control_epoch || before.led!=next.led || before.fan!=next.fan) {
+               before.control_epoch!=next.control_epoch || before.led!=next.led || before.fan_level!=next.fan_level) {
                 static const char *names[]={"UNKNOWN","OCCUPIED","VACANT"};
                 AppLog_Printf("[CTRL] mode=%s occupancy=%s fan=%u led=%u epoch=%lu stack_free=%lu\r\n",
                     Control_ModeName(next.mode),names[next.occupancy],
-                    next.fan?1U:0U,next.led?1U:0U,(unsigned long)next.control_epoch,
+                    (unsigned)next.fan_level,next.led?1U:0U,(unsigned long)next.control_epoch,
                     (unsigned long)osThreadGetStackSpace(osThreadGetId()));
             }
             if(next.requires_new_boot) {

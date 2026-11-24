@@ -52,7 +52,7 @@ static void choose_command(uint32_t now) {
     if(command_state!=COMMAND_QUEUED)return;
     if((int32_t)(now-command.expires_at)>=0)reply.result=CONTROL_EXPIRED;
     else if(policy.output.control_epoch!=command.epoch)reply.result=CONTROL_EPOCH_MISMATCH;
-    else if(!Control_Request(&policy,now,command.epoch,command.hold_s,command.fan,command.led))
+    else if(!Control_Request(&policy,now,command.epoch,command.hold_s,command.fan_level,command.led))
         reply.result=CONTROL_LOCAL_LOCKED;
     else reply.result=CONTROL_APPLIED;
     command_state=COMMAND_WRITING;

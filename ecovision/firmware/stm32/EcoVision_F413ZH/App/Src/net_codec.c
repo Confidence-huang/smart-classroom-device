@@ -1,4 +1,5 @@
 #include "net_codec.h"
+#include "control_policy.h" /* Telemetry reports the same applied level range as commands. */
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -103,8 +104,8 @@ static void decimal(char *out,size_t size,int32_t value) {
  (void)snprintf(out,size,"%s%lu.%02lu",value<0?"-":"",(unsigned long)(mag/100U),(unsigned long)(mag%100U));
 }
 int Net_Telemetry(char *out,size_t size,const char *device,const char *boot,const NetSample *s) {
- if(!out||!s||!identifier(device,32)||!identifier(boot,32)||s->count>20||s->occupancy>2||
-    (s->local_off && (s->remote || s->fan || s->led)) ||
+ if(!out||!s||!identifier(device,32)||!identifier(boot,32)||s->count>20||s->occupancy>2||s->fan_level>CONTROL_FAN_MAX||
+    (s->local_off && (s->remote || s->fan_level || s->led)) ||
     (s->remote ? s->hold_remaining_s==0 || s->hold_remaining_s>300 : s->hold_remaining_s!=0))return -1;
  bool vv=s->vision_valid && s->vision_age<5000U;
  bool tv=s->temp_valid && s->temp_age<10000U && s->temp_x100>=-4000 && s->temp_x100<=8500 && s->rh_x100>=0 && s->rh_x100<=10000;
@@ -120,8 +121,8 @@ int Net_Telemetry(char *out,size_t size,const char *device,const char *boot,cons
   /* The controller saves only validated command ids after driver confirmation. */
   (void)snprintf(last,sizeof last,"\"%s\"",s->last_command);
  }
- int n=snprintf(out,size,"{\"v\":\"1.0.0\",\"device_id\":\"%s\",\"boot_id\":\"%s\",\"seq\":%lu,\"uptime_ms\":%lu,\"ts\":%s,\"time_valid\":%s,\"control_epoch\":%lu,\"count\":%s,\"vision_valid\":%s,\"vision_age_ms\":%s,\"temp_c\":%s,\"temp_valid\":%s,\"temp_age_ms\":%s,\"humidity_pct\":%s,\"humidity_valid\":%s,\"occupancy\":\"%s\",\"mode\":\"%s\",\"fan_out\":%u,\"led_out\":%u,\"hold_remaining_s\":%u,\"net_state\":\"ONLINE\",\"last_cmd_id\":%s,\"faults\":[%s%s%s]}",
- device,boot,(unsigned long)s->seq,(unsigned long)s->uptime,ts,boolean(s->time_valid),(unsigned long)s->control_epoch,count,boolean(vv),va,temp,boolean(tv),ta,rh,boolean(tv),occupancy[s->occupancy],s->local_off?"LOCAL_OFF":s->remote?"REMOTE":"AUTO",s->fan?1U:0U,s->led?1U:0U,
+ int n=snprintf(out,size,"{\"v\":\"1.0.0\",\"device_id\":\"%s\",\"boot_id\":\"%s\",\"seq\":%lu,\"uptime_ms\":%lu,\"ts\":%s,\"time_valid\":%s,\"control_epoch\":%lu,\"count\":%s,\"vision_valid\":%s,\"vision_age_ms\":%s,\"temp_c\":%s,\"temp_valid\":%s,\"temp_age_ms\":%s,\"humidity_pct\":%s,\"humidity_valid\":%s,\"occupancy\":\"%s\",\"mode\":\"%s\",\"fan_out\":%u,\"fan_level\":%u,\"led_out\":%u,\"hold_remaining_s\":%u,\"net_state\":\"ONLINE\",\"last_cmd_id\":%s,\"faults\":[%s%s%s]}",
+ device,boot,(unsigned long)s->seq,(unsigned long)s->uptime,ts,boolean(s->time_valid),(unsigned long)s->control_epoch,count,boolean(vv),va,temp,boolean(tv),ta,rh,boolean(tv),occupancy[s->occupancy],s->local_off?"LOCAL_OFF":s->remote?"REMOTE":"AUTO",s->fan_level?1U:0U,(unsigned)s->fan_level,s->led?1U:0U,
  (unsigned)s->hold_remaining_s,last,
  vv?"":"\"VISION_FAULT\"",(!vv&&!tv)?",":"",tv?"":"\"SENSOR_FAULT\"");
  return n<0 || (size_t)n>=size || n>1500 ? -1:n;

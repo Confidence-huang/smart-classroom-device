@@ -14,11 +14,14 @@ typedef struct {
     uint32_t temperature_age_ms;
     bool button_pressed;
 } ControlInput;
+/* 0 stops the fan. AUTO and legacy remote ON use the proven level 2. */
+enum { CONTROL_FAN_OFF = 0, CONTROL_FAN_DEFAULT = 2, CONTROL_FAN_MAX = 5 };
 typedef struct {
     ControlOccupancy occupancy;
     ControlMode mode;
     uint32_t control_epoch;
-    bool led, fan, requires_new_boot;
+    bool led, requires_new_boot;
+    uint8_t fan_level; /* Requested PWM level, carried through to the applied snapshot. */
     uint16_t hold_remaining_s; /* Rounded up while a remote command owns the outputs. */
 } ControlOutput;
 typedef struct {
@@ -38,7 +41,7 @@ void Control_LocalOff(ControlPolicy *policy);
 
 /* hold_s == 0 requests AUTO. Only the task that reads B1 can apply a request. */
 bool Control_Request(ControlPolicy *policy, uint32_t now, uint32_t epoch,
-                     uint16_t hold_s, bool fan, bool led);
+                     uint16_t hold_s, uint8_t fan_level, bool led);
 
 const char *Control_ModeName(ControlMode mode);
 #endif

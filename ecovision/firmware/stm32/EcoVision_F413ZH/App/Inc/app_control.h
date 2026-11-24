@@ -11,7 +11,8 @@ typedef struct {
     uint32_t epoch;
     uint32_t expires_at; /* Local monotonic deadline, computed from the trusted clock. */
     uint16_t hold_s;
-    bool fan, led;
+    uint8_t fan_level; /* Absolute setting from the validated network command. */
+    bool led;
     char id[65];
 } ControlCommand;
 

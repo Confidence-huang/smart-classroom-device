@@ -75,17 +75,18 @@ int main(void) {
     s.temp_valid=true;s.occupancy=1;s.control_epoch=42;
     assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)>0);
     assert(strstr(json,"\"occupancy\":\"OCCUPIED\"") && strstr(json,"\"control_epoch\":42"));
-    s.local_off=true;s.fan=0;s.led=0;
+    s.local_off=true;s.fan_level=0;s.led=0;
     assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)>0);
     assert(strstr(json,"\"mode\":\"LOCAL_OFF\""));
-    s.fan=1;
+    s.fan_level=1;
     assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)<0);
-    s.local_off=false;s.remote=true;s.hold_remaining_s=120;
+    s.local_off=false;s.remote=true;s.hold_remaining_s=120;s.fan_level=5;
     strcpy(s.last_command,"fan-on");
     assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)>0);
     assert(strstr(json,"\"mode\":\"REMOTE\"") && strstr(json,"\"hold_remaining_s\":120") &&
+           strstr(json,"\"fan_out\":1,\"fan_level\":5") &&
            strstr(json,"\"last_cmd_id\":\"fan-on\""));
-    s.fan=0;
+    s.fan_level=0;
     s.occupancy=3;
     assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)<0);
     puts("PASS: AT framing/overflow, URC bounds, UTC/timezone/calendar, APN preservation, private config CRC/bounds, formal validity and legacy compatibility");

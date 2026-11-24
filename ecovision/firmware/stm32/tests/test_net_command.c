@@ -1,4 +1,5 @@
 #include "net_command.h"
+#include "control_policy.h" /* The original ON command keeps the default level. */
 #include "net_codec.h"
 #include <assert.h>
 #include <stdio.h>
@@ -12,7 +13,7 @@ static const char command_json[]=
 int main(void) {
  NetCommand command,other;
  assert(Net_ParseCommand(command_json,&command)==NET_COMMAND_OK);
- assert(command.fan==1 && command.led==0 && command.epoch==4 &&
+ assert(command.fan_level==CONTROL_FAN_DEFAULT && command.fan==1 && command.led==0 && command.epoch==4 &&
         command.issued_at==1795272586ULL && command.ttl_s==15 && command.hold_s==120);
 
  /* A different wire key order and a JSON escape still represent the same command. */
@@ -25,6 +26,18 @@ int main(void) {
  assert(!Net_SameCommand(&command,&other));
 
  char changed[sizeof command_json+40];
+ /* Compare absolute settings when the same command ID is delivered again. */
+ for(unsigned level=1;level<=CONTROL_FAN_MAX;level++) {
+  snprintf(changed,sizeof changed,"{\"fan_level\":%u,%s",level,command_json+1);
+  assert(Net_ParseCommand(changed,&other)==NET_COMMAND_OK && other.fan_level==(int)level);
+  assert(Net_SameCommand(&command,&other)==(level==CONTROL_FAN_DEFAULT));
+ }
+ snprintf(changed,sizeof changed,"{\"fan_level\":0,%s",command_json+1);
+ assert(Net_ParseCommand(changed,&other)==NET_COMMAND_INVALID);
+ snprintf(changed,sizeof changed,"{\"fan_level\":6,%s",command_json+1);
+ assert(Net_ParseCommand(changed,&other)==NET_COMMAND_INVALID);
+ snprintf(changed,sizeof changed,"{\"fan_level\":5,\"fan_level\":4,%s",command_json+1);
+ assert(Net_ParseCommand(changed,&other)==NET_COMMAND_INVALID);
  strcpy(changed,command_json);
  memcpy(strstr(changed,"1.0.0"),"2.0.0",5);
  assert(Net_ParseCommand(changed,&other)==NET_COMMAND_UNSUPPORTED);
