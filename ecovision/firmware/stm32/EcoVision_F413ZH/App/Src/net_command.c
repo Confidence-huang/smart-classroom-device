@@ -1,4 +1,4 @@
-/* Decode the flat v1.0.0 MQTT command before any access to the output task. */
+/* Decode the supported versioned MQTT commands before accessing the output task. */
 #include "net_command.h"
 #include "control_policy.h" /* Legacy ON default and supported fan level range. */
 #include <string.h>
@@ -135,7 +135,8 @@ static bool field_value(enum CommandField key,const char **p,NetCommand *cmd,
     switch(key) {
     case VERSION:
         if(!string_value(p,word,sizeof word))return false;
-        *supported=strcmp(word,"1.0.0")==0;
+        cmd->fan_levels_version=strcmp(word,NET_WIRE_FAN_LEVELS)==0;
+        *supported=cmd->fan_levels_version || strcmp(word,NET_WIRE_BASE)==0;
         return true;
     case DEVICE: return string_value(p,cmd->device,sizeof cmd->device) && device_id(cmd->device);
     case BOOT: return string_value(p,cmd->boot,sizeof cmd->boot) && boot_id(cmd->boot);
@@ -189,6 +190,8 @@ NetCommandParse Net_ParseCommand(const char *json,NetCommand *cmd) {
     whitespace(&json);
     if(*json)return NET_COMMAND_INVALID;
     if(!supported)return NET_COMMAND_UNSUPPORTED;
+    /* A frozen 1.0 message cannot carry any new fields. */
+    if(has_level!=(cmd->fan_levels_version && remote))return NET_COMMAND_INVALID;
     if(remote && (cmd->fan<0 || cmd->led<0 || cmd->hold_s<30))return NET_COMMAND_INVALID;
     if(!remote && (cmd->fan!=-1 || cmd->led!=-1 || cmd->hold_s!=0 || has_level))return NET_COMMAND_INVALID;
     /* Keep the binary wire status consistent with the optional absolute level. */
@@ -201,5 +204,6 @@ bool Net_SameCommand(const NetCommand *a,const NetCommand *b) {
     return strcmp(a->device,b->device)==0 && strcmp(a->boot,b->boot)==0 &&
            strcmp(a->id,b->id)==0 && a->issued_at==b->issued_at &&
            a->epoch==b->epoch && a->hold_s==b->hold_s && a->ttl_s==b->ttl_s &&
+           a->fan_levels_version==b->fan_levels_version &&
            a->fan_level==b->fan_level && a->led==b->led;
 }

@@ -7,7 +7,8 @@ typedef enum {NET_AT_NONE,NET_AT_LINE,NET_AT_PROMPT,NET_AT_DROPPED} NetAtEvent;
 typedef struct {char line[2180] /* Full 2048-byte MQTT payload plus the modem envelope. */;size_t used;bool dropping;} NetAtParser;
 typedef struct {
  char host[128],user[128],password[128],device[33];
- bool remote_enabled; /* Broker authorization and retain policy were verified before provisioning. */
+ bool remote_enabled; /* Provisioned only after broker ACL and retained-state checks. */
+ bool fan_levels_version; /* Advertise v1.1 after all strict consumers are ready. */
  uint16_t port,ca_length;char ca[4097],legacy_topic[128],room[33];
 } NetConfig;
 typedef struct {
@@ -24,6 +25,6 @@ bool Net_Result(const char *line,const char *prefix,int *values,size_t count);
 bool Net_ConfigDecode(const uint8_t *bytes,size_t size,NetConfig *out);
 bool Net_ClockUTC(const char *line,uint32_t *utc);
 int Net_IPv4Profile(char *out,size_t size,const char *line);
-int Net_Telemetry(char *out,size_t size,const char *device,const char *boot,const NetSample *s);
+int Net_Telemetry(char *out,size_t size,const char *device,const char *boot,const NetSample *s,bool fan_levels_version);
 int Net_LegacyTelemetry(char *out,size_t size,const char *device,const char *room,const NetSample *s);
 #endif

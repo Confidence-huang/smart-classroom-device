@@ -224,15 +224,19 @@ static bool publish(const char *name,const char *data,bool retain) {
 }
 static bool publish_ack(const ReceivedCommand *item, const ControlOutput *output,
                         const char *reason) {
+ /* Correlate with the request schema, even on an upgraded board serving a legacy client. */
+ bool fan_levels_version=item->command.fan_levels_version;
+ char level[20]="";
+ if(fan_levels_version)(void)snprintf(level,sizeof level,",\"fan_level\":%u",(unsigned)output->fan_level);
  char received_at[16]="null";
  if(item->utc)(void)snprintf(received_at,sizeof received_at,"%lu",(unsigned long)item->utc);
  int size=snprintf(payload,sizeof payload,
-  "{\"v\":\"1.0.0\",\"device_id\":\"%s\",\"boot_id\":\"%s\",\"cmd_id\":\"%s\","
+  "{\"v\":\"%s\",\"device_id\":\"%s\",\"boot_id\":\"%s\",\"cmd_id\":\"%s\","
   "\"status\":\"%s\",\"reason\":\"%s\",\"received_at\":%s,\"uptime_ms\":%lu,"
-  "\"control_epoch\":%lu,\"mode\":\"%s\",\"fan_out\":%u,\"fan_level\":%u,\"led_out\":%u,\"hold_remaining_s\":%u}",
-  config.device,boot,item->command.id,strcmp(reason,"OK")==0?"APPLIED":"REJECTED",
+  "\"control_epoch\":%lu,\"mode\":\"%s\",\"fan_out\":%u%s,\"led_out\":%u,\"hold_remaining_s\":%u}",
+  fan_levels_version?NET_WIRE_FAN_LEVELS:NET_WIRE_BASE,config.device,boot,item->command.id,strcmp(reason,"OK")==0?"APPLIED":"REJECTED",
   reason,received_at,(unsigned long)item->tick,(unsigned long)output->control_epoch,
-  Control_ModeName(output->mode),output->fan_level?1U:0U,(unsigned)output->fan_level,output->led?1U:0U,(unsigned)output->hold_remaining_s);
+  Control_ModeName(output->mode),output->fan_level?1U:0U,level,output->led?1U:0U,(unsigned)output->hold_remaining_s);
  if(size<0 || (size_t)size>=sizeof payload)return false;
  bool sent=publish(ack_topic,payload,false);
  AppLog_Printf("[NET] command ACK reason=%s puback=%u\r\n",reason,sent?1U:0U);
@@ -257,7 +261,8 @@ static const char *command_rejection(const ReceivedCommand *item,const ControlOu
                                      uint32_t now,uint32_t expire) {
  const NetCommand *cmd=&item->command;
  if(item->parsed==NET_COMMAND_INVALID)return "INVALID_MESSAGE";
- if(item->parsed==NET_COMMAND_UNSUPPORTED)return "UNSUPPORTED_VERSION";
+ if(item->parsed==NET_COMMAND_UNSUPPORTED || (cmd->fan_levels_version && !config.fan_levels_version))
+  return "UNSUPPORTED_VERSION";
  if(strcmp(cmd->boot,boot)!=0)return "BOOT_MISMATCH";
  if(!clock_valid || !item->utc)return "TIME_UNTRUSTED";
  if(cmd->issued_at>item->utc)return "FUTURE_COMMAND";
@@ -408,12 +413,12 @@ void AppNet_Run(void *argument) {
    sample.occupancy=(uint8_t)control.occupancy;
    sample.local_off=control.mode==CONTROL_LOCAL_OFF;sample.control_epoch=control.control_epoch;
    sample.light_valid=env.light_valid;sample.light_raw16=env.light_raw16;
-   if(Net_Telemetry(payload,sizeof payload,config.device,boot,&sample)<0)break;
+   if(Net_Telemetry(payload,sizeof payload,config.device,boot,&sample,config.fan_levels_version)<0)break;
    (void)snprintf(topic,sizeof topic,"ecovision/%s/telemetry",config.device);
    if(!publish(topic,payload,false))break;
    AppLog_Printf("[NET] PUBACK seq=%lu bytes=%u temp_valid=%u vision_valid=%u\r\n",(unsigned long)sample.seq,(unsigned)strlen(payload),sample.temp_valid?1U:0U,sample.vision_valid?1U:0U);
    /* Explicit private opt-in to the existing dashboard's legacy input.
-    * Official 1.0.0 telemetry above is unchanged. Invalid sensor data is
+    * Existing public dashboard telemetry remains on its original format. Invalid sensor data is
     * never fabricated to satisfy the old consumer's non-null fields. */
    if(config.legacy_topic[0] && Net_LegacyTelemetry(payload,sizeof payload,config.device,config.room,&sample)>0) {
     if(publish(config.legacy_topic,payload,true))AppLog_Printf("[NET] LEGACY PUBACK seq=%lu source=C_HAL_REAL_4G\r\n",(unsigned long)(sample.utc-946684800U));

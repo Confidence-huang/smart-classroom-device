@@ -1,4 +1,5 @@
 #include "net_codec.h"
+#include "net_command.h" /* Stable MQTT wire version strings. */
 #include "control_policy.h" /* Telemetry reports the same applied level range as commands. */
 #include <stdio.h>
 #include <string.h>
@@ -53,10 +54,12 @@ bool Net_ConfigDecode(const uint8_t *p,size_t size,NetConfig *out) {
  if(ca==0 || ca>4096)return false;
  /* The optional marker enables remote control and preserves both legacy record lengths. */
  bool remote=n==422U+ca || n==583U+ca;
- if(remote && p[16U+n-1U]!=0xd3U)return false;
+ /* The existing marker keeps binary compatibility; the new marker opts into v1.1. */
+ uint8_t mode=remote?p[16U+n-1U]:0;
+ if(remote && mode!=0xd3U && mode!=0xd4U)return false;
  if(remote)n--;
  if(n!=421U+ca && n!=582U+ca)return false;
- memset(out,0,sizeof *out);out->remote_enabled=remote;memcpy(out->host,p+16,128);memcpy(out->user,p+144,128);
+ memset(out,0,sizeof *out);out->remote_enabled=remote;out->fan_levels_version=mode==0xd4U;memcpy(out->host,p+16,128);memcpy(out->user,p+144,128);
  memcpy(out->password,p+272,128);memcpy(out->device,p+400,33);
  out->port=(uint16_t)(p[433]|((uint16_t)p[434]<<8));out->ca_length=ca;memcpy(out->ca,p+437,ca);
  if(!safe_at(out->host,sizeof out->host)||!safe_at(out->user,sizeof out->user)||!safe_at(out->password,sizeof out->password)||
@@ -103,7 +106,7 @@ static void decimal(char *out,size_t size,int32_t value) {
  uint32_t mag=(uint32_t)(value<0?-(int64_t)value:value);
  (void)snprintf(out,size,"%s%lu.%02lu",value<0?"-":"",(unsigned long)(mag/100U),(unsigned long)(mag%100U));
 }
-int Net_Telemetry(char *out,size_t size,const char *device,const char *boot,const NetSample *s) {
+int Net_Telemetry(char *out,size_t size,const char *device,const char *boot,const NetSample *s,bool fan_levels_version) {
  if(!out||!s||!identifier(device,32)||!identifier(boot,32)||s->count>20||s->occupancy>2||s->fan_level>CONTROL_FAN_MAX||
     (s->local_off && (s->remote || s->fan_level || s->led)) ||
     (s->remote ? s->hold_remaining_s==0 || s->hold_remaining_s>300 : s->hold_remaining_s!=0))return -1;
@@ -121,8 +124,11 @@ int Net_Telemetry(char *out,size_t size,const char *device,const char *boot,cons
   /* The controller saves only validated command ids after driver confirmation. */
   (void)snprintf(last,sizeof last,"\"%s\"",s->last_command);
  }
- int n=snprintf(out,size,"{\"v\":\"1.0.0\",\"device_id\":\"%s\",\"boot_id\":\"%s\",\"seq\":%lu,\"uptime_ms\":%lu,\"ts\":%s,\"time_valid\":%s,\"control_epoch\":%lu,\"count\":%s,\"vision_valid\":%s,\"vision_age_ms\":%s,\"temp_c\":%s,\"temp_valid\":%s,\"temp_age_ms\":%s,\"humidity_pct\":%s,\"humidity_valid\":%s,\"occupancy\":\"%s\",\"mode\":\"%s\",\"fan_out\":%u,\"fan_level\":%u,\"led_out\":%u,\"hold_remaining_s\":%u,\"net_state\":\"ONLINE\",\"last_cmd_id\":%s,\"faults\":[%s%s%s]}",
- device,boot,(unsigned long)s->seq,(unsigned long)s->uptime,ts,boolean(s->time_valid),(unsigned long)s->control_epoch,count,boolean(vv),va,temp,boolean(tv),ta,rh,boolean(tv),occupancy[s->occupancy],s->local_off?"LOCAL_OFF":s->remote?"REMOTE":"AUTO",s->fan_level?1U:0U,(unsigned)s->fan_level,s->led?1U:0U,
+ /* The optional fragment is absent from v1.0 payloads, even when PWM is active. */
+ char level[20]="";
+ if(fan_levels_version)(void)snprintf(level,sizeof level,",\"fan_level\":%u",(unsigned)s->fan_level);
+ int n=snprintf(out,size,"{\"v\":\"%s\",\"device_id\":\"%s\",\"boot_id\":\"%s\",\"seq\":%lu,\"uptime_ms\":%lu,\"ts\":%s,\"time_valid\":%s,\"control_epoch\":%lu,\"count\":%s,\"vision_valid\":%s,\"vision_age_ms\":%s,\"temp_c\":%s,\"temp_valid\":%s,\"temp_age_ms\":%s,\"humidity_pct\":%s,\"humidity_valid\":%s,\"occupancy\":\"%s\",\"mode\":\"%s\",\"fan_out\":%u%s,\"led_out\":%u,\"hold_remaining_s\":%u,\"net_state\":\"ONLINE\",\"last_cmd_id\":%s,\"faults\":[%s%s%s]}",
+ fan_levels_version?NET_WIRE_FAN_LEVELS:NET_WIRE_BASE,device,boot,(unsigned long)s->seq,(unsigned long)s->uptime,ts,boolean(s->time_valid),(unsigned long)s->control_epoch,count,boolean(vv),va,temp,boolean(tv),ta,rh,boolean(tv),occupancy[s->occupancy],s->local_off?"LOCAL_OFF":s->remote?"REMOTE":"AUTO",s->fan_level?1U:0U,level,s->led?1U:0U,
  (unsigned)s->hold_remaining_s,last,
  vv?"":"\"VISION_FAULT\"",(!vv&&!tv)?",":"",tv?"":"\"SENSOR_FAULT\"");
  return n<0 || (size_t)n>=size || n>1500 ? -1:n;

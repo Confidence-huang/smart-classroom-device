@@ -38,15 +38,15 @@ int main(void) {
     assert(NetAt_Feed(&p,'\n')==NET_AT_LINE && !strcmp(p.line,"OK"));
     NetSample s={0}; s.uptime=1000;s.seq=5;
     char json[1200];
-    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)>0);
+    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s,false)>0);
     assert(strstr(json,"\"count\":null") && strstr(json,"\"temp_c\":null"));
     assert(strstr(json,"\"time_valid\":false") && strstr(json,"VISION_FAULT"));
     s.vision_valid=true;s.count=0;s.vision_age=0;s.temp_valid=true;s.temp_x100=-123;s.rh_x100=4500;s.temp_age=0;
-    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)>0);
+    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s,false)>0);
     assert(strstr(json,"\"count\":0") && strstr(json,"\"temp_c\":-1.23"));
     assert(!strstr(json,"VISION_FAULT") && !strstr(json,"SENSOR_FAULT"));
-    assert(Net_Telemetry(json,8,"ev001","0123456789abcdef",&s)<0);
-    assert(Net_Telemetry(json,sizeof json,"bad\"id","0123456789abcdef",&s)<0);
+    assert(Net_Telemetry(json,8,"ev001","0123456789abcdef",&s,false)<0);
+    assert(Net_Telemetry(json,sizeof json,"bad\"id","0123456789abcdef",&s,false)<0);
     assert(!Net_ConfigDecode((const uint8_t *)"garbage",7,0));
     uint8_t fixture[1024]={0};NetConfig decoded;
     memcpy(fixture,"EVNET01",8);
@@ -64,6 +64,10 @@ int main(void) {
     fixture[626]=0xd3;
     length++;memcpy(fixture+8,&length,4);crc=Net_Crc32(fixture+16,length);memcpy(fixture+12,&crc,4);
     assert(Net_ConfigDecode(fixture,627,&decoded) && decoded.remote_enabled && !strcmp(decoded.room,"room01"));
+    assert(!decoded.fan_levels_version);
+    fixture[626]=0xd4;
+    crc=Net_Crc32(fixture+16,length);memcpy(fixture+12,&crc,4);
+    assert(Net_ConfigDecode(fixture,627,&decoded) && decoded.remote_enabled && decoded.fan_levels_version);
     fixture[280]^=1;
     assert(!Net_ConfigDecode(fixture,627,&decoded));
     s.time_valid=true;s.utc=1795272586U;s.light_valid=true;s.light_raw16=12000;
@@ -73,22 +77,25 @@ int main(void) {
     s.temp_valid=false;
     assert(Net_LegacyTelemetry(json,sizeof json,"ev001","room01",&s)<0);
     s.temp_valid=true;s.occupancy=1;s.control_epoch=42;
-    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)>0);
+    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s,false)>0);
     assert(strstr(json,"\"occupancy\":\"OCCUPIED\"") && strstr(json,"\"control_epoch\":42"));
     s.local_off=true;s.fan_level=0;s.led=0;
-    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)>0);
+    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s,false)>0);
     assert(strstr(json,"\"mode\":\"LOCAL_OFF\""));
     s.fan_level=1;
-    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)<0);
+    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s,false)<0);
     s.local_off=false;s.remote=true;s.hold_remaining_s=120;s.fan_level=5;
     strcpy(s.last_command,"fan-on");
-    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)>0);
+    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s,false)>0);
+    assert(strstr(json,"\"v\":\"1.0.0\"") && strstr(json,"\"fan_out\":1") && !strstr(json,"fan_level"));
+    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s,true)>0);
+    assert(strstr(json,"\"v\":\"1.1.0\""));
     assert(strstr(json,"\"mode\":\"REMOTE\"") && strstr(json,"\"hold_remaining_s\":120") &&
            strstr(json,"\"fan_out\":1,\"fan_level\":5") &&
            strstr(json,"\"last_cmd_id\":\"fan-on\""));
     s.fan_level=0;
     s.occupancy=3;
-    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s)<0);
+    assert(Net_Telemetry(json,sizeof json,"ev001","0123456789abcdef",&s,false)<0);
     puts("PASS: AT framing/overflow, URC bounds, UTC/timezone/calendar, APN preservation, private config CRC/bounds, formal validity and legacy compatibility");
     return 0;
 }
