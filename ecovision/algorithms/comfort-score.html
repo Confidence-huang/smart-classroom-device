@@ -1,0 +1,46 @@
+<div id="ecovision-score" class="comfort-demo">
+  <h3>同一间教室，CO₂ 升高时分数怎么变？</h3>
+  <p class="text-small text-muted">模拟算例 · 25 ℃ · 50%RH · 400 lx</p>
+  <label>室内 CO₂ <output id="ecovision-ppm" class="tabular-nums">1500 ppm</output>
+    <input type="range" min="600" max="1800" step="10" value="1500">
+  </label>
+  <div class="comfort-scores" role="group" aria-label="各项评分，满分100">
+    <div>通风分 <output id="ecovision-air">0.0</output><meter min="0" max="100" value="0"></meter></div>
+    <div>纯加权总分 <output id="ecovision-avg">70.0</output><meter min="0" max="100" value="70"></meter></div>
+    <div>限制后的总分 <output id="ecovision-total">20.0</output><meter min="0" max="100" value="20"></meter></div>
+  </div>
+  <p id="ecovision-decision" class="text-small" role="status">若 ≥1000 ppm 持续 120 秒，进入通风评估。</p>
+</div>
+<style>
+  #ecovision-score { display:grid; gap:.65em; }
+  #ecovision-score label { display:grid; grid-template-columns:1fr auto; gap:.25em .75em; }
+  #ecovision-score input { grid-column:1 / -1; width:100%; accent-color:var(--viz-series-1); }
+  #ecovision-score .comfort-scores { display:grid; gap:.45em; }
+  #ecovision-score .comfort-scores>div { display:grid; grid-template-columns:minmax(8em,1fr) 4em minmax(5em,2fr); align-items:center; gap:.5em; }
+  #ecovision-score meter { width:100%; accent-color:var(--viz-series-1); }
+  #ecovision-score meter::-webkit-meter-bar { background:var(--muted); border:0; }
+  #ecovision-score meter::-webkit-meter-optimum-value { background:var(--viz-series-1); }
+</style>
+<script>
+(() => {
+  const root = document.getElementById('ecovision-score');
+  const slider = root.querySelector('input');
+  const meters = root.querySelectorAll('meter');
+  function update() {
+    const ppm = Number(slider.value);
+    const air = Math.max(0, Math.min(100, (1500 - ppm) / 7));
+    const weighted = 70 + air * 0.30;
+    const total = Math.min(weighted, air + 20);
+    root.querySelector('#ecovision-ppm').textContent = `${ppm} ppm`;
+    [air, weighted, total].forEach((score, index) => {
+      root.querySelector(['#ecovision-air', '#ecovision-avg', '#ecovision-total'][index]).textContent = score.toFixed(1);
+      meters[index].value = score;
+    });
+    root.querySelector('#ecovision-decision').textContent = ppm >= 1000
+      ? '若 ≥1000 ppm 持续 120 秒，进入通风评估。'
+      : '当前读数低于进入通风评估的示例阈值。';
+  }
+  slider.addEventListener('input', update);
+  update();
+})();
+</script>
