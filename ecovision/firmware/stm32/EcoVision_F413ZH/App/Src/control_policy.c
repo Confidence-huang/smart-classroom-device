@@ -53,11 +53,15 @@ static void button(ControlPolicy *p,uint32_t now,bool pressed) {
     }
 }
 
+bool Control_TemperatureFresh(const ControlInput *in) {
+    return in->temperature_valid && in->temperature_age_ms<10000U &&
+           in->temperature_x100>=-4000 && in->temperature_x100<=8500;
+}
+
 void Control_Update(ControlPolicy *p,uint32_t now,const ControlInput *in) {
     button(p,now,in->button_pressed);
     bool vision=in->vision_valid && in->vision_age_ms<5000U && in->count<=20U;
-    bool temperature=in->temperature_valid && in->temperature_age_ms<10000U &&
-                     in->temperature_x100>=-4000 && in->temperature_x100<=8500;
+    bool temperature=Control_TemperatureFresh(in);
     if(!vision || in->new_vision_session) {
         p->output.occupancy=CONTROL_UNKNOWN;
         p->positives=0;p->zero_active=false;

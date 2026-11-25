@@ -38,6 +38,8 @@ typedef struct {
 void Control_Init(ControlPolicy *policy);
 void Control_Update(ControlPolicy *policy, uint32_t now, const ControlInput *input);
 void Control_LocalOff(ControlPolicy *policy);
+/* Keep the AUTO fan and demo AC on the same temperature validity rules. */
+bool Control_TemperatureFresh(const ControlInput *input);
 
 /* hold_s == 0 requests AUTO. Only the task that reads B1 can apply a request. */
 bool Control_Request(ControlPolicy *policy, uint32_t now, uint32_t epoch,
