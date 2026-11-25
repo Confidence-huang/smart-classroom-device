@@ -76,6 +76,10 @@ int Net_IPv4Profile(char *out,size_t size,const char *line) {
  if(*p++!=','||*p<'0'||*p>'3'||p[1]!=0)return -1;
  int n=snprintf(out,size,"AT+QICSGP=1,1%s",tail);return n<0||(size_t)n>=size ? -1:n;
 }
+/* Use Gregorian leap days in both AT clock parsing and legacy ISO formatting. */
+static bool leap_year(unsigned year) {
+ return year%4U==0 && (year%100U!=0 || year%400U==0);
+}
 bool Net_ClockUTC(const char *line,uint32_t *utc) {
  if(!line||!utc)return false;const char *p=strchr(line,'"');if(!p)return false;p++;
  int y,m,d,h,mi,s,tz,used=0;char sign;
@@ -85,9 +89,9 @@ bool Net_ClockUTC(const char *line,uint32_t *utc) {
  if(p[used]==','){if(p[used+1]!='0'||p[used+2]!='"')return false;}
  else if(p[used]!='"')return false;
  static const unsigned days[]={31,28,31,30,31,30,31,31,30,31,30,31};
- bool leap=(y%4==0&&(y%100!=0||y%400==0));
+ bool leap=leap_year((unsigned)y);
  if((unsigned)d>days[m-1]+((m==2&&leap)?1U:0U))return false;
- uint32_t total=0;for(int year=1970;year<y;year++)total+=(year%4==0&&(year%100!=0||year%400==0))?366U:365U;
+ uint32_t total=0;for(int year=1970;year<y;year++)total+=leap_year((unsigned)year)?366U:365U;
  for(int month=1;month<m;month++)total+=days[month-1]+((month==2&&leap)?1U:0U);
  int64_t epoch=(int64_t)(total+(uint32_t)d-1U)*86400+h*3600+mi*60+s;
  epoch+=(sign=='-'?1:-1)*tz*900;if(epoch<0||epoch>UINT32_MAX)return false;
@@ -117,9 +121,9 @@ int Net_Telemetry(char *out,size_t size,const char *device,const char *boot,cons
 int Net_LegacyTelemetry(char *out,size_t size,const char *device,const char *room,const NetSample *s) {
  if(!out||!s||!identifier(device,32)||!identifier(room,32)||!s->time_valid||s->utc<946684800U||!s->temp_valid||s->temp_age>=10000U||!s->light_valid||s->temp_x100<-4000||s->temp_x100>8500||s->rh_x100<0||s->rh_x100>10000)return -1;
  uint32_t days=s->utc/86400U,seconds=s->utc%86400U;unsigned year=1970,month=1;
- for(;;){unsigned count=(year%4==0&&(year%100!=0||year%400==0))?366U:365U;if(days<count)break;days-=count;year++;}
+ for(;;){unsigned count=leap_year(year)?366U:365U;if(days<count)break;days-=count;year++;}
  static const unsigned months[]={31,28,31,30,31,30,31,31,30,31,30,31};
- for(;;){unsigned count=months[month-1]+((month==2&&year%4==0)?1U:0U);if(days<count)break;days-=count;month++;}
+ for(;;){unsigned count=months[month-1]+((month==2&&leap_year(year))?1U:0U);if(days<count)break;days-=count;month++;}
  char count[12]="null",temp[24],rh[24];decimal(temp,sizeof temp,s->temp_x100);decimal(rh,sizeof rh,s->rh_x100);
  if(s->vision_valid && s->vision_age<5000U && s->count<=20)(void)snprintf(count,sizeof count,"%u",s->count);
  int n=snprintf(out,size,"{\"schema_version\":1,\"type\":\"telemetry\",\"source\":\"stm32_c_hal_ec200u\",\"simulated\":false,\"device_id\":\"%s\",\"room_id\":\"%s\",\"seq\":%lu,\"captured_at\":\"%04u-%02u-%02uT%02lu:%02lu:%02luZ\",\"people_count\":%s,\"temperature_c\":%s,\"humidity_pct\":%s,\"light_lux\":null,\"light_raw_u16\":%u}",device,room,(unsigned long)(s->utc-946684800U),year,month,(unsigned)(days+1U),(unsigned long)(seconds/3600U),(unsigned long)(seconds%3600U/60U),(unsigned long)(seconds%60U),count,temp,rh,s->light_raw16);
