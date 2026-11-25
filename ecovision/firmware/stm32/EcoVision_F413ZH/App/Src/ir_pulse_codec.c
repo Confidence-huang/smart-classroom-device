@@ -24,15 +24,23 @@ bool IrPulse_Decode24(const IrPulseFrame *f,uint8_t *cmd,uint8_t *param) {
     if(param) { *param=data[1]; }
     return true;
 }
-bool IrPulse_Encode24(uint8_t cmd,uint8_t param,IrPulseFrame *f) {
-    if(!f||!parameter_valid(cmd,param))return false;
-    const uint8_t data[3]={cmd,param,(uint8_t)(cmd^param^0x5aU)};
-    f->us[0]=9000;f->us[1]=4500;
-    for(unsigned i=0;i<24;i++) {
-        f->us[2+2*i]=560;
-        f->us[3+2*i]=(data[i/8]&(0x80U>>(i%8)))?1690U:560U;
+bool IrPulse_EncodeDemoTimings(uint8_t cmd, uint8_t param, uint16_t timings[IR_PULSE_DEMO_LENGTH]) {
+    if (!timings || !parameter_valid(cmd, param)) return false;
+    const uint8_t data[3] = {cmd, param, (uint8_t)(cmd ^ param ^ 0x5aU)};
+    timings[0] = 9000;
+    timings[1] = 4500;
+    /* The 24 bits are sent MSB first, each with a fixed mark and a variable space. */
+    for (unsigned i = 0; i < 24; ++i) {
+        timings[2 + 2*i] = 560;
+        timings[3 + 2*i] = (data[i/8] & (0x80U >> (i%8))) ? 1690U : 560U;
     }
-    f->us[50]=560;f->len=IR_PULSE_DEMO_LENGTH;return true;
+    timings[IR_PULSE_DEMO_LENGTH - 1] = 560; /* End mark. */
+    return true;
+}
+bool IrPulse_Encode24(uint8_t cmd,uint8_t param,IrPulseFrame *f) {
+    if (!f || !IrPulse_EncodeDemoTimings(cmd, param, f->us)) return false;
+    f->len = IR_PULSE_DEMO_LENGTH;
+    return true;
 }
 bool IrPulse_ValidRaw(const IrPulseFrame *f) {
     if(!f||f->len<3U||f->len>IR_PULSE_CAPACITY||(f->len&1U)==0U)return false;
