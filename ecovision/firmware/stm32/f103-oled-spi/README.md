@@ -4,14 +4,26 @@ F103 接收项目的 24 位红外演示帧。上电和关机时 OLED 显示 `OFF
 
 ## 接线
 
+### F413 发射端（UART5，CN8 内排）
+
+| F413 | ZJ-IR-V2 |
+| --- | --- |
+| CN8-10（PC12 / D47 / UART5_TX） | RXD |
+| CN8-12（PD2 / D48 / UART5_RX） | TXD |
+| CN8-7（3.3 V） | VCC |
+| CN8-11（GND） | GND |
+
+### F103 接收端与 OLED
+
 | 模块 | F103 |
 | --- | --- |
 | OLED SCL / SDA | PB6 / PB7（软件 SPI） |
 | OLED RES / DC | PB8 / PB9 |
 | 红外接收头 OUT | PA0（TIM2_CH1） |
-| 两个模块的 GND | F103 GND |
+| OLED 与接收头供电 | 兼容的 3.3 V 电源 |
+| OLED 与接收头的 GND | F103 GND |
 
-本项目使用兼容 3.3 V 的模块与接收头输出。F103 使用内部 HSI 8 MHz，SWD 继续使用 PA13/PA14。
+发射端与接收端通过红外光通信。F103 使用内部 HSI 8 MHz，SWD 继续使用 PA13/PA14。
 
 ## 构建和验收
 
