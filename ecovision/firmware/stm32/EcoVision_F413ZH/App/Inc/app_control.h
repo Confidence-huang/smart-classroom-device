@@ -2,6 +2,10 @@
 #define APP_CONTROL_H
 #include "control_policy.h"
 
+#ifdef ECOVISION_DAYLIGHT_SHADOW
+void AppControl_LogDaylight(void);
+#endif
+
 typedef enum {
     CONTROL_APPLIED, CONTROL_EXPIRED, CONTROL_EPOCH_MISMATCH, CONTROL_LOCAL_LOCKED,
     CONTROL_AC_ACCEPTED, CONTROL_AC_REJECTED, CONTROL_AC_UNKNOWN

@@ -11,6 +11,7 @@ enum { EV_HOLD, EV_OFF, EV_ON, EV_INCREASE, EV_DECREASE, EV_OPEN, EV_CLOSE,
 enum { EV_LUX_UNKNOWN, EV_DIM, EV_LUX_OK, EV_BRIGHT };
 enum { EV_AIR_UNKNOWN, EV_AIR_OK, EV_VENTILATE };
 enum { EV_SHADE_UNKNOWN, EV_DAYLIGHT_ALLOWED, EV_SHADE_NEEDED };
+enum { EV_DAYLIGHT_DISABLED, EV_DAYLIGHT_SHARED_SENSOR, EV_DAYLIGHT_ISOLATED_SENSOR };
 
 typedef struct {
     EvInput base; /* AHT20 temp/RH, PC5 ADC, validated vision count and mode */
@@ -27,6 +28,7 @@ typedef struct {
     uint8_t ac_off_confirmed;
     uint8_t ac_cooling_confirmed;
     uint8_t daylight; /* EV_SHADE_* or EV_DAYLIGHT_ALLOWED */
+    uint8_t daylight_switching; /* optional binary lighting experiment */
 } EvCoreInput;
 
 typedef struct {
@@ -35,6 +37,8 @@ typedef struct {
     uint32_t air_since, light_since, ac_since;
     uint8_t air_pending, light_pending, ac_pending;
     uint8_t vent_demand, vent_cleared, ac_demand, previous_mode, previous_simulation;
+    uint32_t daylight_since;
+    uint8_t daylight_pending, previous_daylight_switching, previous_led_actual;
 } EvCoreState;
 
 typedef struct {
@@ -45,8 +49,13 @@ typedef struct {
     uint16_t impact_x100[EV_SCORE_COUNT]; /* count × (100-score), UINT16_MAX unknown */
     uint8_t air_need, light_need, ventilation_blocked, simulation;
     uint8_t advice[EV_DEVICE_COUNT]; /* advisory only; not actuator commands */
+    uint8_t daylight_led; /* optional EV_HOLD/EV_ON/EV_OFF, independent of base */
 } EvCoreOutput;
 
 void ev_core_init(EvCoreState *state);
 void ev_core_step(EvCoreState *state, const EvCoreInput *input, EvCoreOutput *output);
+/* Observe lighting using occupancy/mode from the owning firmware policy. */
+uint8_t ev_daylight_observe(EvCoreState *state,const EvSample *lux,uint32_t now,
+                            uint8_t occupancy,uint8_t mode,uint8_t lit,uint8_t policy,
+                            uint8_t force_off);
 #endif

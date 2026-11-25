@@ -6,6 +6,42 @@
 #include "cmsis_os.h"
 #include "main.h"
 #include <string.h>
+#ifdef ECOVISION_DAYLIGHT_SHADOW
+#include "app_log.h"
+#include "ecovision_core.h"
+
+static EvCoreState daylight_observer;
+static uint8_t virtual_lamp;
+static struct {
+    uint32_t now;
+    int32_t lux;
+    uint8_t valid, stable, occupancy, advice, virtual_state;
+} daylight_report;
+
+static void observe_daylight(const EnvironmentSnapshot *env,const ControlOutput *decision,
+                             uint32_t now,bool force_off) {
+    EvSample lux={.at_ms=env->sampled_at,.value=(int32_t)env->lux_x100,
+                  .present=!daylight_observer.lux.has_seen||
+                           daylight_observer.lux.seen_ms!=env->sampled_at,
+                  .valid=env->lux_valid,.source=3};
+    const uint8_t occupancy=decision->occupancy==CONTROL_OCCUPIED?EV_OCCUPIED:
+        decision->occupancy==CONTROL_VACANT?EV_VACANT:EV_UNKNOWN;
+    const uint8_t mode=decision->mode==CONTROL_LOCAL_OFF?EV_LOCAL_OFF:EV_AUTO;
+    const uint8_t advice=ev_daylight_observe(&daylight_observer,&lux,now,occupancy,mode,
+        virtual_lamp,EV_DAYLIGHT_SHARED_SENSOR,force_off);
+    if(advice==EV_ON)virtual_lamp=1;
+    if(advice==EV_OFF)virtual_lamp=0;
+    taskENTER_CRITICAL();
+    daylight_report.now=now;
+    daylight_report.lux=daylight_observer.lux.filtered;
+    daylight_report.valid=daylight_observer.lux.valid;
+    daylight_report.stable=daylight_observer.lux.stable;
+    daylight_report.occupancy=occupancy;
+    daylight_report.advice=advice;
+    daylight_report.virtual_state=virtual_lamp;
+    taskEXIT_CRITICAL();
+}
+#endif
 
 static ControlPolicy policy;
 static ControlOutput applied;
@@ -38,6 +74,10 @@ static struct {
 } ac;
 
 void AppControl_Init(void) {
+#ifdef ECOVISION_DAYLIGHT_SHADOW
+    ev_core_init(&daylight_observer);
+    virtual_lamp=0;
+#endif
     Control_Init(&policy);applied=policy.output;
     command_state=COMMAND_IDLE;
     applied_command[0]=0;
@@ -115,12 +155,19 @@ ControlOutput AppControl_Poll(void) {
     Control_Update(&policy,now,&input);
     choose_command(now);
     ControlOutput output=policy.output;
+#ifdef ECOVISION_DAYLIGHT_SHADOW
+    const bool fault_off=policy.fault_active&&now-policy.fault_at>=60000U;
+#endif
     taskEXIT_CRITICAL();
+
 
     ac.fresh_temperature=Control_TemperatureFresh(&input);
     ac.fresh_positive=input.vision_valid && input.count>0U && input.count<=20U;
     ac.temperature_x100=environment.temp_x100;
     ac.humidity_x100=environment.humi_x100;
+#ifdef ECOVISION_DAYLIGHT_SHADOW
+    observe_daylight(&environment,&output,now,fault_off);
+#endif
     return output;
 }
 
@@ -223,6 +270,23 @@ void AppControl_GetRemoteSnapshot(ControlOutput *output,char last_command[65]) {
 void AppControl_GetSnapshot(ControlOutput *output) {
     taskENTER_CRITICAL();*output=applied;taskEXIT_CRITICAL();
 }
+
+#ifdef ECOVISION_DAYLIGHT_SHADOW
+/* Called by the sensor task. Serial logging stays outside the output task. */
+void AppControl_LogDaylight(void) {
+    taskENTER_CRITICAL();
+    const uint32_t now=daylight_report.now;
+    const int32_t lux=daylight_report.lux;
+    const uint8_t valid=daylight_report.valid, stable=daylight_report.stable;
+    const uint8_t occupancy=daylight_report.occupancy, advice=daylight_report.advice;
+    const uint8_t virtual_state=daylight_report.virtual_state;
+    const bool actual=applied.led;
+    taskEXIT_CRITICAL();
+    AppLog_Printf("[LUX_SHADOW] ms=%lu valid=%u stable=%u lux_x100=%ld occ=%u actual=%u virtual=%u advice=%u\r\n",
+        (unsigned long)now,(unsigned)valid,(unsigned)stable,(long)lux,
+        (unsigned)occupancy,(unsigned)actual,(unsigned)virtual_state,(unsigned)advice);
+}
+#endif
 
 void AppControl_SafetyOff(void) {
     taskENTER_CRITICAL();
