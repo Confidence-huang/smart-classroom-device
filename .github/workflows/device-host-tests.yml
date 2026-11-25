@@ -20,3 +20,16 @@ jobs:
           persist-credentials: false
       - name: Run firmware host and protocol tests
         run: bash ecovision/firmware/stm32/tests/run_host_ci.sh
+      - name: Verify F103 OLED transport and infrared decoder
+        working-directory: ecovision/firmware/stm32
+        run: |
+          # The same production OLED and decoder sources run behind host test shims.
+          f103=f103-oled-spi
+          shared=EcoVision_F413ZH/App
+          cc -std=c11 -Wall -Wextra -Werror -I "$f103" \
+            "$f103/test_transport.c" "$f103/oled_spi.c" -o "$RUNNER_TEMP/f103-oled"
+          cc -std=c11 -Wall -Wextra -Werror -I "$f103" -I "$shared/Inc" \
+            "$f103/test_receiver.c" "$f103/ir_receiver.c" "$shared/Src/ir_pulse_codec.c" \
+            -o "$RUNNER_TEMP/f103-ir"
+          "$RUNNER_TEMP/f103-oled"
+          "$RUNNER_TEMP/f103-ir"
