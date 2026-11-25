@@ -1,11 +1,15 @@
 /* Drive the demo receiver through the ZJ-IR-V2 module's AFN 22H raw waveform command. */
 #include "app_ac_demo.h"
+#include "app_log.h"
 #include "ir_pulse_codec.h"
 #include "main.h"
 
 static UART_HandleTypeDef infrared;
 static uint8_t address;
-static bool ready;
+/* The network task reads capability. Only the startup code and output task can set it. */
+static volatile bool ready;
+static bool discovery_reported;
+static uint32_t last_probe_at;
 
 static uint8_t sum_bytes(const uint8_t *data, unsigned length)
 {
@@ -13,6 +17,22 @@ static uint8_t sum_bytes(const uint8_t *data, unsigned length)
     for (unsigned i = 0; i < length; i++)
         sum = (uint8_t)(sum + data[i]);
     return sum;
+}
+
+/* AFN 06 only reads the module address, including on a retry. It sends no infrared command. */
+static bool probe_address(uint32_t timeout_ms)
+{
+    uint8_t probe[] = {0x68, 0x07, 0x00, 0xff, 0x06, 0x05, 0x16};
+    uint8_t reply[8];
+    /* Discard a stale receive byte or overrun left by a late response. */
+    __HAL_UART_CLEAR_OREFLAG(&infrared);
+    if (HAL_UART_Transmit(&infrared, probe, sizeof probe, 20U) != HAL_OK ||
+        HAL_UART_Receive(&infrared, reply, sizeof reply, timeout_ms) != HAL_OK) return false;
+    if (reply[0] != 0x68 || reply[1] != 8 || reply[2] != 0 || reply[4] != 0x06 ||
+        reply[3] != reply[5] || reply[5] == 0xff || reply[6] != sum_bytes(reply + 3, 3) ||
+        reply[7] != 0x16) return false;
+    address = reply[5];
+    return true;
 }
 
 void AppAcDemo_Init(void)
@@ -36,17 +56,29 @@ void AppAcDemo_Init(void)
             .OverSampling = UART_OVERSAMPLING_16
         }
     };
-    if (HAL_UART_Init(&infrared) != HAL_OK) return;
-    HAL_Delay(400U); /* Allow the learning module to finish power-on before read-only discovery. */
-    uint8_t probe[] = {0x68, 0x07, 0x00, 0xff, 0x06, 0x05, 0x16};
-    uint8_t reply[8];
-    if (HAL_UART_Transmit(&infrared, probe, sizeof probe, 20U) != HAL_OK ||
-        HAL_UART_Receive(&infrared, reply, sizeof reply, 250U) != HAL_OK) return;
-    if (reply[0] != 0x68 || reply[1] != 8 || reply[2] != 0 || reply[4] != 0x06 ||
-        reply[3] != reply[5] || reply[5] == 0xff || reply[6] != sum_bytes(reply + 3, 3) ||
-        reply[7] != 0x16) return;
-    address = reply[5];
-    ready = true;
+    if (HAL_UART_Init(&infrared) == HAL_OK) {
+        HAL_Delay(400U); /* Allow the learning module to finish power-on. */
+        ready = probe_address(250U);
+    }
+    last_probe_at = HAL_GetTick();
+}
+
+void AppAcDemo_Poll(uint32_t now)
+{
+    /* Retry a failed startup probe every 3 seconds, after the output task has written fan and lamp. */
+    if (!ready && now - last_probe_at >= 3000U) {
+        last_probe_at = now;
+        if (HAL_UART_Init(&infrared) == HAL_OK && probe_address(40U)) {
+            ready = true;
+            discovery_reported = false;
+        }
+    }
+    /* Report startup once and log the transition to ready without flooding COM15. */
+    if (!discovery_reported) {
+        discovery_reported = true;
+        if (ready) AppLog_Printf("[ZJ-IR] UART5 ADDRESS_OK address=%02X\r\n", (unsigned)address);
+        else AppLog_Printf("[ZJ-IR] UART5 no valid address reply; will retry\r\n");
+    }
 }
 
 bool AppAcDemo_Ready(void)

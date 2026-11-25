@@ -14,6 +14,7 @@ static unsigned ac_requests;
 static uint8_t ac_temperature;
 static AcModuleResult ac_module_result;
 bool AppAcDemo_Ready(void) { return true; }
+void AppAcDemo_Poll(uint32_t now) { (void)now; assert(critical_depth==0); }
 void AppLog_Printf(const char *format, ...) { (void)format; }
 AcModuleResult AppAcDemo_Send(uint8_t temperature_c) {
     assert(critical_depth==0);

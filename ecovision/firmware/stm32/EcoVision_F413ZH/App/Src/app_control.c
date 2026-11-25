@@ -200,6 +200,7 @@ void AppControl_PublishApplied(const ControlOutput *output) {
             }
         }
     }
+    AppAcDemo_Poll(now);
     ac_automatic(output,now,manual_sent);
     taskENTER_CRITICAL();
     applied=*output;
