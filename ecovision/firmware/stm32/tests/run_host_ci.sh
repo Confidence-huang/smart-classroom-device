@@ -20,6 +20,18 @@ run_c_test() {
     "$build/$name"
 }
 
+# Run the same sensor, display, and fan units as the Windows host launchers.
+run_c_test environment_codec "$tests/test_environment_codec.c" "$app/Src/environment_codec.c"
+ECOVISION_LCD_PREVIEW="$build/dashboard-preview.ppm" \
+    run_c_test lcd_view "$tests/test_lcd_view.c" "$app/Src/lcd_view.c"
+run_c_test fan_output -I "$tests/tb6612_host" "$tests/test_tb6612.c" "$app/Src/app_fan.c"
+run_c_test bh1750 -I "$tests/bh1750_host" "$tests/test_bh1750.c" \
+    "$app/Src/app_bh1750.c" "$app/Src/lcd_view.c"
+run_c_test reed -I "$tests/reed_host" "$tests/test_reed.c" "$app/Src/app_reed.c"
+python3 -B "$tests/test_led_task_exit.py"
+python3 -B -m unittest discover -s ../tests -p 'test_payload.py' -v
+python3 -B ../check_syntax.py ../src/main.py
+
 run_c_test vision_protocol "$tests/test_vision_protocol.c" "$app/Src/vision_protocol.c"
 run_c_test net_codec "$tests/test_net_codec.c" "$app/Src/net_codec.c"
 run_c_test net_recovery "$tests/test_net_recovery.c" "$app/Src/net_recovery.c"

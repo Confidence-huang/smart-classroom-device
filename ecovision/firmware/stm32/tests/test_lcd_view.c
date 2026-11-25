@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
 static uint8_t guarded[LCD_VIEW_BYTES+2], previous[LCD_VIEW_BYTES];
 int main(void) {
     EnvironmentSnapshot env={0};
@@ -24,7 +25,9 @@ int main(void) {
     assert(guarded[0]==0xA5 && guarded[LCD_VIEW_BYTES+1]==0xA5);
     env.th_valid=true;env.light_valid=true;env.temp_x100=2510;env.humi_x100=5030;env.light_raw16=23029;
     assert(LcdView_RenderDashboard(guarded+1,LCD_VIEW_BYTES,true,true,12,583,&env));
-    FILE *preview=fopen("firmware/stm32/environment-evidence/dashboard-preview.ppm","wb");
+    /* CI writes to its temporary directory, while the desktop script keeps its preview path. */
+    const char *preview_path=getenv("ECOVISION_LCD_PREVIEW");
+    FILE *preview=fopen(preview_path ? preview_path : "firmware/stm32/environment-evidence/dashboard-preview.ppm","wb");
     assert(preview!=NULL);
     (void)fprintf(preview,"P6\n160 128\n255\n");
     for(size_t at=1;at<LCD_VIEW_BYTES+1;at+=2) {

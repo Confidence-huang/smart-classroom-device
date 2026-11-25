@@ -3,6 +3,7 @@
 Compiles the task entry extracted from main.c with a returning LED stub and
 a non-returning CMSIS exit stub. This is not a FreeRTOS hardware test.
 """
+import os
 import re
 import subprocess
 import tempfile
@@ -26,7 +27,12 @@ static jmp_buf exit_target;
 static int led_calls, exit_calls;
 static int huart3;
 static void AppLed_Run(void *port) { assert(port == &huart3); led_calls++; }
-__declspec(noreturn) void osThreadExit(void) {
+#ifdef _MSC_VER
+__declspec(noreturn)
+#else
+_Noreturn
+#endif
+void osThreadExit(void) {
     exit_calls++;
     longjmp(exit_target, 1);
 }
@@ -47,10 +53,15 @@ with tempfile.TemporaryDirectory(prefix='ecovision-led-exit-') as directory:
     work = Path(directory)
     c_file, executable = work / 'entry.c', work / 'entry.exe'
     c_file.write_text(harness, encoding='utf-8')
-    command = (f'call "{vcvars}" >nul && cl /nologo /W4 /Od '
-               f'"{c_file}" /Fo:"{work / "entry.obj"}" /Fe:"{executable}" '
-               '/link /INCREMENTAL:NO')
-    batch = work / 'compile.cmd'
-    batch.write_text('@echo off\n' + command + '\n', encoding='utf-8')
-    subprocess.run(['cmd.exe', '/d', '/c', str(batch)], check=True)
+    # Keep the existing MSVC entry and build the same harness with cc in Linux CI.
+    if os.name == 'nt':
+        command = (f'call "{vcvars}" >nul && cl /nologo /W4 /Od '
+                   f'"{c_file}" /Fo:"{work / "entry.obj"}" /Fe:"{executable}" '
+                   '/link /INCREMENTAL:NO')
+        batch = work / 'compile.cmd'
+        batch.write_text('@echo off\n' + command + '\n', encoding='utf-8')
+        subprocess.run(['cmd.exe', '/d', '/c', str(batch)], check=True)
+    else:
+        subprocess.run(['cc', '-std=c11', '-Wall', '-Wextra', str(c_file),
+                        '-o', str(executable)], check=True)
     subprocess.run([str(executable)], check=True)
