@@ -227,6 +227,46 @@ static int ready(const EvCoreInput *input,unsigned device) {
     return (input->ready_mask&(1u<<device))!=0;
 }
 
+static uint8_t daylight_led(EvCoreState *state,uint32_t now,uint8_t occupancy,
+                            uint8_t mode,uint8_t lit,uint8_t policy,uint8_t force_off) {
+    uint8_t candidate=EV_HOLD;
+    if(policy!=state->previous_daylight_switching||lit!=state->previous_led_actual)
+        state->daylight_pending=EV_HOLD;
+    state->previous_daylight_switching=policy;
+    state->previous_led_actual=lit;
+
+    if(policy!=EV_DAYLIGHT_SHARED_SENSOR&&policy!=EV_DAYLIGHT_ISOLATED_SENSOR) {
+        state->daylight_pending=EV_HOLD;
+        return EV_HOLD;
+    }
+    if(mode!=EV_AUTO) {
+        state->daylight_pending=EV_HOLD;
+        return mode==EV_LOCAL_OFF?EV_OFF:EV_HOLD;
+    }
+    if(occupancy==EV_VACANT||force_off) {
+        state->daylight_pending=EV_HOLD;
+        return EV_OFF;
+    }
+    if(occupancy==EV_OCCUPIED&&state->lux.valid&&state->lux.stable) {
+        if(!lit&&state->lux.filtered<28000)candidate=EV_ON;
+        if(lit&&policy==EV_DAYLIGHT_ISOLATED_SENSOR&&state->lux.filtered>38000)candidate=EV_OFF;
+    }
+    const uint32_t dwell=candidate==EV_ON?10000u:30000u;
+    return confirmed(&state->daylight_pending,&state->daylight_since,candidate,now,dwell)?
+           candidate:EV_HOLD;
+}
+
+uint8_t ev_daylight_observe(EvCoreState *state,const EvSample *lux,uint32_t now,
+                            uint8_t occupancy,uint8_t mode,uint8_t lit,uint8_t policy,
+                            uint8_t force_off) {
+    EvSample sample=*lux;
+    if(sample.simulated)sample.valid=0;
+    if(!state->lux.valid||now-state->lux.at_ms>=LUX_MAX_AGE_MS)
+        state->daylight_pending=EV_HOLD;
+    update(&state->lux,&sample,now,LUX_MAX_AGE_MS,0,10000000,15000,1);
+    return daylight_led(state,now,occupancy,mode,lit,policy,force_off);
+}
+
 static void core_advice(EvCoreState *state,const EvCoreInput *input,EvCoreOutput *out) {
     const uint32_t now=input->base.now_ms;
     const EvChannel *temp=&state->base.channel[EV_TEMP];
@@ -311,7 +351,8 @@ void ev_core_step(EvCoreState *state,const EvCoreInput *input,EvCoreOutput *out)
     if(!state->co2.valid||now-state->co2.at_ms>=CO2_MAX_AGE_MS) {
         state->air_pending=state->vent_demand=state->vent_cleared=0;
     }
-    if(!state->lux.valid||now-state->lux.at_ms>=LUX_MAX_AGE_MS)state->light_pending=0;
+    if(!state->lux.valid||now-state->lux.at_ms>=LUX_MAX_AGE_MS)
+        state->light_pending=state->daylight_pending=0;
     if(!state->base.channel[EV_TEMP].valid||now-state->base.channel[EV_TEMP].at_ms>=10000u)
         state->ac_pending=state->ac_demand=0;
     memset(out,0,sizeof *out);
@@ -335,4 +376,7 @@ void ev_core_step(EvCoreState *state,const EvCoreInput *input,EvCoreOutput *out)
         out->air_need=state->vent_demand?EV_VENTILATE:EV_AIR_OK;
     } else state->air_pending=state->vent_demand=state->vent_cleared=0;
     core_advice(state,input,out);
+    out->daylight_led=daylight_led(state,now,state->base.occupancy,base.mode,
+        (uint8_t)(base.led_actual!=0),input->daylight_switching,
+        (uint8_t)(state->base.fault_active&&now-state->base.fault_since>=60000u));
 }

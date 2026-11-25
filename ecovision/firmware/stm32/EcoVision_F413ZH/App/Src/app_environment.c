@@ -1,5 +1,8 @@
 #include "main.h"
 #include "app_environment.h"
+#ifdef ECOVISION_DAYLIGHT_SHADOW
+#include "app_control.h"
+#endif
 #include "app_aht20.h"
 #include "environment_codec.h"
 #include "app_log.h"
@@ -37,6 +40,9 @@ void AppEnvironment_Run(void *argument) {
         if(next.light_valid) next.light_raw16=Environment_Adc12ToU16(next.light_raw12);
         next.sampled_at=HAL_GetTick();
         taskENTER_CRITICAL();latest=next;taskEXIT_CRITICAL();
+#ifdef ECOVISION_DAYLIGHT_SHADOW
+        AppControl_LogDaylight();
+#endif
         if(next.sampled_at-previous_log>=5000U) {
             AppLog_Printf("[ENV] th_valid=%u temp_x100=%ld rh_x100=%ld adc_valid=%u adc12=%u adc16=%u err=%d\r\n",
                 next.th_valid?1U:0U,(long)next.temp_x100,(long)next.humi_x100,next.light_valid?1U:0U,

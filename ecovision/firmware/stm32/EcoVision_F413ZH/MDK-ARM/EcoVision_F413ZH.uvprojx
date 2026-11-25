@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F413xx</Define>
               <Undefine></Undefine>
-              <IncludePath>../Inc;../App/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include</IncludePath>
+              <IncludePath>../Inc;../App/Inc;../../../../algorithms;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM4F;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -551,6 +551,7 @@
 <File><FileName>net_recovery.c</FileName><FileType>1</FileType><FilePath>../App/Src/net_recovery.c</FilePath></File>
 <File><FileName>control_policy.c</FileName><FileType>1</FileType><FilePath>../App/Src/control_policy.c</FilePath></File>
 <File><FileName>app_control.c</FileName><FileType>1</FileType><FilePath>../App/Src/app_control.c</FilePath></File>
+<File><FileName>ecovision_algorithm.c</FileName><FileType>1</FileType><FilePath>../../../../algorithms/ecovision_algorithm.c</FilePath></File>
 <File><FileName>app_net.c</FileName><FileType>1</FileType><FilePath>../App/Src/app_net.c</FilePath></File>
             <File><FileName>app_environment.c</FileName><FileType>1</FileType><FilePath>../App/Src/app_environment.c</FilePath></File>
             <File><FileName>environment_codec.c</FileName><FileType>1</FileType><FilePath>../App/Src/environment_codec.c</FilePath></File>

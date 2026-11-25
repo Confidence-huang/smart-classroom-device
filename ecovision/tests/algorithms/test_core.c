@@ -29,7 +29,51 @@ static void tick(uint32_t now,int32_t temp,int32_t lux,int32_t co2) {
     ev_core_step(&state,&input,&output);
 }
 
+static void test_daylight_switching(void) {
+    reset();
+    input.daylight_switching=EV_DAYLIGHT_SHARED_SENSOR;
+    for(uint32_t t=0;t<=40000;t+=1000)tick(t,2500,42000,-1);
+    assert(output.daylight_led==EV_HOLD && output.base.led);
+    for(uint32_t t=41000;t<=51000;t+=1000)tick(t,2500,20000,-1);
+    assert(output.daylight_led==EV_HOLD);
+    tick(52000,2500,20000,-1);
+    assert(output.daylight_led==EV_ON);
+    input.base.led_actual=1;
+    for(uint32_t t=53000;t<=95000;t+=1000)tick(t,2500,60000,-1);
+    assert(output.daylight_led==EV_HOLD); /* lamp's own light cannot turn it off */
+
+    input.daylight_switching=EV_DAYLIGHT_ISOLATED_SENSOR;
+    for(uint32_t t=96000;t<=125000;t+=1000)tick(t,2500,60000,-1);
+    assert(output.daylight_led==EV_HOLD);
+    tick(126000,2500,60000,-1);
+    assert(output.daylight_led==EV_OFF);
+    tick(129000,2500,-1,-1);
+    assert(output.daylight_led==EV_HOLD); /* stale at 3000 ms */
+    tick(130000,2500,60000,-1);
+    assert(output.daylight_led==EV_HOLD); /* recovery restarts confirmation */
+    input.base.mode=EV_LOCAL_OFF;
+    tick(131000,2500,60000,-1);
+    assert(output.daylight_led==EV_OFF);
+    input.base.mode=EV_REMOTE;
+    tick(132000,2500,60000,-1);
+    assert(output.daylight_led==EV_HOLD);
+
+    input.base.mode=EV_AUTO;
+    for(uint32_t t=133000;t<=163000;t+=1000) {
+        input.base.now_ms=t;
+        input.base.sample[EV_VISION]=sample(t,0);
+        input.base.sample[EV_TEMP]=sample(t,2500);
+        ev_core_step(&state,&input,&output);
+    }
+    assert(output.base.occupancy==EV_VACANT && output.daylight_led==EV_OFF);
+    input.daylight_switching=EV_DAYLIGHT_DISABLED;
+    tick(164000,2500,42000,-1);
+    assert(output.daylight_led==EV_HOLD);
+    puts("PASS daylight: occupied bright/dark, self-light, independent sensor, stale, manual and vacancy");
+}
+
 int main(void) {
+    test_daylight_switching();
     reset();
     tick(0,2500,-1,-1);
     assert(output.coverage_pct==50&&output.total_score==EV_SCORE_UNKNOWN&&output.measured_score==100);
