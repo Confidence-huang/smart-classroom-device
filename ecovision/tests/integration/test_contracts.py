@@ -30,7 +30,7 @@ def check_shape(value, schema):
     """
     supported = {"$schema", "$id", "title", "type", "additionalProperties", "required",
                  "properties", "const", "enum", "minimum", "maximum", "pattern",
-                 "anyOf", "items", "uniqueItems", "maxItems"}
+                 "anyOf", "items", "uniqueItems", "maxItems", "description", "dependentSchemas"}
     assert not set(schema) - supported, f"Unsupported schema keywords: {set(schema)-supported}"
     if "anyOf" in schema:
         matches = []
@@ -58,13 +58,17 @@ def check_shape(value, schema):
         assert value <= schema["maximum"]
     if "pattern" in schema:
         assert re.fullmatch(schema["pattern"].removeprefix("^").removesuffix("$"), value)
-    if kind == "object":
+    if type(value) is dict:
         assert set(schema.get("required", [])) <= value.keys(), "Missing fields"
         if schema.get("additionalProperties") is False:
             assert value.keys() <= schema["properties"].keys(), "Unknown fields"
         for key, child in schema.get("properties", {}).items():
             if key in value:
                 check_shape(value[key], child)
+        # Apply optional MQTT extensions only when their triggering field is present.
+        for key, dependency in schema.get("dependentSchemas", {}).items():
+            if key in value:
+                check_shape(value, dependency)
     if kind == "array":
         assert len(value) <= schema.get("maxItems", len(value))
         if schema.get("uniqueItems"):
@@ -108,6 +112,8 @@ class ContractTests(unittest.TestCase):
     def setUp(self):
         self.schemas = {kind: read(CONTRACTS / f"{kind}.schema.json")
                         for kind in ("telemetry", "command", "ack", "status")}
+        self.fan_level_schemas = {kind: read(CONTRACTS / f"{kind}.v1.1.schema.json")
+                                  for kind in ("telemetry", "command", "ack")}
         self.policy = read(CONTRACTS / "policy.json")
         self.cases = read(CONTRACTS / "examples/scenarios.json")
 
@@ -121,7 +127,21 @@ class ContractTests(unittest.TestCase):
             kind = path.name.split("_")[0]
             if kind in self.schemas:
                 with self.subTest(path=path.name):
-                    check_shape(read(path), self.schemas[kind])
+                    payload = read(path)
+                    schemas = (self.fan_level_schemas if payload["v"] == self.policy["fan_levels_version"]
+                               else self.schemas)
+                    check_shape(payload, schemas[kind])
+
+    def test_fan_levels_require_negotiated_wire_version(self):
+        for kind in self.fan_level_schemas:
+            with self.subTest(kind=kind):
+                extended = read(CONTRACTS / f"examples/{kind}_fan_levels.json")
+                with self.assertRaises(AssertionError):
+                    check_shape({**extended, "v": self.policy["version"]}, self.schemas[kind])
+                missing_level = {key: value for key, value in extended.items() if key != "fan_level"}
+                with self.assertRaises(AssertionError):
+                    check_shape(missing_level, self.fan_level_schemas[kind])
+                check_shape({**missing_level, "v": self.policy["version"]}, self.schemas[kind])
 
     def test_intentionally_invalid_command(self):
         with self.assertRaises(AssertionError):

@@ -1,6 +1,7 @@
 /* EC200U network waits run only in this task; no credential or AT echo logging. */
 #include "app_net.h"
 #include "net_codec.h"
+#include "net_command.h"
 #include "net_publish.h"
 #include "net_recovery.h"
 #include "app_log.h"
@@ -15,7 +16,7 @@
 #include <stdlib.h>
 
 extern UART_HandleTypeDef huart6;
-enum {RX_CAP=2048};
+enum {RX_CAP=4096, COMMAND_QUEUE=4, COMMAND_CACHE=32};
 static volatile uint16_t head,tail;
 static volatile bool rx_fault;
 static volatile uint32_t received_bytes;
@@ -30,6 +31,58 @@ static uint16_t message_id;
 static uint32_t sequence,status_sequence,utc_base,utc_tick;
 static bool clock_valid;
 static char matched_line[512];
+static char command_topic[55],ack_topic[55];
+static bool receive_commands,command_subscribed;
+static uint32_t subscription_utc;
+
+/* Queue modem deliveries independently of AT replies; the network task owns both. */
+typedef struct {
+ NetCommand command;
+ NetCommandParse parsed;
+ uint32_t utc,tick;
+} ReceivedCommand;
+static ReceivedCommand inbox[COMMAND_QUEUE],working;
+static unsigned inbox_start,inbox_size;
+static bool awaiting_output;
+
+/* Cache only successful applications so duplicate delivery never renews a lease. */
+typedef struct {
+ ReceivedCommand received;
+ ControlOutput output;
+} AppliedCommand;
+static AppliedCommand applied_cache[COMMAND_CACHE];
+static unsigned reserved_cache;
+
+static uint32_t utc_now(void);
+
+static void receive_command(char *line) {
+ if(!command_subscribed)return;
+ char *json=Net_CommandUrc(line,command_topic);
+ if(!json)return;
+ if(inbox_size==COMMAND_QUEUE){AppLog_Printf("[NET] command inbox full\r\n");return;}
+
+ ReceivedCommand *item=&inbox[(inbox_start+inbox_size)%COMMAND_QUEUE];
+ item->parsed=Net_ParseCommand(json,&item->command);
+ /* Reply only to this device and a command id that can safely be correlated. */
+ if(strcmp(item->command.device,config.device)!=0 || !Net_CommandId(item->command.id))return;
+ item->utc=clock_valid?utc_now():0;
+ item->tick=HAL_GetTick();
+ inbox_size++;
+}
+
+/* Preserve complete and partial downlink frames between ordinary AT commands. */
+static bool drain_online_uart(void) {
+ if(rx_fault)return false;
+ while(tail!=head) {
+  uint8_t byte=ring[tail];tail=(uint16_t)((tail+1U)%RX_CAP);
+  NetAtEvent event=NetAt_Feed(&parser,byte);
+  if(event==NET_AT_DROPPED)return false;
+  if(event!=NET_AT_LINE)continue;
+  if(!strncmp(parser.line,"+QMTSTAT:",9))return false;
+  receive_command(parser.line);
+ }
+ return true;
+}
 
 const char *AppNet_State(void){return state;}
 static void stage(const char *value){state=value;AppLog_Printf("[NET] state=%s\r\n",value);}
@@ -55,7 +108,12 @@ static int transaction(const char *command,const char *expected,uint32_t timeout
  uint32_t received_before=received_bytes;
  bool ok=false,match=expected==NULL;
  bool prompt=expected && !strcmp(expected,">");
- if(command){discard();if(!transmit(command,strlen(command))||!transmit("\r",1))return -4;}
+ if(command) {
+  if(command_subscribed) {
+   if(!drain_online_uart())return -5;
+  } else discard();
+  if(!transmit(command,strlen(command))||!transmit("\r",1))return -4;
+ }
  matched_line[0]=0;uint32_t start=HAL_GetTick();
  while((uint32_t)(HAL_GetTick()-start)<timeout) {
   if(rx_fault){discard();return -3;}
@@ -65,6 +123,10 @@ static int transaction(const char *command,const char *expected,uint32_t timeout
    if(event==NET_AT_DROPPED)return -3;
    if(event==NET_AT_PROMPT && prompt)return 0;
    if(event!=NET_AT_LINE)continue;
+   if(!strncmp(parser.line,"+QMTRECV:",9)) {
+    receive_command(parser.line);
+    continue;
+   }
    const char *line=parser.line;
    if(!strcmp(line,"ERROR")||!strncmp(line,"+CME ERROR",10)||!strncmp(line,"+CMS ERROR",10)){AppLog_Printf("[NET] modem result=%s\r\n",line);return -1;}
    if(!strncmp(line,"+QMTSTAT:",9)){AppLog_Printf("[NET] modem result=%s\r\n",line);return -5;}
@@ -160,6 +222,97 @@ static bool publish(const char *name,const char *data,bool retain) {
  if(missing_prompt)AppLog_Printf("[NET] missing prompt; completed declared payload once; matching PUBACK=%u id=%u\r\n",result?1U:0U,message_id);
  return result;
 }
+static bool publish_ack(const ReceivedCommand *item, const ControlOutput *output,
+                        const char *reason) {
+ /* Correlate with the request schema, even on an upgraded board serving a legacy client. */
+ bool fan_levels_version=item->command.fan_levels_version;
+ char level[20]="";
+ if(fan_levels_version)(void)snprintf(level,sizeof level,",\"fan_level\":%u",(unsigned)output->fan_level);
+ char received_at[16]="null";
+ if(item->utc)(void)snprintf(received_at,sizeof received_at,"%lu",(unsigned long)item->utc);
+ int size=snprintf(payload,sizeof payload,
+  "{\"v\":\"%s\",\"device_id\":\"%s\",\"boot_id\":\"%s\",\"cmd_id\":\"%s\","
+  "\"status\":\"%s\",\"reason\":\"%s\",\"received_at\":%s,\"uptime_ms\":%lu,"
+  "\"control_epoch\":%lu,\"mode\":\"%s\",\"fan_out\":%u%s,\"led_out\":%u,\"hold_remaining_s\":%u}",
+  fan_levels_version?NET_WIRE_FAN_LEVELS:NET_WIRE_BASE,config.device,boot,item->command.id,strcmp(reason,"OK")==0?"APPLIED":"REJECTED",
+  reason,received_at,(unsigned long)item->tick,(unsigned long)output->control_epoch,
+  Control_ModeName(output->mode),output->fan_level?1U:0U,level,output->led?1U:0U,(unsigned)output->hold_remaining_s);
+ if(size<0 || (size_t)size>=sizeof payload)return false;
+ bool sent=publish(ack_topic,payload,false);
+ AppLog_Printf("[NET] command ACK reason=%s puback=%u\r\n",reason,sent?1U:0U);
+ return sent;
+}
+
+static bool finish_command(bool *refresh) {
+ ControlReply reply;
+ if(!AppControl_TakeReply(&reply))return true;
+ awaiting_output=false;
+ const char *reason="LOCAL_LOCKED";
+ if(reply.result==CONTROL_APPLIED) {
+  applied_cache[reserved_cache]=(AppliedCommand){working,reply.output};
+  *refresh=true;
+  reason="OK";
+ } else if(reply.result==CONTROL_EXPIRED)reason="EXPIRED";
+ else if(reply.result==CONTROL_EPOCH_MISMATCH)reason="EPOCH_MISMATCH";
+ return publish_ack(&working,&reply.output,reason);
+}
+
+static const char *command_rejection(const ReceivedCommand *item,const ControlOutput *output,
+                                     uint32_t now,uint32_t expire) {
+ const NetCommand *cmd=&item->command;
+ if(item->parsed==NET_COMMAND_INVALID)return "INVALID_MESSAGE";
+ if(item->parsed==NET_COMMAND_UNSUPPORTED || (cmd->fan_levels_version && !config.fan_levels_version))
+  return "UNSUPPORTED_VERSION";
+ if(strcmp(cmd->boot,boot)!=0)return "BOOT_MISMATCH";
+ if(!clock_valid || !item->utc)return "TIME_UNTRUSTED";
+ if(cmd->issued_at>item->utc)return "FUTURE_COMMAND";
+ if(cmd->issued_at<subscription_utc || (int32_t)(now-expire)>=0)return "EXPIRED";
+ if(cmd->epoch!=output->control_epoch)return "EPOCH_MISMATCH";
+ if(output->mode==CONTROL_LOCAL_OFF)return "LOCAL_LOCKED";
+ return NULL;
+}
+
+static bool service_commands(bool *refresh) {
+ if(!command_subscribed)return true;
+ if(awaiting_output)return finish_command(refresh);
+ if(!inbox_size)return true;
+
+ working=inbox[inbox_start];
+ inbox_start=(inbox_start+1U)%COMMAND_QUEUE;inbox_size--;
+ const NetCommand *cmd=&working.command;
+ ControlOutput current;AppControl_GetSnapshot(&current);
+ uint32_t now=HAL_GetTick(),utc=utc_base+(now-utc_tick)/1000U;
+ unsigned free_slot=COMMAND_CACHE;
+ if(working.parsed==NET_COMMAND_OK && strcmp(cmd->boot,boot)==0) {
+  for(unsigned i=0;i<COMMAND_CACHE;i++) {
+   AppliedCommand *entry=&applied_cache[i];
+   const NetCommand *old=&entry->received.command;
+   if(old->id[0] && strcmp(old->id,cmd->id)==0) {
+    if(Net_SameCommand(old,cmd))return publish_ack(&entry->received,&entry->output,"OK");
+    return publish_ack(&working,&current,"CMD_ID_CONFLICT");
+   }
+   if(!old->id[0] || (uint64_t)utc>=old->issued_at+old->ttl_s)free_slot=i;
+  }
+ }
+
+ /* The output task uses this same monotonic deadline if scheduling delays the write. */
+ uint64_t expires_utc=cmd->issued_at+cmd->ttl_s;
+ uint32_t expires_tick=now;
+ if(expires_utc>utc && expires_utc-utc<=30U)
+  expires_tick=now+(uint32_t)(expires_utc-utc)*1000U-(now-utc_tick)%1000U;
+ const char *rejection=command_rejection(&working,&current,now,expires_tick);
+ if(rejection)return publish_ack(&working,&current,rejection);
+ if(free_slot==COMMAND_CACHE)return publish_ack(&working,&current,"BUSY");
+
+ ControlCommand request={.epoch=cmd->epoch,.expires_at=expires_tick,.hold_s=cmd->hold_s,
+                         .fan_level=cmd->hold_s?(uint8_t)cmd->fan_level:CONTROL_FAN_OFF,.led=cmd->led==1};
+ memcpy(request.id,cmd->id,sizeof request.id);
+ if(!AppControl_Queue(&request))return publish_ack(&working,&current,"BUSY");
+ reserved_cache=free_slot;
+ awaiting_output=true;
+ return true;
+}
+
 static bool configure_tls(void) {
  /* The modem remains powered across MCU reset: close the previous socket
   * before replacing its CA file or changing the active TLS context. */
@@ -176,6 +329,9 @@ static bool configure_tls(void) {
   "AT+QMTCFG=\"pdpcid\",0,1","AT+QMTCFG=\"session\",0,1","AT+QMTCFG=\"keepalive\",0,30",
   "AT+QMTCFG=\"ssl\",0,1,0"};
  for(unsigned i=0;i<sizeof commands/sizeof commands[0];i++)if(!simple(commands[i]))return false;
+ /* Length-bearing direct notifications avoid treating AT replies as a payload. */
+ receive_commands=config.remote_enabled && simple("AT+QMTCFG=\"recv/mode\",0,0,1");
+ if(config.remote_enabled && !receive_commands)AppLog_Printf("[NET] MQTT downlink framing unavailable\r\n");
  return true;
 }
 static bool connect_cloud(void) {
@@ -193,17 +349,29 @@ static bool connect_cloud(void) {
  bool connected=wait_result(command_buffer,"+QMTCONN:",3,45000U,v)&&v[0]==0&&v[1]==0&&v[2]==0;
  memset(command_buffer,0,sizeof command_buffer);if(!connected){AppLog_Printf("[NET] MQTT CONN failed result=%d,%d,%d\r\n",v[0],v[1],v[2]);return false;}
  (void)snprintf(payload,sizeof payload,"{\"v\":\"1.0.0\",\"device_id\":\"%s\",\"boot_id\":\"%s\",\"seq\":%lu,\"state\":\"online\",\"reason\":\"connected\",\"ts\":%lu}",config.device,boot,(unsigned long)online_seq,(unsigned long)utc_now());
+ if(receive_commands) {
+  uint16_t id=++message_id;if(id==0)id=++message_id;
+  int sub[4]={-1,-1,-1,-1};
+  (void)snprintf(command_buffer,sizeof command_buffer,"AT+QMTSUB=0,%u,\"%s\",1",id,command_topic);
+  subscription_utc=utc_now();
+  command_subscribed=wait_result(command_buffer,"+QMTSUB:",4,20000U,sub) &&
+                     sub[0]==0 && sub[1]==id && sub[2]==0 && sub[3]==1;
+  AppLog_Printf("[NET] MQTT command subscription=%s\r\n",command_subscribed?"ready":"unavailable");
+ }
  return publish(topic,payload,true);
 }
 void AppNet_Run(void *argument) {
  (void)argument;osDelay(1600U);arm();
  bool configured=Net_ConfigDecode((const uint8_t *)0x08160000U,8192U,&config);
  AppLog_Printf("[NET] private_config=%s (values not logged)\r\n",configured?"valid":"invalid");
+ (void)snprintf(command_topic,sizeof command_topic,"ecovision/%s/cmd",config.device);
+ (void)snprintf(ack_topic,sizeof ack_topic,"ecovision/%s/ack",config.device);
  if(!random_id()){stage("RNG_ERROR");for(;;)osDelay(1000U);}
  uint32_t retry=0;uint32_t previous_temp_at=0,previous_vision_at=0;bool have_temp=false,have_vision=false;
  static const uint32_t delays[]={2000,5000,10000,30000,60000};
  for(;;) {
-  clock_valid=false;stage("AT_WAIT");
+  clock_valid=false;command_subscribed=false;inbox_start=0;inbox_size=0;
+  stage("AT_WAIT");
   if(!find_at()){AppLog_Printf("[NET] AT no response UART6 PG14/PG9\r\n");goto backoff;}
   if(!simple("ATE0")||!simple("AT+CMEE=2")||!simple("AT+QURCCFG=\"urcport\",\"uart1\""))goto backoff;
   stage("SIM_CHECK");
@@ -237,24 +405,34 @@ void AppNet_Run(void *argument) {
    NetSample sample={0};sample.uptime=now;sample.seq=sequence++;sample.utc=utc_now();sample.time_valid=clock_valid;
    sample.vision_valid=vis.active&&vis.valid;sample.count=vis.count;sample.have_vision=have_vision;sample.vision_age=now-previous_vision_at;
    sample.temp_valid=env.th_valid;sample.temp_x100=env.temp_x100;sample.rh_x100=env.humi_x100;sample.have_temp=have_temp;sample.temp_age=now-previous_temp_at;
-   ControlOutput control;AppControl_GetSnapshot(&control);
+   ControlOutput control;AppControl_GetRemoteSnapshot(&control,sample.last_command);
+   sample.remote=control.mode==CONTROL_REMOTE;
+   sample.hold_remaining_s=control.hold_remaining_s;
    /* One applied snapshot avoids mixing pre/post LOCAL_OFF driver values. */
-   sample.fan=control.fan;sample.led=control.led;
+   sample.fan_level=control.fan_level;sample.led=control.led;
    sample.occupancy=(uint8_t)control.occupancy;
    sample.local_off=control.mode==CONTROL_LOCAL_OFF;sample.control_epoch=control.control_epoch;
    sample.light_valid=env.light_valid;sample.light_raw16=env.light_raw16;
-   if(Net_Telemetry(payload,sizeof payload,config.device,boot,&sample)<0)break;
+   if(Net_Telemetry(payload,sizeof payload,config.device,boot,&sample,config.fan_levels_version)<0)break;
    (void)snprintf(topic,sizeof topic,"ecovision/%s/telemetry",config.device);
    if(!publish(topic,payload,false))break;
    AppLog_Printf("[NET] PUBACK seq=%lu bytes=%u temp_valid=%u vision_valid=%u\r\n",(unsigned long)sample.seq,(unsigned)strlen(payload),sample.temp_valid?1U:0U,sample.vision_valid?1U:0U);
    /* Explicit private opt-in to the existing dashboard's legacy input.
-    * Official 1.0.0 telemetry above is unchanged. Invalid sensor data is
+    * Existing public dashboard telemetry remains on its original format. Invalid sensor data is
     * never fabricated to satisfy the old consumer's non-null fields. */
    if(config.legacy_topic[0] && Net_LegacyTelemetry(payload,sizeof payload,config.device,config.room,&sample)>0) {
     if(publish(config.legacy_topic,payload,true))AppLog_Printf("[NET] LEGACY PUBACK seq=%lu source=C_HAL_REAL_4G\r\n",(unsigned long)(sample.utc-946684800U));
     else AppLog_Printf("[NET] legacy consumer publish failed; official path remains primary\r\n");
    }
-   uint32_t until=now+5000U;while((int32_t)(HAL_GetTick()-until)<0)osDelay(20U);
+   uint32_t until=now+5000U;
+   while((int32_t)(HAL_GetTick()-until)<0) {
+    bool refresh=false;
+    if(command_subscribed && (!drain_online_uart() || !service_commands(&refresh)))goto backoff;
+    ControlOutput latest;AppControl_GetSnapshot(&latest);
+    if(refresh || latest.mode!=control.mode || latest.control_epoch!=control.control_epoch ||
+       latest.fan_level!=control.fan_level || latest.led!=control.led)break;
+    osDelay(20U);
+   }
   }
 backoff:
   AppLog_Printf("[NET] stage=%s failed; retry=%lu (local tasks continue)\r\n",state,(unsigned long)retry);

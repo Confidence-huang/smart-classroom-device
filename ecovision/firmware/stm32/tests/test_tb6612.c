@@ -1,4 +1,5 @@
 #include "app_fan.h"
+#include "control_policy.h" /* Driver and controller expose the same level range. */
 #include "main.h"
 #include <assert.h>
 #include <stdio.h>
@@ -28,21 +29,21 @@ HAL_StatusTypeDef HAL_TIM_PWM_Start(TIM_HandleTypeDef *timer, uint32_t channel)
 int main(void)
 {
     TIM_HandleTypeDef timer = {4799U, 999U};
-    const uint32_t expected[] = {0U, 1920U, 2880U, 3840U, 4800U};
+    const uint32_t expected[] = {0U, 1920U, 2880U, 3840U, 4320U, 4800U};
     outputs = 7U;
     assert(!AppFan_SetLevel(1U));
     assert(AppFan_Init(&timer));
     assert(timer.compare == 0U && outputs == 0U);
     assert(first_write == FAN_STBY_Pin);
-    for (uint8_t level = 1U; level < 5U; ++level)
+    for (uint8_t level = 1U; level <= CONTROL_FAN_MAX; ++level)
     {
         assert(AppFan_SetLevel(level));
         assert(timer.compare == expected[level]);
         assert(outputs == (FAN_STBY_Pin | FAN_AIN1_Pin));
-        assert(AppFan_DutyPercent(level) == 20U * (level + 1U));
+        assert(AppFan_DutyPercent(level) == 100U * expected[level] / (timer.period + 1U));
     }
     const unsigned previous_count = write_count;
-    assert(!AppFan_SetLevel(5U));
+    assert(!AppFan_SetLevel(CONTROL_FAN_MAX + 1U));
     assert(write_count == previous_count && timer.compare == 4800U);
     write_count = 0U;
     assert(AppFan_SetLevel(0U));
@@ -50,6 +51,6 @@ int main(void)
     start_result = HAL_ERROR;
     assert(!AppFan_Init(&timer));
     assert(!AppFan_SetLevel(1U) && outputs == 0U);
-    puts("PASS: default standby, four PWM duties, direction, invalid level, standby-first stop, start failure");
+    puts("PASS: default standby, five PWM duties, direction, invalid level, standby-first stop, start failure");
     return 0;
 }

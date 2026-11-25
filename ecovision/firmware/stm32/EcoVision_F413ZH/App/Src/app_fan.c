@@ -1,10 +1,12 @@
 #include "app_fan.h"
+#include "control_policy.h" /* Shared level bounds for control and the PWM driver. */
 #include "main.h"
 
 static volatile uint8_t actual_level;
 uint8_t AppFan_GetLevel(void){return actual_level;}
 static TIM_HandleTypeDef *fan_timer;
-static const uint8_t duty_percent[5] = {0U, 40U, 60U, 80U, 100U};
+/* Keep AUTO at its proven 60% and add a step between 80% and full drive. */
+static const uint8_t duty_percent[CONTROL_FAN_MAX + 1] = {0U, 40U, 60U, 80U, 90U, 100U};
 
 bool AppFan_Init(TIM_HandleTypeDef *timer)
 {
@@ -24,12 +26,12 @@ bool AppFan_Init(TIM_HandleTypeDef *timer)
 
 uint8_t AppFan_DutyPercent(uint8_t level)
 {
-    return level < 5U ? duty_percent[level] : 0U;
+    return level <= CONTROL_FAN_MAX ? duty_percent[level] : 0U;
 }
 
 bool AppFan_SetLevel(uint8_t level)
 {
-    if (fan_timer == NULL || level >= 5U)
+    if (fan_timer == NULL || level > CONTROL_FAN_MAX)
     {
         return false;
     }

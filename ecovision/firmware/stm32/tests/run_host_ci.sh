@@ -22,8 +22,10 @@ run_c_test() {
 
 run_c_test vision_protocol "$tests/test_vision_protocol.c" "$app/Src/vision_protocol.c"
 run_c_test net_codec "$tests/test_net_codec.c" "$app/Src/net_codec.c"
+run_c_test net_command "$tests/test_net_command.c" "$app/Src/net_command.c"
 run_c_test net_recovery "$tests/test_net_recovery.c" "$app/Src/net_recovery.c"
 run_c_test net_publish "$tests/test_net_publish.c" "$app/Src/net_publish.c"
+run_c_test tb6612 -I "$tests/tb6612_host" "$tests/test_tb6612.c" "$app/Src/app_fan.c"
 
 # D01 main predates the D02 control adapter and K230 runtime.
 if [[ -f "$app/Src/app_control.c" ]]; then

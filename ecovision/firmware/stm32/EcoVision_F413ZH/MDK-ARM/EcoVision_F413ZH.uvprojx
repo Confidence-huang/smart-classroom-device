@@ -547,6 +547,7 @@
           <GroupName>App</GroupName>
           <Files>
 <File><FileName>net_codec.c</FileName><FileType>1</FileType><FilePath>../App/Src/net_codec.c</FilePath></File>
+<File><FileName>net_command.c</FileName><FileType>1</FileType><FilePath>../App/Src/net_command.c</FilePath></File>
 <File><FileName>net_publish.c</FileName><FileType>1</FileType><FilePath>../App/Src/net_publish.c</FilePath></File>
 <File><FileName>net_recovery.c</FileName><FileType>1</FileType><FilePath>../App/Src/net_recovery.c</FilePath></File>
 <File><FileName>control_policy.c</FileName><FileType>1</FileType><FilePath>../App/Src/control_policy.c</FilePath></File>

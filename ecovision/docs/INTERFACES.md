@@ -1,4 +1,4 @@
-# EcoVision公共接口 1.0.0
+# EcoVision 公共接口
 
 状态：2026-11-12总控冻结的第一版开发基线；不是硬件认证结果。本文定义语义，contracts/*.schema.json定义形状，contracts/policy.json定义公共常量，发生冲突必须停止受影响集成并由总控修订。
 
@@ -43,7 +43,7 @@ seq为uint32，第一帧可为0；后续`delta=(new-old) mod 2^32`，仅0<delta<
 
 device_id为`[a-z0-9][a-z0-9_-]{0,31}`，例如ev001；载荷device_id必须匹配主题与凭据ACL。设备仅能发布自己的上行并订阅自己的cmd；云端服务可发白名单设备cmd。浏览器不持有Broker管理员凭据。role不从消息自报，鉴权由服务与Broker ACL提供。
 
-载荷UTF-8 JSON对象，禁止重复键、NaN/Infinity、未知字段；最大2048字节。全部必填字段和枚举见schema；`v`固定`1.0.0`。遥测与status各有独立uint32序号；ACK不含seq，按cmd_id关联。云端按boot_id及模序去重，不能让旧消息倒退显示。每5秒遥测，状态变化额外触发；云端连续15秒无新鲜遥测标记STALE并禁用命令，不以retain状态证明在线。终端成功CONNACK后发布online状态；LWT在CONNECT预设offline、ts=null；正常断开主动发offline。status在每次CONNECT前预留连续两个序号n/n+1，online使用n，遗嘱或正常offline使用n+1，下次连接用n+2；同boot_id内重连不归零。这样遗嘱不会被online序号过滤掉，延迟旧遗嘱也不会覆盖新连接。遗嘱时间仅代表云端观察，旧boot_id遗嘱不能覆盖新会话；新boot_id通过新鲜遥测确认后锁定，旧会话不因status自行切回。
+载荷UTF-8 JSON对象，禁止重复键、NaN/Infinity、未知字段；最大2048字节。全部必填字段和枚举见schema；`1.0.0` 为默认版本，五档扩展见第 7 节。遥测与status各有独立uint32序号；ACK不含seq，按cmd_id关联。云端按boot_id及模序去重，不能让旧消息倒退显示。每5秒遥测，状态变化额外触发；云端连续15秒无新鲜遥测标记STALE并禁用命令，不以retain状态证明在线。终端成功CONNACK后发布online状态；LWT在CONNECT预设offline、ts=null；正常断开主动发offline。status在每次CONNECT前预留连续两个序号n/n+1，online使用n，遗嘱或正常offline使用n+1，下次连接用n+2；同boot_id内重连不归零。这样遗嘱不会被online序号过滤掉，延迟旧遗嘱也不会覆盖新连接。遗嘱时间仅代表云端观察，旧boot_id遗嘱不能覆盖新会话；新boot_id通过新鲜遥测确认后锁定，旧会话不因status自行切回。
 
 ## 4. 遥测、有效性与单位
 
@@ -59,7 +59,7 @@ command.schema.json全部字段必填：v、device_id、boot_id、control_epoch�
 
 ttl_s=1..30，默认15；接收时要求`issued_at <= now < issued_at+ttl_s`，未来时间拒绝FUTURE_COMMAND，无宽限。租期从首次实际执行的单调时刻起，不能把MQTT重投递当续租；重连不重置已存在租期。断网不自动结束现有租期，到期回AUTO。
 
-校验顺序固定：大小/JSON/结构/版本 → 主题与授权/retain → device_id → boot_id → 幂等表 → 可信时间/时效 → control_epoch → LOCAL_OFF锁 → 参数/容量 → 执行与ACK。未知版本UNSUPPORTED_VERSION，结构无效INVALID_MESSAGE。无合法cmd_id、错误设备或未授权消息仅记录/丢弃，避免应答到其他设备；可关联的合法身份消息返回拒绝ACK。retain=true返回RETAINED_COMMAND。
+校验顺序固定：大小/JSON/结构/版本 → 主题与授权/retain → device_id → boot_id → 幂等表 → 可信时间/时效 → control_epoch → LOCAL_OFF锁 → 参数/容量 → 执行与ACK。未知版本UNSUPPORTED_VERSION，结构无效INVALID_MESSAGE。无合法cmd_id、错误设备或未授权消息仅记录/丢弃，避免应答到其他设备；可关联的合法身份消息返回拒绝ACK。能读取 MQTT RETAIN 标志的订阅端对保留命令返回 RETAINED_COMMAND。EC200U 的 +QMTRECV 不含该标志，因此其远控启用条件见第 8 节。
 
 当前boot_id内按cmd_id保存已执行命令的规范化内容（键序无关，字段值全部参与）及首次APPLIED ACK。相同ID同内容只重发原ACK，含原received_at/uptime_ms/输出快照，即使后来过期、按键或状态改变也不重新执行；云端实时输出以新遥测为准。同ID不同内容拒绝CMD_ID_CONFLICT并保留首次记录。保留期至少到该ID命令的issued_at+ttl_s；有效幂等条目不得提前驱逐，容量32满则新命令BUSY，不执行。拒绝不占幂等表，相同消息以后重试需重新校验，因此环境恢复后可能被接受；云端命令记录保留每次拒绝，不把拒绝当成成功缓存。过期清理后旧命令仍因时效/epoch被拒；不缓存未来命令造成无限占位。重启清空缓存，但旧boot_id拒绝。至少保留到TTL后可继续保留最近记录；若已驱逐，过期重试返回EXPIRED而非原ACK，两种情况都不得重新动作。
 
@@ -72,3 +72,17 @@ ack.schema.json字段：v/device_id/boot_id/cmd_id/status/reason/received_at/upt
 ## 7. 版本与变更
 
 冻结号1.0.0，UART EV1是本项目首版完整格式，不能接收旧参考五字段。禁止模块自行增加/改名字段、主题、时效或控制优先级。新增必填、改变语义/单位/主题、改变UART布局均为破坏性变更升主版本；增加可选字段升次版本并先定义协商，本版仍严格拒绝未知字段；纯解释勘误升补丁。模块提交“问题、受影响样例、建议、兼容性、验证”，总控同时更新本文、schema、policy、样例、测试、CHANGELOG后统一宣布生效。11-25后只允许必要缺陷修正并重跑受影响测试。
+
+### 1.1.0 五档 MQTT 扩展
+
+设备私有配置默认保持 1.0.0，遥测、二值命令和 ACK 继续使用冻结 schema。只有完成所有严格消费者的升级后，才用 `provision_network.py --remote-control --fan-levels-v11` 显式开启 1.1.0。status、UART 和旧公开看板兼容主题沿用原格式。
+
+1.1.0 遥测和 ACK 带整数 fan_level（0 关闭，1–5 档），fan_out 仍表示二值驱动输出。收到新鲜且通过 1.1.0 schema 的遥测后，云端才提供五档。1.1.0 REMOTE 命令须带 fan_level，AUTO 不传这项。ACK 回用已识别的请求版本。设备仍可接受 1.0.0 二值命令，其中开启沿用默认 2 档。去重比较包含请求版本。
+
+升级先验证下游接受两版，再将设备候选保持在 1.0.0，逐台打开 1.1.0。回退先恢复设备 1.0.0 私有配置并复位，确认新鲜遥测和开关 ACK 后，再回退严格消费者。旧固件回退时使用与其相配的私有配置。
+
+## 8. EC200U 远控上线前的 Broker 检查
+
+EC200U 的串口消息无法辨认 RETAIN 标志。终端的订阅时间与 TTL 用于新鲜度检查。生产 Broker 必须限制控制账号仅能向授权设备发布非保留 cmd，并限制设备订阅自己的 cmd、发布自己的 ack。核对默认及通配规则，确认它们未额外允许保留发布。
+
+启用远控前，暂停目标设备的远控接入。在 Broker 的保留消息管理中核对准确的 cmd 主题。管理员可删除发现的遗留 cmd 条目，保留 status 遗嘱。随后用独立 MQTT 3.1.1 客户端，以设备权限和 clean session 核对首次订阅及同 ID 断线重连。两次都需要 SUBACK QoS 1，且未收到保留消息。保留发布的拒绝测试使用独立测试主题或隔离 Broker。若授权或保留状态无法确认，私有配置保持远控关闭。
