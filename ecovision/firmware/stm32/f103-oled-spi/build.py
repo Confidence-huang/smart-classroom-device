@@ -1,23 +1,25 @@
 """Build F103 SPI OLED/IR receiver; never connects to or flashes hardware."""
 from pathlib import Path
+import argparse
 import hashlib
 import json
-import re
 import subprocess
 
 root = Path(__file__).resolve().parent
-tools = Path('D:/k51/ARM/ARMCLANG/bin')
+arguments = argparse.ArgumentParser(description=__doc__)
+arguments.add_argument('--toolchain', type=Path, default=Path('D:/k51/ARM/ARMCLANG/bin'),
+                       help='directory containing the Arm Compiler 6 executables')
+arguments.add_argument('--output', type=Path, default=root / 'build',
+                       help='directory for the HEX, map, and build log')
+options = arguments.parse_args()
+tools = options.toolchain.resolve()
 repo = Path.home() / 'STM32Cube/Repository/STM32Cube_FW_F1_V1.8.7'
 cmsis = repo / 'Drivers/CMSIS'
 device = cmsis / 'Device/ST/STM32F1xx'
 shared = root.parent / 'EcoVision_F413ZH/App'
-donor = Path('D:/移远杯项目文档/wzy works/红外模块_整合包(2)/02_F103_接收显示代码/Core/Src/f103_oled.c')
-font = re.search(r'static const uint8_t font5x7\[40\]\[5\] = \{.*?\n\};', donor.read_text(encoding='utf-8', errors='replace'), re.S)
-if not font:
-    raise SystemExit('Donor font table not found')
-(root / 'font.h').write_text('/* Font from user-supplied wzy f103_oled.c. */\n' + font[0] + '\n', encoding='utf-8')
-out = root / 'build'
-out.mkdir(exist_ok=True)
+# Compile against the tracked font.h so the build can use a clean checkout.
+out = options.output.resolve()
+out.mkdir(parents=True, exist_ok=True)
 scatter = out / 'f103.sct'
 scatter.write_text('LR_IROM1 0x08000000 0x10000 {\n ER_IROM1 0x08000000 0x10000 {\n *.o (RESET, +First)\n *(InRoot$$Sections)\n .ANY (+RO)\n }\n RW_IRAM1 0x20000000 0x5000 { .ANY (+RW +ZI) }\n}\n')
 
