@@ -1,4 +1,6 @@
 #include "app_vision.h"
+#include "app_alert.h"
+#include "app_uart_dma.h"
 #include "app_log.h"
 #include "app_lcd.h"
 #include "vision_protocol.h"
@@ -8,7 +10,6 @@
 enum { RING_SIZE=1024 };
 typedef struct {uint32_t tick;uint8_t byte;} Sample;
 static UART_HandleTypeDef *port;
-static uint8_t rx_byte;
 static volatile Sample ring[RING_SIZE];
 static volatile uint16_t head, tail;
 static volatile uint32_t faults;
@@ -22,14 +23,16 @@ void AppVision_GetSnapshot(EvVision *out) {
 }
 void AppVision_Rehandshake(void) {restart=true;}
 static void arm(void) {
-    if(HAL_UART_Receive_IT(port,&rx_byte,1)!=HAL_OK) faults|=0x10000U;
+    if(!AppUartDma_Start(port)) faults|=0x10000U;
 }
-void AppVision_RxComplete(UART_HandleTypeDef *uart) {
-    if(uart!=port) return;
-    uint16_t next=(uint16_t)((head+1U)%RING_SIZE);
-    if(next==tail) faults|=0x20000U;
-    else {ring[head].tick=HAL_GetTick();ring[head].byte=rx_byte;head=next;}
-    arm();
+/* Once the ring fills, the task discards the partial frame and rehandshakes. */
+void AppVision_RxBytes(const uint8_t *data,uint16_t length,uint32_t now) {
+    for(uint16_t i=0;i<length && !faults;i++) {
+        const uint16_t next=(uint16_t)((head+1U)%RING_SIZE);
+        if(next==tail){faults|=0x20000U;return;}
+        ring[head].tick=now;ring[head].byte=data[i];
+        __DMB();head=next;
+    }
 }
 void AppVision_RxError(UART_HandleTypeDef *uart) {
     if(uart==port) faults|=uart->ErrorCode ? uart->ErrorCode : 0x40000U;
@@ -55,6 +58,7 @@ static bool begin(uint32_t now) {
     return true;
 }
 void AppVision_Run(UART_HandleTypeDef *uart) {
+    AppHealth_Beat(HEALTH_VISION);
     osDelay(1100U);
     port=uart;
     lcd_enabled=AppLcd_Init();
@@ -72,13 +76,13 @@ void AppVision_Run(UART_HandleTypeDef *uart) {
     uint32_t last_errors=0;
     uint32_t lcd_at=HAL_GetTick()-1000U;
     for(;;) {
+        AppHealth_Beat(HEALTH_VISION);
         uint32_t now=HAL_GetTick();
         if(faults) {
-            HAL_NVIC_DisableIRQ(USART2_IRQn);
-            uint32_t error=faults;
-            (void)HAL_UART_AbortReceive(port);
+            /* Stop the source before dropping the queue and starting a new session. */
+            const uint32_t error=faults;
+            AppUartDma_Stop(port);
             tail=head;faults=0;
-            HAL_NVIC_EnableIRQ(USART2_IRQn);
             arm();restart=true;
             AppLog_Printf("[VISION] RX fault=0x%lx; discard and rehandshake\r\n",(unsigned long)error);
         }
@@ -92,10 +96,10 @@ void AppVision_Run(UART_HandleTypeDef *uart) {
             }
             query_at=now-1000U;last_errors=0;
         }
-        while(tail!=head) {
+        while(tail!=head && !faults) {
             uint8_t byte=ring[tail].byte;
             uint32_t at=ring[tail].tick;
-            tail=(uint16_t)((tail+1U)%RING_SIZE);
+            __DMB();tail=(uint16_t)((tail+1U)%RING_SIZE);
             bool was_active=state.active;
             uint32_t accepted=state.accepted;
             EvVision_Feed(&state,byte,at);

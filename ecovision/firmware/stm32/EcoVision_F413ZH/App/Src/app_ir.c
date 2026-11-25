@@ -47,8 +47,6 @@ static void arm_rx(void)
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *uart)
 {
     AppLed_RxComplete(uart);
-    AppVision_RxComplete(uart);
-    AppNet_RxComplete(uart);
     if (uart != ir_uart)
     {
         return;
