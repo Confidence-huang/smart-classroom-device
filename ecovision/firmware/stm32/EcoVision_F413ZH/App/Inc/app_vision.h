@@ -4,7 +4,7 @@
 #include "vision_protocol.h"
 void AppVision_GetSnapshot(EvVision *out);
 void AppVision_Run(UART_HandleTypeDef *uart);
-void AppVision_RxComplete(UART_HandleTypeDef *uart);
+void AppVision_RxBytes(const uint8_t *data, uint16_t length, uint32_t at);
 void AppVision_RxError(UART_HandleTypeDef *uart);
 void AppVision_Rehandshake(void);
 #endif

@@ -22,6 +22,7 @@
 #include "stm32f4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "app_uart_dma.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -204,6 +205,21 @@ void TIM6_DAC_IRQHandler(void)
   /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
 
   /* USER CODE END TIM6_DAC_IRQn 1 */
+}
+
+/* Dispatch to the HAL handles owned by the receive adapter. */
+void DMA1_Stream5_IRQHandler(void) {
+  /* USER CODE BEGIN DMA1_Stream5_IRQn 0 */
+  AppUartDma_Irq(0);
+  return; /* CubeMX may add a default HAL dispatch after this section. */
+  /* USER CODE END DMA1_Stream5_IRQn 0 */
+}
+
+void DMA2_Stream1_IRQHandler(void) {
+  /* USER CODE BEGIN DMA2_Stream1_IRQn 0 */
+  AppUartDma_Irq(1);
+  return;
+  /* USER CODE END DMA2_Stream1_IRQn 0 */
 }
 
 /* USER CODE BEGIN 1 */

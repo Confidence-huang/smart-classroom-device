@@ -40,6 +40,7 @@ run_c_test net_publish "$tests/test_net_publish.c" "$app/Src/net_publish.c"
 run_c_test tb6612 -I "$tests/tb6612_host" "$tests/test_tb6612.c" "$app/Src/app_fan.c"
 run_c_test alert_policy tests/embedded/test_alert_policy.c
 run_c_test rx_cursor "$tests/test_rx_cursor.c" "$app/Src/rx_cursor.c"
+run_c_test uart_dma -I "$tests/uart_dma_host" "$tests/test_uart_dma.c" "$app/Src/app_uart_dma.c" "$app/Src/rx_cursor.c"
 
 # D01 main predates the D02 control adapter and K230 runtime.
 if [[ -f "$app/Src/app_control.c" ]]; then
