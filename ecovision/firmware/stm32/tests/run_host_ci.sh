@@ -50,3 +50,10 @@ python3 -B -m unittest discover -s tests/integration -p 'test_*.py' -v
 if [[ -f firmware/k230/figurine_uart.py ]]; then
     python3 -B -m unittest discover -s tests/vision -p 'test_*.py' -v
 fi
+
+# These are host-only tests for the standalone comfort-scoring module.
+run_c_test comfort_algorithm -I algorithms \
+    tests/algorithms/test_algorithm.c algorithms/ecovision_algorithm.c -lm
+run_c_test comfort_inputs -I algorithms \
+    tests/algorithms/test_core.c algorithms/ecovision_algorithm.c \
+    algorithms/ecovision_stm32_inputs.c -lm
