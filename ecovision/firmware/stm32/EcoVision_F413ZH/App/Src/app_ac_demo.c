@@ -88,15 +88,16 @@ bool AppAcDemo_Ready(void)
 
 AcModuleResult AppAcDemo_Send(uint8_t temperature_c)
 {
-    IrPulseFrame frame;
-    if (!ready || !IrPulse_Encode24(temperature_c ? 1U : 2U, temperature_c, &frame))
+    /* The output task only sends the fixed demo frame. Its stack need not hold a raw receive buffer. */
+    uint16_t timings[IR_PULSE_DEMO_LENGTH];
+    if (!ready || !IrPulse_EncodeDemoTimings(temperature_c ? 1U : 2U, temperature_c, timings))
         return AC_MODULE_REJECTED;
 
     /* Each 51-span project waveform needs at most two bytes per span at 8 µs resolution. */
     uint8_t packet[5U + 2U * IR_PULSE_DEMO_LENGTH + 2U] = {0x68, 0, 0, address, 0x22};
     unsigned length = 5;
-    for (unsigned i = 0; i < frame.len; i++) {
-        const unsigned ticks = (frame.us[i] + 4U) / 8U;
+    for (unsigned i = 0; i < IR_PULSE_DEMO_LENGTH; i++) {
+        const unsigned ticks = (timings[i] + 4U) / 8U;
         if (ticks >= 128U) {
             packet[length++] = (uint8_t)((ticks & 127U) | 128U);
             packet[length++] = (uint8_t)(ticks >> 7U);
