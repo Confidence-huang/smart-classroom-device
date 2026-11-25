@@ -74,6 +74,11 @@ int main(void) {
     assert(Net_LegacyTelemetry(json,sizeof json,"ev001","room01",&s)>0);
     assert(strstr(json,"\"simulated\":false") && strstr(json,"\"people_count\":0"));
     assert(strstr(json,"2026-11-21T14:49:46Z") && strstr(json,"\"light_lux\":null"));
+    /* 2100-03-01 must not be formatted as a nonexistent February 29. */
+    s.utc=4107542400U;
+    assert(Net_LegacyTelemetry(json,sizeof json,"ev001","room01",&s)>0);
+    assert(strstr(json,"2100-03-01T00:00:00Z"));
+    s.utc=1795272586U;
     s.temp_valid=false;
     assert(Net_LegacyTelemetry(json,sizeof json,"ev001","room01",&s)<0);
     s.temp_valid=true;s.occupancy=1;s.control_epoch=42;

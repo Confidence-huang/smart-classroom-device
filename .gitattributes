@@ -1,0 +1,2 @@
+# Bash entry points must also run from Windows-backed checkouts in WSL.
+*.sh text eol=lf
