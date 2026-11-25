@@ -121,11 +121,11 @@ static bool output_value(const char **p,int8_t *output) {
 }
 
 enum CommandField {
-    VERSION, DEVICE, BOOT, EPOCH, ID, ISSUED, TTL, MODE, FAN, LED, HOLD, FAN_LEVEL, FIELD_COUNT
+    VERSION, DEVICE, BOOT, EPOCH, ID, ISSUED, TTL, MODE, FAN, LED, HOLD, FAN_LEVEL, AC_TEMP, FIELD_COUNT
 };
 static const char *const fields[FIELD_COUNT]={
     "v","device_id","boot_id","control_epoch","cmd_id","issued_at","ttl_s","mode",
-    "fan_out","led_out","hold_s","fan_level"
+    "fan_out","led_out","hold_s","fan_level","ac_temp_c"
 };
 
 static bool field_value(enum CommandField key,const char **p,NetCommand *cmd,
@@ -136,7 +136,8 @@ static bool field_value(enum CommandField key,const char **p,NetCommand *cmd,
     case VERSION:
         if(!string_value(p,word,sizeof word))return false;
         cmd->fan_levels_version=strcmp(word,NET_WIRE_FAN_LEVELS)==0;
-        *supported=cmd->fan_levels_version || strcmp(word,NET_WIRE_BASE)==0;
+        cmd->ac_version=strcmp(word,NET_WIRE_AC_DEMO)==0;
+        *supported=cmd->ac_version || cmd->fan_levels_version || strcmp(word,NET_WIRE_BASE)==0;
         return true;
     case DEVICE: return string_value(p,cmd->device,sizeof cmd->device) && device_id(cmd->device);
     case BOOT: return string_value(p,cmd->boot,sizeof cmd->boot) && boot_id(cmd->boot);
@@ -160,6 +161,10 @@ static bool field_value(enum CommandField key,const char **p,NetCommand *cmd,
         if(!unsigned_value(p,CONTROL_FAN_MAX,&value))return false;
         cmd->fan_level=(int8_t)value;
         return true;
+    case AC_TEMP:
+        if(!unsigned_value(p,30,&value) || (value != 0 && value < 16))return false;
+        cmd->ac_temp_c=(int8_t)value;
+        return true;
     case HOLD:
         if(!unsigned_value(p,300,&value))return false;
         cmd->hold_s=(uint16_t)value;
@@ -170,6 +175,7 @@ static bool field_value(enum CommandField key,const char **p,NetCommand *cmd,
 
 NetCommandParse Net_ParseCommand(const char *json,NetCommand *cmd) {
     memset(cmd,0,sizeof *cmd);
+    cmd->ac_temp_c=-1;
     if(strlen(json)>NET_COMMAND_LIMIT || !take(&json,'{'))return NET_COMMAND_INVALID;
     unsigned seen=0;
     bool supported=false,remote=false;
@@ -186,9 +192,13 @@ NetCommandParse Net_ParseCommand(const char *json,NetCommand *cmd) {
     /* Existing clients still send the original required fields without fan_level. */
     const unsigned required=(1U<<FAN_LEVEL)-1U;
     const bool has_level=(seen&(1U<<FAN_LEVEL))!=0;
-    if((seen&required)!=required || !take(&json,'}'))return NET_COMMAND_INVALID;
+    if(!take(&json,'}'))return NET_COMMAND_INVALID;
     whitespace(&json);
     if(*json)return NET_COMMAND_INVALID;
+    /* AC actions carry only the shared session fields and their absolute temperature. */
+    const unsigned ac_required=((1U<<MODE)-1U)|(1U<<AC_TEMP);
+    if(cmd->ac_version)return seen==ac_required ? NET_COMMAND_OK : NET_COMMAND_INVALID;
+    if((seen&required)!=required || (seen&(1U<<AC_TEMP)))return NET_COMMAND_INVALID;
     if(!supported)return NET_COMMAND_UNSUPPORTED;
     /* A frozen 1.0 message cannot carry any new fields. */
     if(has_level!=(cmd->fan_levels_version && remote))return NET_COMMAND_INVALID;
@@ -204,6 +214,7 @@ bool Net_SameCommand(const NetCommand *a,const NetCommand *b) {
     return strcmp(a->device,b->device)==0 && strcmp(a->boot,b->boot)==0 &&
            strcmp(a->id,b->id)==0 && a->issued_at==b->issued_at &&
            a->epoch==b->epoch && a->hold_s==b->hold_s && a->ttl_s==b->ttl_s &&
-           a->fan_levels_version==b->fan_levels_version &&
+           a->fan_levels_version==b->fan_levels_version && a->ac_version==b->ac_version &&
+           a->ac_temp_c==b->ac_temp_c &&
            a->fan_level==b->fan_level && a->led==b->led;
 }

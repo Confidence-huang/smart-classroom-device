@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "app_ac_demo.h"
 #include "cmsis_os.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -150,6 +151,8 @@ int main(void)
   {
     Error_Handler();
   }
+
+  AppAcDemo_Init(); /* Safely probe the optional IR module after fan standby is initialized. */
 
   /* USER CODE END 2 */
 

@@ -1,4 +1,5 @@
 #include "app_control.h"
+#include "app_ac_demo.h"
 #include "app_environment.h"
 #include "app_vision.h"
 #include "stm32f4xx_hal.h"
@@ -9,6 +10,14 @@
 int critical_depth;
 static uint32_t tick;
 static bool button_pressed;
+static unsigned ac_requests;
+static uint8_t ac_temperature;
+AcModuleResult AppAcDemo_Send(uint8_t temperature_c) {
+    assert(critical_depth==0);
+    ++ac_requests;
+    ac_temperature=temperature_c;
+    return AC_MODULE_ACK;
+}
 static EnvironmentSnapshot environment;
 static EvVision vision;
 uint32_t HAL_GetTick(void){return tick;}
@@ -85,6 +94,28 @@ static void remote_mailbox_and_button(void) {
     assert(snapshot.mode==CONTROL_LOCAL_OFF && strcmp(last_command,"fan-on")==0);
 }
 
+static void demo_is_independent_and_obeys_local_lock(void) {
+    AppControl_Init();
+    button_pressed=false;
+    tick=20000;
+    ControlCommand request={.epoch=0,.expires_at=21000,.ac_demo=true,.ac_temp_c=23,.id="demo-on"};
+    ControlReply reply;
+    assert(AppControl_Queue(&request));
+    ControlOutput output=AppControl_Poll();
+    assert(output.mode==CONTROL_AUTO && !output.fan_level && !output.led && !ac_requests);
+    AppControl_PublishApplied(&output);
+    assert(AppControl_TakeReply(&reply) && reply.result==CONTROL_AC_ACCEPTED);
+    assert(ac_requests==1 && ac_temperature==23);
+
+    AppControl_SafetyOff();
+    request.epoch=1;
+    request.ac_temp_c=0;
+    assert(AppControl_Queue(&request));
+    output=AppControl_Poll();
+    AppControl_PublishApplied(&output);
+    assert(AppControl_TakeReply(&reply) && reply.result==CONTROL_LOCAL_LOCKED && ac_requests==1);
+}
+
 int main(void) {
     AppControl_Init();memcpy(vision.link,"0000000000000001",17);memcpy(vision.boot,"0000000000000002",17);vision.count=1;
     ControlOutput out=frame(0,0);assert(!out.led);
@@ -104,6 +135,7 @@ int main(void) {
     AppControl_PublishApplied(&out);AppControl_GetSnapshot(&published);assert(published.mode==CONTROL_LOCAL_OFF);
     invalid_between_polls_resets_confirmation();
     remote_mailbox_and_button();
+    demo_is_independent_and_obeys_local_lock();
     assert(critical_depth==0);
     puts("PASS: adapter frame identity, invalid sample between polls, applied-only snapshot, safety OFF and critical-section balance");
     return 0;

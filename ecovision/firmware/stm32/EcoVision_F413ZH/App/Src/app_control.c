@@ -1,4 +1,5 @@
 #include "app_control.h"
+#include "app_ac_demo.h"
 #include "app_environment.h"
 #include "app_vision.h"
 #include "cmsis_os.h"
@@ -52,6 +53,8 @@ static void choose_command(uint32_t now) {
     if(command_state!=COMMAND_QUEUED)return;
     if((int32_t)(now-command.expires_at)>=0)reply.result=CONTROL_EXPIRED;
     else if(policy.output.control_epoch!=command.epoch)reply.result=CONTROL_EPOCH_MISMATCH;
+    else if(command.ac_demo)
+        reply.result=policy.output.mode==CONTROL_LOCAL_OFF?CONTROL_LOCAL_LOCKED:CONTROL_AC_ACCEPTED;
     else if(!Control_Request(&policy,now,command.epoch,command.hold_s,command.fan_level,command.led))
         reply.result=CONTROL_LOCAL_LOCKED;
     else reply.result=CONTROL_APPLIED;
@@ -93,6 +96,15 @@ ControlOutput AppControl_Poll(void) {
 }
 
 void AppControl_PublishApplied(const ControlOutput *output) {
+    /* Poll has already handled B1. Keep the bounded UART exchange outside the critical section. */
+    if(command_state==COMMAND_WRITING && reply.result==CONTROL_AC_ACCEPTED) {
+        if((int32_t)(HAL_GetTick()-command.expires_at)>=0)reply.result=CONTROL_EXPIRED;
+        else {
+            AcModuleResult result=AppAcDemo_Send(command.ac_temp_c);
+            if(result==AC_MODULE_REJECTED)reply.result=CONTROL_AC_REJECTED;
+            if(result==AC_MODULE_UNKNOWN)reply.result=CONTROL_AC_UNKNOWN;
+        }
+    }
     taskENTER_CRITICAL();
     applied=*output;
     if(command_state==COMMAND_WRITING) {
