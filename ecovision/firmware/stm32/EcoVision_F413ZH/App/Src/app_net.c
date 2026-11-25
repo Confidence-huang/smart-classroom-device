@@ -10,6 +10,7 @@
 #include "app_fan.h"
 #include "app_led.h"
 #include "app_control.h"
+#include "app_ac_demo.h"
 #include "cmsis_os.h"
 #include <stdio.h>
 #include <string.h>
@@ -45,10 +46,11 @@ static ReceivedCommand inbox[COMMAND_QUEUE],working;
 static unsigned inbox_start,inbox_size;
 static bool awaiting_output;
 
-/* Cache only successful applications so duplicate delivery never renews a lease. */
+/* Cache successful applications and attempted IR sends so duplicates never repeat an action. */
 typedef struct {
  ReceivedCommand received;
  ControlOutput output;
+ const char *reason;
 } AppliedCommand;
 static AppliedCommand applied_cache[COMMAND_CACHE];
 static unsigned reserved_cache;
@@ -224,6 +226,19 @@ static bool publish(const char *name,const char *data,bool retain) {
 }
 static bool publish_ack(const ReceivedCommand *item, const ControlOutput *output,
                         const char *reason) {
+ if(item->command.ac_version) {
+  const char *status=!strcmp(reason,"OK")?"AC_ACCEPTED":!strcmp(reason,"AC_UNCONFIRMED")?"AC_UNKNOWN":"REJECTED";
+  char received_at[16]="null";
+  if(item->utc)(void)snprintf(received_at,sizeof received_at,"%lu",(unsigned long)item->utc);
+  int size=snprintf(payload,sizeof payload,
+    "{\"v\":\"%s\",\"device_id\":\"%s\",\"boot_id\":\"%s\",\"cmd_id\":\"%s\","
+    "\"status\":\"%s\",\"reason\":\"%s\",\"received_at\":%s,\"uptime_ms\":%lu,"
+    "\"control_epoch\":%lu,\"ac_temp_c\":%u}",
+    NET_WIRE_AC_DEMO,config.device,boot,item->command.id,status,reason,received_at,
+    (unsigned long)item->tick,(unsigned long)output->control_epoch,
+    item->command.ac_temp_c<0?0U:(unsigned)item->command.ac_temp_c);
+  return size>0 && (size_t)size<sizeof payload && publish(ack_topic,payload,false);
+ }
  /* Correlate with the request schema, even on an upgraded board serving a legacy client. */
  bool fan_levels_version=item->command.fan_levels_version;
  char level[20]="";
@@ -248,12 +263,16 @@ static bool finish_command(bool *refresh) {
  if(!AppControl_TakeReply(&reply))return true;
  awaiting_output=false;
  const char *reason="LOCAL_LOCKED";
- if(reply.result==CONTROL_APPLIED) {
-  applied_cache[reserved_cache]=(AppliedCommand){working,reply.output};
-  *refresh=true;
-  reason="OK";
- } else if(reply.result==CONTROL_EXPIRED)reason="EXPIRED";
+ if(reply.result==CONTROL_APPLIED || reply.result==CONTROL_AC_ACCEPTED)reason="OK";
+ else if(reply.result==CONTROL_AC_REJECTED)reason="AC_MODULE_REJECTED";
+ else if(reply.result==CONTROL_AC_UNKNOWN)reason="AC_UNCONFIRMED";
+ else if(reply.result==CONTROL_EXPIRED)reason="EXPIRED";
  else if(reply.result==CONTROL_EPOCH_MISMATCH)reason="EPOCH_MISMATCH";
+ if(reply.result==CONTROL_APPLIED || reply.result==CONTROL_AC_ACCEPTED ||
+    reply.result==CONTROL_AC_REJECTED || reply.result==CONTROL_AC_UNKNOWN) {
+  applied_cache[reserved_cache]=(AppliedCommand){working,reply.output,reason};
+  *refresh=true;
+ }
  return publish_ack(&working,&reply.output,reason);
 }
 
@@ -263,6 +282,7 @@ static const char *command_rejection(const ReceivedCommand *item,const ControlOu
  if(item->parsed==NET_COMMAND_INVALID)return "INVALID_MESSAGE";
  if(item->parsed==NET_COMMAND_UNSUPPORTED || (cmd->fan_levels_version && !config.fan_levels_version))
   return "UNSUPPORTED_VERSION";
+ if(cmd->ac_version && (!config.fan_levels_version || !AppAcDemo_Ready()))return "AC_UNAVAILABLE";
  if(strcmp(cmd->boot,boot)!=0)return "BOOT_MISMATCH";
  if(!clock_valid || !item->utc)return "TIME_UNTRUSTED";
  if(cmd->issued_at>item->utc)return "FUTURE_COMMAND";
@@ -288,7 +308,7 @@ static bool service_commands(bool *refresh) {
    AppliedCommand *entry=&applied_cache[i];
    const NetCommand *old=&entry->received.command;
    if(old->id[0] && strcmp(old->id,cmd->id)==0) {
-    if(Net_SameCommand(old,cmd))return publish_ack(&entry->received,&entry->output,"OK");
+    if(Net_SameCommand(old,cmd))return publish_ack(&entry->received,&entry->output,entry->reason);
     return publish_ack(&working,&current,"CMD_ID_CONFLICT");
    }
    if(!old->id[0] || (uint64_t)utc>=old->issued_at+old->ttl_s)free_slot=i;
@@ -305,7 +325,8 @@ static bool service_commands(bool *refresh) {
  if(free_slot==COMMAND_CACHE)return publish_ack(&working,&current,"BUSY");
 
  ControlCommand request={.epoch=cmd->epoch,.expires_at=expires_tick,.hold_s=cmd->hold_s,
-                         .fan_level=cmd->hold_s?(uint8_t)cmd->fan_level:CONTROL_FAN_OFF,.led=cmd->led==1};
+                         .fan_level=cmd->hold_s?(uint8_t)cmd->fan_level:CONTROL_FAN_OFF,.led=cmd->led==1,
+                         .ac_demo=cmd->ac_version,.ac_temp_c=cmd->ac_temp_c<0?0U:(uint8_t)cmd->ac_temp_c};
  memcpy(request.id,cmd->id,sizeof request.id);
  if(!AppControl_Queue(&request))return publish_ack(&working,&current,"BUSY");
  reserved_cache=free_slot;
@@ -409,6 +430,7 @@ void AppNet_Run(void *argument) {
    sample.remote=control.mode==CONTROL_REMOTE;
    sample.hold_remaining_s=control.hold_remaining_s;
    /* One applied snapshot avoids mixing pre/post LOCAL_OFF driver values. */
+   sample.ac_demo_ready=config.remote_enabled && AppAcDemo_Ready();
    sample.fan_level=control.fan_level;sample.led=control.led;
    sample.occupancy=(uint8_t)control.occupancy;
    sample.local_off=control.mode==CONTROL_LOCAL_OFF;sample.control_epoch=control.control_epoch;

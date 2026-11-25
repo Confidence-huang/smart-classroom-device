@@ -67,6 +67,25 @@ int main(void) {
  memcpy(strstr(changed,"1.0.0"),"1.1.0",5);
  assert(Net_ParseCommand(changed,&other)==NET_COMMAND_INVALID);
 
+ const char ac_context[]=
+  "{\"v\":\"1.2.0\",\"device_id\":\"ev001\",\"boot_id\":\"0123456789abcdef\","
+  "\"control_epoch\":4,\"cmd_id\":\"ac-1\",\"issued_at\":1795272586,\"ttl_s\":15";
+ const int supported[]={0,16,24,30};
+ for (unsigned i=0;i<sizeof supported/sizeof *supported;i++) {
+  snprintf(changed,sizeof changed,"%s,\"ac_temp_c\":%d}",ac_context,supported[i]);
+  assert(Net_ParseCommand(changed,&other)==NET_COMMAND_OK);
+  assert(other.ac_version && !other.fan_levels_version && other.ac_temp_c==supported[i]);
+ }
+ snprintf(changed,sizeof changed,"%s,\"ac_temp_c\":15}",ac_context);
+ assert(Net_ParseCommand(changed,&other)==NET_COMMAND_INVALID);
+ snprintf(changed,sizeof changed,"%s,\"ac_temp_c\":31}",ac_context);
+ assert(Net_ParseCommand(changed,&other)==NET_COMMAND_INVALID);
+ snprintf(changed,sizeof changed,"%s,\"ac_temp_c\":24,\"fan_level\":3}",ac_context);
+ assert(Net_ParseCommand(changed,&other)==NET_COMMAND_INVALID);
+ snprintf(changed,sizeof changed,"%s,\"ac_temp_c\":24}",ac_context);
+ memcpy(strstr(changed,"1.2.0"),"1.1.0",5);
+ assert(Net_ParseCommand(changed,&other)==NET_COMMAND_INVALID);
+
  char urc[300];
  const char *topic="ecovision/ev001/cmd";
  snprintf(urc,sizeof urc,"+QMTRECV: 0,12,\"%s\",%u,\"%s\"",

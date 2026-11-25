@@ -128,7 +128,7 @@ int Net_Telemetry(char *out,size_t size,const char *device,const char *boot,cons
  char level[20]="";
  if(fan_levels_version)(void)snprintf(level,sizeof level,",\"fan_level\":%u",(unsigned)s->fan_level);
  int n=snprintf(out,size,"{\"v\":\"%s\",\"device_id\":\"%s\",\"boot_id\":\"%s\",\"seq\":%lu,\"uptime_ms\":%lu,\"ts\":%s,\"time_valid\":%s,\"control_epoch\":%lu,\"count\":%s,\"vision_valid\":%s,\"vision_age_ms\":%s,\"temp_c\":%s,\"temp_valid\":%s,\"temp_age_ms\":%s,\"humidity_pct\":%s,\"humidity_valid\":%s,\"occupancy\":\"%s\",\"mode\":\"%s\",\"fan_out\":%u%s,\"led_out\":%u,\"hold_remaining_s\":%u,\"net_state\":\"ONLINE\",\"last_cmd_id\":%s,\"faults\":[%s%s%s]}",
- fan_levels_version?NET_WIRE_FAN_LEVELS:NET_WIRE_BASE,device,boot,(unsigned long)s->seq,(unsigned long)s->uptime,ts,boolean(s->time_valid),(unsigned long)s->control_epoch,count,boolean(vv),va,temp,boolean(tv),ta,rh,boolean(tv),occupancy[s->occupancy],s->local_off?"LOCAL_OFF":s->remote?"REMOTE":"AUTO",s->fan_level?1U:0U,level,s->led?1U:0U,
+ fan_levels_version?(s->ac_demo_ready?NET_WIRE_AC_DEMO:NET_WIRE_FAN_LEVELS):NET_WIRE_BASE,device,boot,(unsigned long)s->seq,(unsigned long)s->uptime,ts,boolean(s->time_valid),(unsigned long)s->control_epoch,count,boolean(vv),va,temp,boolean(tv),ta,rh,boolean(tv),occupancy[s->occupancy],s->local_off?"LOCAL_OFF":s->remote?"REMOTE":"AUTO",s->fan_level?1U:0U,level,s->led?1U:0U,
  (unsigned)s->hold_remaining_s,last,
  vv?"":"\"VISION_FAULT\"",(!vv&&!tv)?",":"",tv?"":"\"SENSOR_FAULT\"");
  return n<0 || (size_t)n>=size || n>1500 ? -1:n;

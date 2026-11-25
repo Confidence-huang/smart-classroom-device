@@ -7,6 +7,7 @@
 
 #define NET_WIRE_BASE "1.0.0"
 #define NET_WIRE_FAN_LEVELS "1.1.0"
+#define NET_WIRE_AC_DEMO "1.2.0"
 
 enum { NET_COMMAND_LIMIT=2048, NET_COMMAND_ID_SIZE=65 };
 
@@ -18,6 +19,8 @@ typedef struct {
     uint8_t ttl_s;
     int8_t fan, led; /* -1 for AUTO, binary outputs otherwise. */
     int8_t fan_level; /* Absolute PWM level, or -1 for AUTO. */
+    int8_t ac_temp_c; /* -1 for other commands, 0 for OFF, 16–30 for ON. */
+    bool ac_version;
     bool fan_levels_version; /* Echo the request version in ACK and dedup identity. */
 } NetCommand;
 
