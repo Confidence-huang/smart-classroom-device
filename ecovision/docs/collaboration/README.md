@@ -1,18 +1,6 @@
-# 队长接手与双仓库协作
+# 队长接手与双仓库协作（历史归档）
 
-## 当前仓库与协作规则（2026-11-22 更新）
-
-- 最新分工：用户分别发起 D01/D02 PR；另一位仓库管理者审查、在PR中要求修改，验收后合并并接手第3轮。D01/D02完整验证前不开PR。最小AUTO已获用户同意提前到D02，见 [确认的设计](../plans/2026-11-22-local-auto-design.md)。
-- Git 纪律本地适配版（未随本 PR 提供的归档引用 `skills/git-discipline/SKILL.md`）：已安装到本机 Codex 用户级 Skill 目录；保留上游来源与 MIT 授权，适配 Windows、既有会话授权和双仓库按功能 PR 流程。安装及 SHA256 核对见 收据（未随本 PR 提供的归档引用 `evidence/git-skill-adaptation-20261122/installation.json`），不改变模块边界或已有分支。
-- [PR 范围、优先级与分支保留协作文档](2026-11-22-pr-scope-and-branch-retention.md)：按实际提交区分可准备的 PR、待实现项及保留归档，后续审阅从这里开始。
-- 网页仓库：[smart-classroom-web](https://github.com/Confidence-huang/smart-classroom-web)。当前网页地址：[智慧教室看板](https://confidence-huang.github.io/smart-classroom-web/)，由用户提供，本轮未执行网页功能验收。
-- 设备仓库：[smart-classroom-device](https://github.com/Confidence-huang/smart-classroom-device)。两个仓库的 `chore/ecovision-checkpoint-20261121` 分支均保留，尚未合入远端 `main`。
-- 本机克隆仍在 `docs/delivery/2026-11-21/web-repo` 与 `board-repo`；两者 `origin` 的 fetch/push 地址已更新为对应新仓库的 HTTPS `.git` 地址，fetch 成功。
-- 每次修改前先读取各仓库 `AGENTS.md`、`PROJECT_LOG.md` 和 `README`，并核对 Git 根、`git status`、当前分支、HEAD 及远端地址；文件缺失时明确记录，不能假定存在。网页仓库当前本地与远端 `main` 均没有前两份文件，已读取现有 README；设备仓库三份文件均已读取，并区分本地日志与远端 `main` 日志。
-- 不把整个 checkpoint 分支直接合入 `main`。先按功能审阅差异，选定范围后再准备 PR；PR 可由用户发起，无需总控代发。本轮未切换分支、合并、重置、提交、推送或创建 PR。
-- fetch 后：网页本地 HEAD `19ed9e7`、远端 `main` `bc958b6`，相对领先 3 条、落后 2 条；设备本地 HEAD `5c74253`、远端 `main` `0f8b9d6`，相对领先 4 条。两个本地分支都名为 `main` 且工作区干净，HEAD 均等于各自远端 checkpoint；这是此前已有的本地状态，本轮原样保留，不能据此认为远端已合并。
-
-下方为 2026-11-20 历史检查记录；旧名称、状态和技术边界保留溯源。仓库现名及后续协作方式以上述更新为准，设备后续验证另见日报和模块证据。
+> **历史归档声明**：本文为 2026-11-20 至 2026-11-22 的阶段性协作记录归档；其中涉及的旧仓库状态、分支领先/落后计数已过时，**当前最新项目状态与冻结基线以根目录 `PROJECT_LOG.md` 为准**。
 
 ## 2026-11-20 历史记录
 
