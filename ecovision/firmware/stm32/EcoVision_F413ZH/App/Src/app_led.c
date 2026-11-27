@@ -152,7 +152,7 @@ void AppLed_Run(UART_HandleTypeDef *console)
     Servo_Init();
     bench_servo_ch = SERVO_CH_OPEN;
     AppLog_Printf("[CTRL] AUTO READY; B1 long=LOCAL_OFF short=AUTO; console 0/F0=safety OFF, V=handshake\r\n");
-    AppLog_Printf("[BENCH] SERVO PE9(A=open)+PE11(B=close) init 0deg(500us); cmd: A/B, +/-, Z(0), M(120), S000..S180, O/C\r\n");
+    AppLog_Printf("[BENCH] SERVO PE9(A=open)+PE11(B=close) init 0deg(500us); cmd: A/B, +/-, Z(0), M(30), S000..S180, O/C\r\n");
     uint32_t control_at=HAL_GetTick()-20U;
 
     for (;;)
@@ -163,12 +163,12 @@ void AppLed_Run(UART_HandleTypeDef *console)
             const ServoChannel active_ch = win_seq.target_open ? SERVO_CH_OPEN : SERVO_CH_CLOSE;
             if (win_seq.step == WIN_SEQ_RETREAT && (uint32_t)(now_seq - win_seq.step_at) >= 400U)
             {
-                Servo_SetChannelAngleDeg(active_ch, 120U);
+                Servo_SetChannelAngleDeg(active_ch, 30U);
                 win_seq.step = WIN_SEQ_ACTUATE;
                 win_seq.step_at = now_seq;
-                AppLog_Printf("[WIN_BENCH] actuate ch=%u deg=120\r\n", (unsigned)active_ch + 1U);
+                AppLog_Printf("[WIN_BENCH] actuate ch=%u deg=30\r\n", (unsigned)active_ch + 1U);
             }
-            else if (win_seq.step == WIN_SEQ_ACTUATE && (uint32_t)(now_seq - win_seq.step_at) >= 700U)
+            else if (win_seq.step == WIN_SEQ_ACTUATE && (uint32_t)(now_seq - win_seq.step_at) >= 400U)
             {
                 Servo_SetChannelAngleDeg(active_ch, 0U);
                 win_seq.step = WIN_SEQ_IDLE;
@@ -286,8 +286,8 @@ void AppLed_Run(UART_HandleTypeDef *console)
             }
             else if (command == 'M')
             {
-                Servo_SetChannelAngleDeg(bench_servo_ch, 120U);
-                AppLog_Printf("[SERVO_BENCH] ch=%u deg=120 pulse_us=%u\r\n",
+                Servo_SetChannelAngleDeg(bench_servo_ch, 30U);
+                AppLog_Printf("[SERVO_BENCH] ch=%u deg=30 pulse_us=%u\r\n",
                               (unsigned)bench_servo_ch + 1U,
                               (unsigned)Servo_GetChannelPulseUs(bench_servo_ch));
             }
