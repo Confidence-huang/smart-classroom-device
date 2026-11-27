@@ -23,27 +23,35 @@
 
 #define SERVO_MIN_PULSE_US     500U    /**< 0° 对应脉宽 */
 #define SERVO_MAX_PULSE_US     2500U   /**< 180° 对应脉宽 */
-#define SERVO_DEFAULT_PULSE_US 1500U   /**< 上电中位 1.5 ms */
+#define SERVO_DEFAULT_PULSE_US 500U    /**< 上电待命位 0°（避免双舵机互顶） */
 #define SERVO_PERIOD_US        20000U  /**< 50 Hz 周期 20 ms */
 
+typedef enum {
+    SERVO_CH_OPEN  = 0U, /**< 舵机 1：PE9 / TIM1_CH1 / D6（开窗） */
+    SERVO_CH_CLOSE = 1U, /**< 舵机 2：PE11 / TIM1_CH2 / D5（关窗） */
+    SERVO_CH_COUNT = 2U
+} ServoChannel;
+
 /**
- * @brief  初始化 PE9 为 TIM1_CH1 PWM 输出（50 Hz），并把脉宽置为中位 1.5 ms
- * @note   会打开 GPIOE、TIM1 时钟；必须在 HAL_Init() 之后调用
+ * @brief  初始化 PE9 (TIM1_CH1) 与 PE11 (TIM1_CH2) 为 50 Hz PWM 输出，初始置为 0° 待命位
  */
 void Servo_Init(void);
 
-/**
- * @brief  设置脉宽（us），超出 500~2500 会被钳位
- */
+/** @brief 设置指定通道脉宽（us，钳位到 500~2500） */
+void Servo_SetChannelPulseUs(ServoChannel ch, uint16_t pulse_us);
+
+/** @brief 读取指定通道当前脉宽（us） */
+uint16_t Servo_GetChannelPulseUs(ServoChannel ch);
+
+/** @brief 设置指定通道角度（0~180°） */
+void Servo_SetChannelAngleDeg(ServoChannel ch, uint16_t deg);
+
+/** @brief 读取指定通道当前角度（0~180°） */
+uint16_t Servo_GetChannelAngleDeg(ServoChannel ch);
+
+/* 向后兼容的单路默认接口（操作 SERVO_CH_OPEN / PE9） */
 void Servo_SetPulseUs(uint16_t pulse_us);
-
-/** @brief 读取当前设定的脉宽（us） */
 uint16_t Servo_GetPulseUs(void);
-
-/**
- * @brief  设置角度（0~180°），线性映射到 500~2500 us
- * @param  deg 角度，>180 按 180 处理
- */
 void Servo_SetAngleDeg(uint16_t deg);
 
 #endif /* APP_SERVO_H */

@@ -26,7 +26,13 @@ static uint32_t fan_prefix_at;
 static uint8_t servo_digits_left;
 static uint16_t servo_acc;
 static uint32_t servo_prefix_at;
-static uint16_t bench_servo_deg = 90U;
+static ServoChannel bench_servo_ch = SERVO_CH_OPEN;
+typedef enum { WIN_SEQ_IDLE = 0, WIN_SEQ_RETREAT, WIN_SEQ_ACTUATE, WIN_SEQ_RELEASE } WinSeqStep;
+static struct {
+    WinSeqStep step;
+    bool target_open;
+    uint32_t step_at;
+} win_seq;
 /* R, G, B. Warm pale yellow, scaled equally across four brightness steps. */
 static const uint8_t levels[5][3] = {
     {0U, 0U, 0U},
@@ -144,14 +150,31 @@ void AppLed_Run(UART_HandleTypeDef *console)
     HAL_NVIC_EnableIRQ(USART3_IRQn);
     AppControl_Init();
     Servo_Init();
-    bench_servo_deg = 90U;
+    bench_servo_ch = SERVO_CH_OPEN;
     AppLog_Printf("[CTRL] AUTO READY; B1 long=LOCAL_OFF short=AUTO; console 0/F0=safety OFF, V=handshake\r\n");
-    AppLog_Printf("[BENCH] SERVO PE9 init deg=%u pulse=%u; cmd: +/- (5deg), M (90deg), S000..S180, R (reed)\r\n",
-                  (unsigned)bench_servo_deg, (unsigned)Servo_GetPulseUs());
+    AppLog_Printf("[BENCH] SERVO PE9(A=open)+PE11(B=close) init 0deg(500us); cmd: A/B, +/-, Z(0), M(45), S000..S180, O/C\r\n");
     uint32_t control_at=HAL_GetTick()-20U;
 
     for (;;)
     {
+        if (win_seq.step != WIN_SEQ_IDLE)
+        {
+            const uint32_t now_seq = HAL_GetTick();
+            const ServoChannel active_ch = win_seq.target_open ? SERVO_CH_OPEN : SERVO_CH_CLOSE;
+            if (win_seq.step == WIN_SEQ_RETREAT && (uint32_t)(now_seq - win_seq.step_at) >= 400U)
+            {
+                Servo_SetChannelAngleDeg(active_ch, 45U);
+                win_seq.step = WIN_SEQ_ACTUATE;
+                win_seq.step_at = now_seq;
+                AppLog_Printf("[WIN_BENCH] actuate ch=%u deg=45\r\n", (unsigned)active_ch + 1U);
+            }
+            else if (win_seq.step == WIN_SEQ_ACTUATE && (uint32_t)(now_seq - win_seq.step_at) >= 500U)
+            {
+                Servo_SetChannelAngleDeg(active_ch, 0U);
+                win_seq.step = WIN_SEQ_IDLE;
+                AppLog_Printf("[WIN_BENCH] done %s (returned 0deg)\r\n", win_seq.target_open ? "OPEN" : "CLOSE");
+            }
+        }
         if (fan_prefix && HAL_GetTick() - fan_prefix_at >= 500U)
         {
             fan_prefix = false;
@@ -186,10 +209,12 @@ void AppLed_Run(UART_HandleTypeDef *console)
                     servo_digits_left--;
                     if (servo_digits_left == 0U)
                     {
-                        bench_servo_deg = (servo_acc > 180U) ? 180U : servo_acc;
-                        Servo_SetAngleDeg(bench_servo_deg);
-                        AppLog_Printf("[SERVO_BENCH] deg=%u pulse_us=%u\r\n",
-                                      (unsigned)bench_servo_deg, (unsigned)Servo_GetPulseUs());
+                        uint16_t deg = (servo_acc > 180U) ? 180U : servo_acc;
+                        Servo_SetChannelAngleDeg(bench_servo_ch, deg);
+                        AppLog_Printf("[SERVO_BENCH] ch=%u deg=%u pulse_us=%u\r\n",
+                                      (unsigned)bench_servo_ch + 1U,
+                                      (unsigned)Servo_GetChannelAngleDeg(bench_servo_ch),
+                                      (unsigned)Servo_GetChannelPulseUs(bench_servo_ch));
                     }
                 }
                 else
@@ -216,6 +241,18 @@ void AppLed_Run(UART_HandleTypeDef *console)
                 fan_prefix = true;
                 fan_prefix_at = HAL_GetTick();
             }
+            else if (command == 'A')
+            {
+                bench_servo_ch = SERVO_CH_OPEN;
+                AppLog_Printf("[SERVO_BENCH] select ch=1 (PE9/D6 OPEN) deg=%u\r\n",
+                              (unsigned)Servo_GetChannelAngleDeg(bench_servo_ch));
+            }
+            else if (command == 'B')
+            {
+                bench_servo_ch = SERVO_CH_CLOSE;
+                AppLog_Printf("[SERVO_BENCH] select ch=2 (PE11/D5 CLOSE) deg=%u\r\n",
+                              (unsigned)Servo_GetChannelAngleDeg(bench_servo_ch));
+            }
             else if (command == 'S')
             {
                 servo_digits_left = 3U;
@@ -224,24 +261,46 @@ void AppLed_Run(UART_HandleTypeDef *console)
             }
             else if (command == '+')
             {
-                bench_servo_deg = (bench_servo_deg + 5U > 180U) ? 180U : (uint16_t)(bench_servo_deg + 5U);
-                Servo_SetAngleDeg(bench_servo_deg);
-                AppLog_Printf("[SERVO_BENCH] deg=%u pulse_us=%u\r\n",
-                              (unsigned)bench_servo_deg, (unsigned)Servo_GetPulseUs());
+                uint16_t cur = Servo_GetChannelAngleDeg(bench_servo_ch);
+                uint16_t deg = (cur + 5U > 180U) ? 180U : (uint16_t)(cur + 5U);
+                Servo_SetChannelAngleDeg(bench_servo_ch, deg);
+                AppLog_Printf("[SERVO_BENCH] ch=%u deg=%u pulse_us=%u\r\n",
+                              (unsigned)bench_servo_ch + 1U, (unsigned)deg,
+                              (unsigned)Servo_GetChannelPulseUs(bench_servo_ch));
             }
             else if (command == '-')
             {
-                bench_servo_deg = (bench_servo_deg < 5U) ? 0U : (uint16_t)(bench_servo_deg - 5U);
-                Servo_SetAngleDeg(bench_servo_deg);
-                AppLog_Printf("[SERVO_BENCH] deg=%u pulse_us=%u\r\n",
-                              (unsigned)bench_servo_deg, (unsigned)Servo_GetPulseUs());
+                uint16_t cur = Servo_GetChannelAngleDeg(bench_servo_ch);
+                uint16_t deg = (cur < 5U) ? 0U : (uint16_t)(cur - 5U);
+                Servo_SetChannelAngleDeg(bench_servo_ch, deg);
+                AppLog_Printf("[SERVO_BENCH] ch=%u deg=%u pulse_us=%u\r\n",
+                              (unsigned)bench_servo_ch + 1U, (unsigned)deg,
+                              (unsigned)Servo_GetChannelPulseUs(bench_servo_ch));
+            }
+            else if (command == 'Z')
+            {
+                Servo_SetChannelAngleDeg(bench_servo_ch, 0U);
+                AppLog_Printf("[SERVO_BENCH] ch=%u deg=0 pulse_us=%u\r\n",
+                              (unsigned)bench_servo_ch + 1U,
+                              (unsigned)Servo_GetChannelPulseUs(bench_servo_ch));
             }
             else if (command == 'M')
             {
-                bench_servo_deg = 90U;
-                Servo_SetAngleDeg(bench_servo_deg);
-                AppLog_Printf("[SERVO_BENCH] deg=%u pulse_us=%u\r\n",
-                              (unsigned)bench_servo_deg, (unsigned)Servo_GetPulseUs());
+                Servo_SetChannelAngleDeg(bench_servo_ch, 45U);
+                AppLog_Printf("[SERVO_BENCH] ch=%u deg=45 pulse_us=%u\r\n",
+                              (unsigned)bench_servo_ch + 1U,
+                              (unsigned)Servo_GetChannelPulseUs(bench_servo_ch));
+            }
+            else if (command == 'O' || command == 'C')
+            {
+                const bool want_open = (command == 'O');
+                const ServoChannel retreat_ch = want_open ? SERVO_CH_CLOSE : SERVO_CH_OPEN;
+                Servo_SetChannelAngleDeg(retreat_ch, 0U);
+                win_seq.target_open = want_open;
+                win_seq.step = WIN_SEQ_RETREAT;
+                win_seq.step_at = HAL_GetTick();
+                AppLog_Printf("[WIN_BENCH] start %s: retreat ch=%u -> 0deg\r\n",
+                              want_open ? "OPEN" : "CLOSE", (unsigned)retreat_ch + 1U);
             }
             else if (command == 'R')
             {
@@ -261,7 +320,7 @@ void AppLed_Run(UART_HandleTypeDef *console)
             }
             else if (command != '\r' && command != '\n' && command != ' ' && command != '\t')
             {
-                AppLog_Printf("[CTRL] ERROR byte=0x%02X; use B1, 0/F0, V, +, -, M, S000..S180, R\r\n", command);
+                AppLog_Printf("[CTRL] ERROR byte=0x%02X; use B1, 0/F0, V, A/B, +/-, Z, M, S000..S180, O/C, R\r\n", command);
             }
         }
         uint32_t now=HAL_GetTick();

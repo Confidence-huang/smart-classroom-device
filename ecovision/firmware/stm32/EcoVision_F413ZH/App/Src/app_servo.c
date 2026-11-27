@@ -14,12 +14,17 @@
 #include "main.h"
 #include "app_servo.h"
 
-/* ---- 用到的寄存器位定义（等价于 HAL 里的 TIM_CCMR1_OC1M / TIM_CCER_CC1E 等） ---- */
+/* ---- 用到的寄存器位定义（等价于 HAL 里的 TIM_CCMR1_OC1M / OC2M / CCER 等） ---- */
 #define SRV_CCMR1_CC1S_Msk      (0x3UL << 0)   /**< CC1S[1:0]：通道 1 配置为输出 */
-#define SRV_CCMR1_OC1M_Msk      (0x7UL << 4)   /**< OC1M[2:0]：输出比较模式 */
-#define SRV_CCMR1_OC1M_PWM1     (0x6UL << 4)   /**< 110 = PWM 模式 1 */
 #define SRV_CCMR1_OC1PE         (0x1UL << 3)   /**< OC1PE：CCR1 预装载使能 */
+#define SRV_CCMR1_OC1M_Msk      (0x7UL << 4)   /**< OC1M[2:0]：通道 1 输出比较模式 */
+#define SRV_CCMR1_OC1M_PWM1     (0x6UL << 4)   /**< 110 = PWM 模式 1 */
+#define SRV_CCMR1_CC2S_Msk      (0x3UL << 8)   /**< CC2S[1:0]：通道 2 配置为输出 */
+#define SRV_CCMR1_OC2PE         (0x1UL << 11)  /**< OC2PE：CCR2 预装载使能 */
+#define SRV_CCMR1_OC2M_Msk      (0x7UL << 12)  /**< OC2M[2:0]：通道 2 输出比较模式 */
+#define SRV_CCMR1_OC2M_PWM1     (0x6UL << 12)  /**< 110 = PWM 模式 1 */
 #define SRV_CCER_CC1E           (0x1UL << 0)   /**< CC1E：通道 1 输出使能 */
+#define SRV_CCER_CC2E           (0x1UL << 4)   /**< CC2E：通道 2 输出使能 */
 #define SRV_CR1_ARPE            (0x1UL << 7)   /**< ARPE：ARR 预装载使能 */
 #define SRV_CR1_CEN             (0x1UL << 0)   /**< CEN：计数器使能 */
 #define SRV_EGR_UG              (0x1UL << 0)   /**< UG：软件产生更新事件（装载影子寄存器） */
@@ -27,10 +32,12 @@
 
 #define SERVO_TIM               TIM1
 #define SERVO_GPIO_PORT         GPIOE
-#define SERVO_GPIO_PIN          GPIO_PIN_9
+#define SERVO_OPEN_PIN          GPIO_PIN_9     /* TIM1_CH1 / D6 */
+#define SERVO_CLOSE_PIN         GPIO_PIN_11    /* TIM1_CH2 / D5 */
 #define SERVO_GPIO_AF           GPIO_AF1_TIM1
 
-static uint16_t s_pulse_us = SERVO_DEFAULT_PULSE_US;
+static uint16_t s_pulse_us[SERVO_CH_COUNT] = { SERVO_DEFAULT_PULSE_US, SERVO_DEFAULT_PULSE_US };
+static uint16_t s_deg[SERVO_CH_COUNT]      = { 0U, 0U };
 
 /** @brief 取 TIM1 的真实内核时钟（Hz）：APB2 分频不为 1 时定时器时钟 = PCLK2 × 2 */
 static uint32_t Servo_GetTimerClockHz(void)
@@ -52,8 +59,8 @@ void Servo_Init(void)
     __HAL_RCC_GPIOE_CLK_ENABLE();
     __HAL_RCC_TIM1_CLK_ENABLE();
 
-    /* 2) PE9 复用为 TIM1_CH1（AF1） */
-    gpio.Pin       = SERVO_GPIO_PIN;
+    /* 2) PE9 (TIM1_CH1) 与 PE11 (TIM1_CH2) 复用为 AF1 */
+    gpio.Pin       = SERVO_OPEN_PIN | SERVO_CLOSE_PIN;
     gpio.Mode      = GPIO_MODE_AF_PP;
     gpio.Pull      = GPIO_NOPULL;
     gpio.Speed     = GPIO_SPEED_FREQ_HIGH;
@@ -69,18 +76,21 @@ void Servo_Init(void)
     }
     SERVO_TIM->PSC = (uint16_t)(psc - 1U);
     SERVO_TIM->ARR = SERVO_PERIOD_US - 1U;
-    SERVO_TIM->CCR1 = s_pulse_us;
+    SERVO_TIM->CCR1 = s_pulse_us[SERVO_CH_OPEN];
+    SERVO_TIM->CCR2 = s_pulse_us[SERVO_CH_CLOSE];
 
-    /* 4) 通道 1：PWM 模式 1 + CCR 预装载 */
+    /* 4) 通道 1 & 2：PWM 模式 1 + CCR 预装载 */
     {
         uint32_t ccmr1 = SERVO_TIM->CCMR1;
-        ccmr1 &= ~(SRV_CCMR1_CC1S_Msk | SRV_CCMR1_OC1M_Msk);
-        ccmr1 |= (SRV_CCMR1_OC1M_PWM1 | SRV_CCMR1_OC1PE);
+        ccmr1 &= ~(SRV_CCMR1_CC1S_Msk | SRV_CCMR1_OC1M_Msk |
+                   SRV_CCMR1_CC2S_Msk | SRV_CCMR1_OC2M_Msk);
+        ccmr1 |= (SRV_CCMR1_OC1M_PWM1 | SRV_CCMR1_OC1PE |
+                  SRV_CCMR1_OC2M_PWM1 | SRV_CCMR1_OC2PE);
         SERVO_TIM->CCMR1 = ccmr1;
     }
-    SERVO_TIM->CCER |= SRV_CCER_CC1E;
+    SERVO_TIM->CCER |= (SRV_CCER_CC1E | SRV_CCER_CC2E);
 
-    /* 5) 高级定时器：必须开主输出 MOE，否则 PB/PE 上一直无波形 */
+    /* 5) 高级定时器：必须开主输出 MOE，否则无波形 */
     SERVO_TIM->BDTR |= SRV_BDTR_MOE;
 
     /* 6) 装载 PSC/ARR 影子寄存器，再启动计数 */
@@ -89,8 +99,12 @@ void Servo_Init(void)
     SERVO_TIM->CR1 |= SRV_CR1_CEN;
 }
 
-void Servo_SetPulseUs(uint16_t pulse_us)
+void Servo_SetChannelPulseUs(ServoChannel ch, uint16_t pulse_us)
 {
+    if ((uint32_t)ch >= (uint32_t)SERVO_CH_COUNT)
+    {
+        return;
+    }
     if (pulse_us < SERVO_MIN_PULSE_US)
     {
         pulse_us = SERVO_MIN_PULSE_US;
@@ -100,23 +114,63 @@ void Servo_SetPulseUs(uint16_t pulse_us)
         pulse_us = SERVO_MAX_PULSE_US;
     }
 
-    s_pulse_us = pulse_us;
-    SERVO_TIM->CCR1 = (uint32_t)pulse_us;   /* 1 tick = 1 us */
+    s_pulse_us[ch] = pulse_us;
+    if (ch == SERVO_CH_OPEN)
+    {
+        SERVO_TIM->CCR1 = (uint32_t)pulse_us;
+    }
+    else
+    {
+        SERVO_TIM->CCR2 = (uint32_t)pulse_us;
+    }
 }
 
-uint16_t Servo_GetPulseUs(void)
+uint16_t Servo_GetChannelPulseUs(ServoChannel ch)
 {
-    return s_pulse_us;
+    if ((uint32_t)ch >= (uint32_t)SERVO_CH_COUNT)
+    {
+        return 0U;
+    }
+    return s_pulse_us[ch];
 }
 
-void Servo_SetAngleDeg(uint16_t deg)
+void Servo_SetChannelAngleDeg(ServoChannel ch, uint16_t deg)
 {
     uint32_t span_us = (uint32_t)(SERVO_MAX_PULSE_US - SERVO_MIN_PULSE_US);  /* 2000 us */
 
+    if ((uint32_t)ch >= (uint32_t)SERVO_CH_COUNT)
+    {
+        return;
+    }
     if (deg > 180U)
     {
         deg = 180U;
     }
+    s_deg[ch] = deg;
     /* pulse = 500 + deg × 2000 / 180，先乘后除避免丢精度 */
-    Servo_SetPulseUs((uint16_t)(SERVO_MIN_PULSE_US + (deg * span_us + 90U) / 180U));
+    Servo_SetChannelPulseUs(ch, (uint16_t)(SERVO_MIN_PULSE_US + (deg * span_us + 90U) / 180U));
+}
+
+uint16_t Servo_GetChannelAngleDeg(ServoChannel ch)
+{
+    if ((uint32_t)ch >= (uint32_t)SERVO_CH_COUNT)
+    {
+        return 0U;
+    }
+    return s_deg[ch];
+}
+
+void Servo_SetPulseUs(uint16_t pulse_us)
+{
+    Servo_SetChannelPulseUs(SERVO_CH_OPEN, pulse_us);
+}
+
+uint16_t Servo_GetPulseUs(void)
+{
+    return Servo_GetChannelPulseUs(SERVO_CH_OPEN);
+}
+
+void Servo_SetAngleDeg(uint16_t deg)
+{
+    Servo_SetChannelAngleDeg(SERVO_CH_OPEN, deg);
 }
