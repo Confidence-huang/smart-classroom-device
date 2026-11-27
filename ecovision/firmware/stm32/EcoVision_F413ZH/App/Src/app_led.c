@@ -1,6 +1,8 @@
 #include "app_led.h"
 #include "app_log.h"
 #include "app_fan.h"
+#include "app_reed.h"
+#include "app_servo.h"
 #include "app_vision.h"
 #include "app_control.h"
 #include "cmsis_os.h"
@@ -21,6 +23,10 @@ static volatile uint8_t rx_tail;
 static volatile bool rx_error;
 static bool fan_prefix;
 static uint32_t fan_prefix_at;
+static uint8_t servo_digits_left;
+static uint16_t servo_acc;
+static uint32_t servo_prefix_at;
+static uint16_t bench_servo_deg = 90U;
 /* R, G, B. Warm pale yellow, scaled equally across four brightness steps. */
 static const uint8_t levels[5][3] = {
     {0U, 0U, 0U},
@@ -137,7 +143,11 @@ void AppLed_Run(UART_HandleTypeDef *console)
     receive_byte();
     HAL_NVIC_EnableIRQ(USART3_IRQn);
     AppControl_Init();
+    Servo_Init();
+    bench_servo_deg = 90U;
     AppLog_Printf("[CTRL] AUTO READY; B1 long=LOCAL_OFF short=AUTO; console 0/F0=safety OFF, V=handshake\r\n");
+    AppLog_Printf("[BENCH] SERVO PE9 init deg=%u pulse=%u; cmd: +/- (5deg), M (90deg), S000..S180, R (reed)\r\n",
+                  (unsigned)bench_servo_deg, (unsigned)Servo_GetPulseUs());
     uint32_t control_at=HAL_GetTick()-20U;
 
     for (;;)
@@ -147,9 +157,15 @@ void AppLed_Run(UART_HandleTypeDef *console)
             fan_prefix = false;
             AppLog_Printf("[FAN] ERROR incomplete command; use F0..F4\r\n");
         }
+        if (servo_digits_left > 0U && HAL_GetTick() - servo_prefix_at >= 1000U)
+        {
+            servo_digits_left = 0U;
+            AppLog_Printf("[SERVO_BENCH] ERROR incomplete command; use S000..S180\r\n");
+        }
         if (rx_error)
         {
             fan_prefix = false;
+            servo_digits_left = 0U;
             HAL_NVIC_DisableIRQ(USART3_IRQn);
             rx_error = false;
             rx_tail = rx_head;
@@ -162,7 +178,27 @@ void AppLed_Run(UART_HandleTypeDef *console)
         {
             const uint8_t command = rx_data[rx_tail];
             rx_tail = (uint8_t)((rx_tail + 1U) % RX_SIZE);
-            if (fan_prefix)
+            if (servo_digits_left > 0U)
+            {
+                if (command >= '0' && command <= '9')
+                {
+                    servo_acc = (uint16_t)(servo_acc * 10U + (uint16_t)(command - '0'));
+                    servo_digits_left--;
+                    if (servo_digits_left == 0U)
+                    {
+                        bench_servo_deg = (servo_acc > 180U) ? 180U : servo_acc;
+                        Servo_SetAngleDeg(bench_servo_deg);
+                        AppLog_Printf("[SERVO_BENCH] deg=%u pulse_us=%u\r\n",
+                                      (unsigned)bench_servo_deg, (unsigned)Servo_GetPulseUs());
+                    }
+                }
+                else
+                {
+                    servo_digits_left = 0U;
+                    AppLog_Printf("[SERVO_BENCH] ERROR expected 3 digits S000..S180\r\n");
+                }
+            }
+            else if (fan_prefix)
             {
                 fan_prefix = false;
                 if (command >= '0' && command <= '4')
@@ -180,6 +216,40 @@ void AppLed_Run(UART_HandleTypeDef *console)
                 fan_prefix = true;
                 fan_prefix_at = HAL_GetTick();
             }
+            else if (command == 'S')
+            {
+                servo_digits_left = 3U;
+                servo_acc = 0U;
+                servo_prefix_at = HAL_GetTick();
+            }
+            else if (command == '+')
+            {
+                bench_servo_deg = (bench_servo_deg + 5U > 180U) ? 180U : (uint16_t)(bench_servo_deg + 5U);
+                Servo_SetAngleDeg(bench_servo_deg);
+                AppLog_Printf("[SERVO_BENCH] deg=%u pulse_us=%u\r\n",
+                              (unsigned)bench_servo_deg, (unsigned)Servo_GetPulseUs());
+            }
+            else if (command == '-')
+            {
+                bench_servo_deg = (bench_servo_deg < 5U) ? 0U : (uint16_t)(bench_servo_deg - 5U);
+                Servo_SetAngleDeg(bench_servo_deg);
+                AppLog_Printf("[SERVO_BENCH] deg=%u pulse_us=%u\r\n",
+                              (unsigned)bench_servo_deg, (unsigned)Servo_GetPulseUs());
+            }
+            else if (command == 'M')
+            {
+                bench_servo_deg = 90U;
+                Servo_SetAngleDeg(bench_servo_deg);
+                AppLog_Printf("[SERVO_BENCH] deg=%u pulse_us=%u\r\n",
+                              (unsigned)bench_servo_deg, (unsigned)Servo_GetPulseUs());
+            }
+            else if (command == 'R')
+            {
+                AppReed_Snapshot reed;
+                AppReed_GetSnapshot(&reed);
+                AppLog_Printf("[REED_BENCH] query valid=%u stable_do=%u\r\n",
+                              reed.valid ? 1U : 0U, reed.do_high ? 1U : 0U);
+            }
             else if (command == 'V')
             {
                 AppVision_Rehandshake();
@@ -191,7 +261,7 @@ void AppLed_Run(UART_HandleTypeDef *console)
             }
             else if (command != '\r' && command != '\n' && command != ' ' && command != '\t')
             {
-                AppLog_Printf("[CTRL] ERROR byte=0x%02X; use B1, 0/F0 or V\r\n", command);
+                AppLog_Printf("[CTRL] ERROR byte=0x%02X; use B1, 0/F0, V, +, -, M, S000..S180, R\r\n", command);
             }
         }
         uint32_t now=HAL_GetTick();

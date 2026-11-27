@@ -37,6 +37,7 @@ bool AppReed_Update(AppReed_Filter *filter, bool high, uint32_t now)
 void AppReed_Poll(void)
 {
     static AppReed_Filter filter;
+    static uint32_t last_bench_log_at;
     const bool high = HAL_GPIO_ReadPin(GPIOE, GPIO_PIN_13) == GPIO_PIN_SET;
     const uint32_t now = HAL_GetTick();
     const bool changed = AppReed_Update(&filter, high, now);
@@ -49,5 +50,13 @@ void AppReed_Poll(void)
     {
         AppLog_Printf("[REED] stable_do=%u window=UNKNOWN calibration=PENDING\r\n",
                       high ? 1U : 0U);
+    }
+    if ((uint32_t)(now - last_bench_log_at) >= 1000U)
+    {
+        last_bench_log_at = now;
+        AppLog_Printf("[REED_BENCH] raw_do=%u stable_valid=%u stable_do=%u\r\n",
+                      high ? 1U : 0U,
+                      filter.valid ? 1U : 0U,
+                      filter.stable_high ? 1U : 0U);
     }
 }
