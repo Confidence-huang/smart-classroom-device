@@ -1,0 +1,14 @@
+{
+  "imgsz": 320,
+  "conf": 0.35,
+  "nms": 0.6,
+  "max_det": 60,
+  "target_max_count": 20,
+  "observed_max_count": 18,
+  "status": "float candidate; K230 conversion and independent field acceptance pending",
+  "fixed_comparison_settings": {
+    "conf": 0.35,
+    "nms": 0.45
+  },
+  "recommendation": "Candidate only. Validation-selected NMS .6 gives more exact test counts but max error2; fixed NMS .45 max error1. Do not silently retune on test. K230 acceptance pending."
+}

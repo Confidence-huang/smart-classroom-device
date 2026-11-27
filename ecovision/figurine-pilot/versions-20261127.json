@@ -1,0 +1,54 @@
+[
+  {
+    "version": "V1",
+    "folder": "background-20261127",
+    "weight": "figurine_newbg_20261127.pt",
+    "sha256": "1c951817dfdc162640b344dfb68449720c61e3367351946b68799faa3b268323",
+    "epochs": 69,
+    "splits": {
+      "train": 109,
+      "val": 11,
+      "test": 12
+    },
+    "training_exposures": 109
+  },
+  {
+    "version": "V2",
+    "folder": "background-20261127-extra20",
+    "weight": "figurine_newbg_v2_20261127.pt",
+    "sha256": "283a386bad4ba3bef2630a8354357815486355beb8c7421e9e72c0d4947e852e",
+    "epochs": 41,
+    "splits": {
+      "train": 118,
+      "val": 12,
+      "test": 15
+    },
+    "training_exposures": 136
+  },
+  {
+    "version": "V3",
+    "folder": "background-20261127-count17-18",
+    "weight": "figurine_newbg_v3_20261127.pt",
+    "sha256": "74097b9ffe685942a39ef97df72ea2b1e110ac66500d72b40ca9d6d03092aa45",
+    "epochs": 36,
+    "splits": {
+      "train": 142,
+      "val": 17,
+      "test": 21
+    },
+    "training_exposures": 166
+  },
+  {
+    "version": "V4",
+    "folder": "background-20261127-count19-20",
+    "weight": "figurine_newbg_v4_20261127.pt",
+    "sha256": "252f9501a53b140a59010850656efca0d25fd99514e9fb9557ee70b9b329e48f",
+    "epochs": 44,
+    "splits": {
+      "train": 161,
+      "val": 22,
+      "test": 35
+    },
+    "training_exposures": 180
+  }
+]

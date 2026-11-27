@@ -143,9 +143,9 @@ try:
         pipeline = PipeLine(rgb888p_size=[640,480], display_mode="auto", display_size=None)
         pipeline.create(sensor_id=2)
         detector = ObjectDetectionApp(
-            "/sdcard/kmodel/figurine_multi.kmodel", labels=["figurine"],
-            model_input_size=[320,320], max_boxes_num=30,
-            confidence_threshold=0.35, nms_threshold=0.3,
+            "/sdcard/kmodel/figurine_newbg_v4_20261127.kmodel", labels=["figurine"],
+            model_input_size=[320,320], max_boxes_num=60,
+            confidence_threshold=0.50, nms_threshold=0.45,
             rgb888p_size=[640,480], display_size=pipeline.get_display_size())
         detector.config_preprocess()
     except Exception as exc:
@@ -154,7 +154,7 @@ try:
             os.exitpoint()
             board.publisher.service(board.now(), None, False)
             time.sleep_ms(10)
-    print("Model: figurine_multi | conf 0.35 | NMS 0.3 | EV1 UART2 GPIO5/6")
+    print("Model: figurine_newbg_v4_20261127 | conf 0.50 | NMS 0.45 | EV1 UART2 GPIO5/6")
     frames = 0
     started = time.ticks_ms()
     last_error = None

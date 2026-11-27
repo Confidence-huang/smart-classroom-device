@@ -1,0 +1,9 @@
+{
+  "imgsz": 320,
+  "conf": 0.35,
+  "nms": 0.45,
+  "max_det": 60,
+  "max_count_observed": 16,
+  "target_max_count": 25,
+  "status": "float model trained; K230 quantization and live acceptance pending"
+}

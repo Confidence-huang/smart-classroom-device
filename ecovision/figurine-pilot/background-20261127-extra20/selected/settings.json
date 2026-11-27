@@ -1,0 +1,10 @@
+{
+  "imgsz": 320,
+  "conf": 0.35,
+  "nms": 0.45,
+  "max_det": 60,
+  "target_max_count": 20,
+  "observed_max_count": 16,
+  "status": "float model; K230 conversion and 17-20 scene acceptance pending",
+  "recommendation": "candidate only; aggregate count accuracy tied and extra-layout test regressed; retain V1 pending more data"
+}

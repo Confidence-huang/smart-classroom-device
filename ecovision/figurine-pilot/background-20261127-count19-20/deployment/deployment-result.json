@@ -1,0 +1,32 @@
+{
+  "assets": {
+    "model_path": "/sdcard/kmodel/figurine_newbg_v4_20261127.kmodel",
+    "model_bytes": 3490672,
+    "model_sha256": "7326229cd117498c9ca0f08420233da854ff40741a62653970f6de5a0650cfd7",
+    "entry": "/sdcard/ecovision_uart/figurine_uart.py",
+    "entry_sha256": "0b29db359bef02a0ea45a7a22f63c70f4725e105dd9597ffefddbb98eab65ec7",
+    "backup_entry": "/sdcard/ecovision_uart/figurine_uart.before_newbg_v4_20261127.py",
+    "backup_sha256": "6e53129644599d76e4d79a3e7244ce0b5cb0237e9aa112bb5ab3f6a9e2a425f8",
+    "main_unchanged": true,
+    "main_sha256": "bc77c0ca8bf834fadaa8fa1f25cd26ad401f935331ba3f9623dc11994a69c3d8",
+    "conf": 0.5,
+    "nms": 0.45,
+    "max_det": 60,
+    "uart_changed": false,
+    "old_model_retained": true,
+    "setting_basis": "Live20 calibration; original float score uses conf.35. 600 diagnostic frames:597 correct,1 missed,2 invalid. Not independent accuracy."
+  },
+  "diagnostic_frame_histogram": {
+    "20": 597,
+    "19": 1,
+    "None": 2
+  },
+  "diagnostic_frames": 600,
+  "reset": {
+    "final_assets_verified": true,
+    "reset_command_acknowledged": true
+  },
+  "user_observation_after_reset": "User confirmed STM32 LCD PEOPLE updated to20 with CanMV disconnected",
+  "uart_wiring": "GPIO5 TX -> STM32 PD6; GPIO6 RX <- STM32 PD5; GND common; UART2 115200 8N1",
+  "limitations": "One static20-person scene; not independent0-20 acceptance. 3/600 imperfect frames. No physical power-cycle test this turn. Float30/35 refers to conf.35; board uses live-calibrated conf.50."
+}
