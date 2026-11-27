@@ -1,0 +1,19 @@
+{
+  "imgsz": 320,
+  "conf": 0.35,
+  "nms": 0.45,
+  "max_det": 60,
+  "target_max_count": 20,
+  "observed_max_count": 20,
+  "status": "float candidate; K230 conversion, independent capture and time stability acceptance pending",
+  "recommendation": "V4 is a promising deployment candidate. Independent capture, ONNX/kmodel conversion, quantization and board count/stability verification remain pending.",
+  "deployment": {
+    "model_path": "/sdcard/kmodel/figurine_newbg_v4_20261127.kmodel",
+    "entry": "/sdcard/ecovision_uart/figurine_uart.py",
+    "conf": 0.5,
+    "nms": 0.45,
+    "model_sha256": "7326229cd117498c9ca0f08420233da854ff40741a62653970f6de5a0650cfd7",
+    "record": "../deployment/DEPLOYMENT.md",
+    "user_confirmed_stm32_people": 20
+  }
+}

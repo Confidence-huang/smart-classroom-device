@@ -1,0 +1,413 @@
+[
+  {
+    "index": 9,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 11
+  },
+  {
+    "index": 10,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 11
+  },
+  {
+    "index": 12,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 11
+  },
+  {
+    "index": 13,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 11
+  },
+  {
+    "index": 14,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 15
+  },
+  {
+    "index": 16,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 15
+  },
+  {
+    "index": 18,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 28,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 29
+  },
+  {
+    "index": 30,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 29
+  },
+  {
+    "index": 31,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 32,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 33
+  },
+  {
+    "index": 34,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 33
+  },
+  {
+    "index": 35,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 33
+  },
+  {
+    "index": 43,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 44,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 45
+  },
+  {
+    "index": 46,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 45
+  },
+  {
+    "index": 47,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 45
+  },
+  {
+    "index": 48,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 49
+  },
+  {
+    "index": 50,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 49
+  },
+  {
+    "index": 51,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 49
+  },
+  {
+    "index": 60,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 61
+  },
+  {
+    "index": 62,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 61
+  },
+  {
+    "index": 63,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 61
+  },
+  {
+    "index": 64,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 65
+  },
+  {
+    "index": 66,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 65
+  },
+  {
+    "index": 67,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 65
+  },
+  {
+    "index": 74,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 80,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 81
+  },
+  {
+    "index": 82,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 81
+  },
+  {
+    "index": 83,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 81
+  },
+  {
+    "index": 84,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 85
+  },
+  {
+    "index": 86,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 85
+  },
+  {
+    "index": 87,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 85
+  },
+  {
+    "index": 88,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 95,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 96,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 98,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 99,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 97
+  },
+  {
+    "index": 100,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 101
+  },
+  {
+    "index": 102,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 101
+  },
+  {
+    "index": 103,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 101
+  },
+  {
+    "index": 104,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 101
+  },
+  {
+    "index": 105,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 106,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 107,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 108,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 116,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 117
+  },
+  {
+    "index": 118,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 119,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 120,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 122,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 123,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 121
+  },
+  {
+    "index": 136,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 137
+  },
+  {
+    "index": 138,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 137
+  },
+  {
+    "index": 139,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 137
+  },
+  {
+    "index": 140,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 141
+  },
+  {
+    "index": 142,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 143,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 144,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 146,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 147,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 148,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 151,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 154,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 156,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 157
+  },
+  {
+    "index": 158,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 157
+  },
+  {
+    "index": 159,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 157
+  },
+  {
+    "index": 160,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 161
+  },
+  {
+    "index": 162,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 161
+  },
+  {
+    "index": 163,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 161
+  },
+  {
+    "index": 164,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 172,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 176,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 177
+  },
+  {
+    "index": 178,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 179,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 180,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 182,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 181
+  },
+  {
+    "index": 183,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 181
+  },
+  {
+    "index": 184,
+    "reason": "near-identical held-out arrangement",
+    "anchors": [
+      181
+    ]
+  },
+  {
+    "index": 196,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 197
+  },
+  {
+    "index": 198,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 197
+  },
+  {
+    "index": 199,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 197
+  },
+  {
+    "index": 200,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 201
+  },
+  {
+    "index": 202,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 201
+  },
+  {
+    "index": 203,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 201
+  },
+  {
+    "index": 204,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 206,
+    "reason": "ambiguous or not accepted in visual audit"
+  },
+  {
+    "index": 207,
+    "reason": "temporal neighbour of held-out group",
+    "anchor": 208
+  }
+]

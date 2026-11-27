@@ -1,6 +1,8 @@
 # Smart Classroom 设备工程
 
-**最新进度与剩余任务：[PROGRESS.md](PROGRESS.md)**。用户已确认风扇能转、灯能亮；AUTO真实负载联动与远控仍按进度表列为待完成。
+**最新进度与剩余任务：[PROGRESS.md](PROGRESS.md)**。
+
+2026-11-27：[K230新背景V1～V4训练与部署记录](ecovision/figurine-pilot/NEW-BACKGROUND-20261127.md)。用户已确认风扇能转、灯能亮；AUTO真实负载联动与远控仍按进度表列为待完成。
 
 本轮 D01 引入 `ecovision/firmware/stm32/EcoVision_F413ZH/` 下的 C/HAL 工程，保留根 `src/` 的原 MicroPython 基线。两套固件独立，禁止为运行旧示例直接覆盖当前实板。
 
