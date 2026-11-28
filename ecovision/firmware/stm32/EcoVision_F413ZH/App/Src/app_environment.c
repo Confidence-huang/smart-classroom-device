@@ -13,6 +13,44 @@
 #include <string.h>
 static EnvironmentSnapshot latest;
 extern I2C_HandleTypeDef hi2c1;
+static void i2c1_delay_us(void) {
+    for(volatile unsigned i=0;i<200U;++i) {}
+}
+static void i2c1_recover_bus(void) {
+    (void)HAL_I2C_DeInit(&hi2c1);
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+    GPIO_InitTypeDef pin={0};
+    pin.Pin=GPIO_PIN_8|GPIO_PIN_9;
+    pin.Mode=GPIO_MODE_OUTPUT_OD;
+    pin.Pull=GPIO_NOPULL;
+    pin.Speed=GPIO_SPEED_FREQ_LOW;
+    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8|GPIO_PIN_9,GPIO_PIN_SET);
+    HAL_GPIO_Init(GPIOB,&pin);
+    i2c1_delay_us();
+    unsigned scl_before=(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==GPIO_PIN_SET)?1U:0U;
+    unsigned sda_before=(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==GPIO_PIN_SET)?1U:0U;
+    for(unsigned i=0;i<9U;++i) {
+        HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_RESET);
+        i2c1_delay_us();
+        HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
+        i2c1_delay_us();
+    }
+    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,GPIO_PIN_RESET);
+    i2c1_delay_us();
+    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_8,GPIO_PIN_SET);
+    i2c1_delay_us();
+    HAL_GPIO_WritePin(GPIOB,GPIO_PIN_9,GPIO_PIN_SET);
+    i2c1_delay_us();
+    unsigned scl_after=(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_8)==GPIO_PIN_SET)?1U:0U;
+    unsigned sda_after=(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_9)==GPIO_PIN_SET)?1U:0U;
+    __HAL_RCC_I2C1_FORCE_RESET();
+    i2c1_delay_us();
+    __HAL_RCC_I2C1_RELEASE_RESET();
+    (void)HAL_I2C_Init(&hi2c1);
+    unsigned busy=(__HAL_I2C_GET_FLAG(&hi2c1,I2C_FLAG_BUSY)!=RESET)?1U:0U;
+    AppLog_Printf("[I2C1] recover before=scl:%u,sda:%u after=scl:%u,sda:%u busy=%u\r\n",
+        scl_before,sda_before,scl_after,sda_after,busy);
+}
 void AppEnvironment_GetSnapshot(EnvironmentSnapshot *out) {
     taskENTER_CRITICAL();*out=latest;taskEXIT_CRITICAL();
     if((uint32_t)(HAL_GetTick()-out->sampled_at)>=10000U) {
@@ -28,6 +66,12 @@ void AppEnvironment_Run(void *argument) {
     Sgp30_Context sgp30={0};
     uint32_t cycle_at=osKernelGetTickCount();
     uint32_t previous_log=HAL_GetTick()-5000U;
+    uint32_t last_recover=HAL_GetTick()-5000U;
+    unsigned bus_fail_streak=0U;
+    if(__HAL_I2C_GET_FLAG(&hi2c1,I2C_FLAG_BUSY)!=RESET) {
+        i2c1_recover_bus();
+        last_recover=HAL_GetTick();
+    }
     for(;;) {
         EnvironmentSnapshot next;memset(&next,0,sizeof next);
         Sgp30_Sample air={0};
@@ -47,7 +91,22 @@ void AppEnvironment_Run(void *argument) {
         next.sensor_error=initialized?AHT20_Read(&sample):AHT20_ERR_NACK;
         if(next.sensor_error==AHT20_OK) {
             next.th_valid=true;next.temp_x100=sample.temp_x100;next.humi_x100=sample.humi_x100;
-        } else initialized=false;
+            bus_fail_streak=0U;
+        } else {
+            initialized=false;
+            if(!next.lux_valid && !next.air_valid) {
+                ++bus_fail_streak;
+                if(bus_fail_streak>=2U && (uint32_t)(HAL_GetTick()-last_recover)>=5000U) {
+                    i2c1_recover_bus();
+                    last_recover=HAL_GetTick();
+                    bus_fail_streak=0U;
+                    memset(&bh1750,0,sizeof bh1750);
+                    memset(&sgp30,0,sizeof sgp30);
+                }
+            } else {
+                bus_fail_streak=0U;
+            }
+        }
         next.light_valid=AppLight_ReadRaw12(&next.light_raw12);
         if(next.light_valid) next.light_raw16=Environment_Adc12ToU16(next.light_raw12);
         next.sampled_at=HAL_GetTick();
