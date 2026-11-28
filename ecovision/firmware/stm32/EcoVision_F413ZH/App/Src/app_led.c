@@ -3,6 +3,8 @@
 #include "app_fan.h"
 #include "app_vision.h"
 #include "app_control.h"
+#include "app_ir_rx.h"
+#include "app_alert.h"
 #include "cmsis_os.h"
 
 #include <stdbool.h>
@@ -137,7 +139,9 @@ void AppLed_Run(UART_HandleTypeDef *console)
     receive_byte();
     HAL_NVIC_EnableIRQ(USART3_IRQn);
     AppControl_Init();
+    AppIrRx_Init();
     AppLog_Printf("[CTRL] AUTO READY; B1 long=LOCAL_OFF short=AUTO; console 0/F0=safety OFF, V=handshake\r\n");
+    AppLog_Printf("[IR-RX] PA2(A8/CN10-11) TIM5 NEC ready\r\n");
     uint32_t control_at=HAL_GetTick()-20U;
 
     for (;;)
@@ -195,12 +199,36 @@ void AppLed_Run(UART_HandleTypeDef *console)
             }
         }
         uint32_t now=HAL_GetTick();
+        static uint32_t last_ir_at=0U;
+        static uint8_t last_ir_cmd=0xFFU;
+        IrNecEvent ir_ev;
+        while(AppIrRx_Pop(&ir_ev)) {
+            AppLog_Printf("[IR-RX] NEC addr=0x%02X cmd=0x%02X repeat=%u\r\n",
+                (unsigned)ir_ev.address,(unsigned)ir_ev.command,ir_ev.is_repeat?1U:0U);
+            if (ir_ev.address != 0x00U) continue;
+            if (ir_ev.command == last_ir_cmd && (uint32_t)(now - last_ir_at) < 300U) continue;
+            last_ir_cmd = ir_ev.command;
+            last_ir_at = now;
+            if (ir_ev.command == 0x45U || ir_ev.command == 0x0DU || ir_ev.command == 0x5AU ||
+                ir_ev.command == 0x09U || ir_ev.command == 0x07U) {
+                AppIrRx_MuteMs(250U);
+            }
+            (void)AppControl_ApplyLocalIr(ir_ev.command);
+        }
         if((uint32_t)(now-control_at)>=20U) {
             control_at=now;
+            AppHealth_Beat(HEALTH_CONTROL);
             ControlOutput before;AppControl_GetSnapshot(&before);
             ControlOutput next=AppControl_Poll();
-            /* Fan control exposes five PWM levels. The ring still uses its fixed ON brightness. */
-            uint8_t fan_level=next.fan_level,led_level=next.led?2U:0U;
+            /* Non-blocking 150 ms full-power kick-start from rest so levels 1-4 overcome static friction. */
+            static uint8_t prev_req_fan=0U;
+            static uint32_t fan_kick_until=0U;
+            if(next.fan_level==0U) fan_kick_until=0U;
+            else if(prev_req_fan==0U && next.fan_level<CONTROL_FAN_MAX) fan_kick_until=now+150U;
+            prev_req_fan=next.fan_level;
+            uint8_t fan_level=(next.fan_level>0U && fan_kick_until!=0U && (int32_t)(now-fan_kick_until)<0)
+                ?CONTROL_FAN_MAX:next.fan_level;
+            uint8_t led_level=next.led?2U:0U;
             bool fan_ok=AppFan_GetLevel()==fan_level || AppFan_SetLevel(fan_level);
             bool led_ok=AppLed_GetLevel()==led_level || show_level(led_level);
             if(!fan_ok || !led_ok) {
@@ -209,6 +237,7 @@ void AppLed_Run(UART_HandleTypeDef *console)
                 NVIC_SystemReset();
             }
             AppControl_PublishApplied(&next);
+            AppHealth_Beat(HEALTH_OUTPUT);
             if(before.occupancy!=next.occupancy || before.mode!=next.mode ||
                before.control_epoch!=next.control_epoch || before.led!=next.led || before.fan_level!=next.fan_level) {
                 static const char *names[]={"UNKNOWN","OCCUPIED","VACANT"};

@@ -16,6 +16,8 @@
 | 干簧管 DO | PE13 / D3 / CN10-10 | GPIO 上拉，30 ms 消抖；不用该脚 TIM1_CH3 |
 | BH1750 SCL | PB8 / D15 / CN7-2 | I2C1 AF4，开漏 100 kHz，与板载 AHT20（0x38）共总线 |
 | BH1750 SDA | PB9 / D14 / CN7-4 | I2C1 AF4；ADDR 保持板载默认低地址 |
+| SGP30 SCL / SDA | PB8 / PB9（CN7-2 / CN7-4） | I2C1 地址 `0x58`，与 AHT20（`0x38`）、BH1750（`0x23`/`0x5C`）共总线 |
+| 本地红外接收头 OUT | PA2 / A8 / CN10-11 | 38 kHz NEC 接收（EXTI2 下降沿 + TIM5 1 MHz），VCC 3.3 V 共地 |
 | 红外链路 | 见 `f103-oled-spi/README.md` | F413 UART5 → ZJ-IR-V2 → 红外光 → F103 PA0 |
 
 对应实现：`App/Src/app_led.c`（WS281x G,R,B 顺序）、`app_fan.c`（TB6612）、`app_reed.c`、`app_bh1750.c`、`app_environment.c`、`f103-oled-spi/`。

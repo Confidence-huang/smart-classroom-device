@@ -236,6 +236,34 @@ static void vacancy_overrides_web_temperature_and_new_occupancy_rearms_auto(void
     assert(ac_requests==3 && ac_temperature==26);
 }
 
+static void local_ir_control_bumps_epoch_and_obeys_lock(void) {
+    ac_scenario_start();
+    tick = 1000U;
+    assert(AppControl_ApplyLocalIr(0x18U)); /* Key '2': fan level 2 */
+    ControlOutput out = AppControl_Poll();
+    assert(out.mode == CONTROL_REMOTE && out.fan_level == 2U && out.control_epoch == 1U);
+
+    tick = 1500U;
+    assert(AppControl_ApplyLocalIr(0x15U)); /* Key PLAY: toggle LED ON */
+    out = AppControl_Poll();
+    assert(out.led && out.fan_level == 2U && out.control_epoch == 2U);
+
+    tick = 2000U;
+    assert(AppControl_ApplyLocalIr(0x0DU)); /* Key C: AC toggle ON (26 C) */
+    assert(ac_requests == 1U && ac_temperature == 26U);
+    out = AppControl_Poll();
+    assert(out.control_epoch == 3U);
+
+    tick = 2500U;
+    assert(AppControl_ApplyLocalIr(0x47U)); /* Key MENU: restore AUTO */
+    out = AppControl_Poll();
+    assert(out.mode == CONTROL_AUTO && out.control_epoch == 4U);
+
+    AppControl_SafetyOff();
+    assert(!AppControl_ApplyLocalIr(0x1CU)); /* Key '5' rejected under LOCAL_OFF */
+    assert(ac_requests == 1U);
+}
+
 int main(void) {
     AppControl_Init();memcpy(vision.link,"0000000000000001",17);memcpy(vision.boot,"0000000000000002",17);vision.count=1;
     ControlOutput out=frame(0,0);assert(!out.led);
@@ -260,8 +288,9 @@ int main(void) {
     humidity_has_its_own_confirmation_and_manual_off_holds();
     sensor_fault_stops_the_demo_once_and_local_lock_suppresses_off();
     vacancy_overrides_web_temperature_and_new_occupancy_rearms_auto();
+    local_ir_control_bumps_epoch_and_obeys_lock();
     assert(critical_depth==0);
     puts("PASS: adapter frame identity, invalid sample between polls, applied-only snapshot, safety OFF and critical-section balance");
-    puts("PASS: demo AC heat, humidity, cooldown, vacancy, manual hold, uncertain ACK, sensor fault and local lock");
+    puts("PASS: demo AC heat, humidity, cooldown, vacancy, manual hold, uncertain ACK, sensor fault, local lock and IR control");
     return 0;
 }

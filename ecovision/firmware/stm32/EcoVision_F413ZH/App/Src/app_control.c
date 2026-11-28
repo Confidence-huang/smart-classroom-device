@@ -149,6 +149,9 @@ ControlOutput AppControl_Poll(void) {
     input.temperature_valid=environment.th_valid;
     input.temperature_x100=environment.temp_x100;
     input.temperature_age_ms=now-environment.sampled_at;
+    input.air_valid=environment.air_valid;
+    input.eco2_ppm=environment.eco2_ppm;
+    input.tvoc_ppb=environment.tvoc_ppb;
     /* NUCLEO MB1137 USER B1 is PC13, active high. */
     input.button_pressed=HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_13)==GPIO_PIN_SET;
     taskENTER_CRITICAL();
@@ -292,4 +295,110 @@ void AppControl_SafetyOff(void) {
     taskENTER_CRITICAL();
     if(policy.output.mode!=CONTROL_LOCAL_OFF)Control_LocalOff(&policy);
     taskEXIT_CRITICAL();
+}
+
+static uint8_t ir_ac_setpoint = AC_SETPOINT_C;
+
+bool AppControl_ApplyLocalIr(uint8_t cmd) {
+    uint32_t now = HAL_GetTick();
+    bool ac_action = false;
+    uint8_t ac_target = 0U;
+    bool handled = false;
+    bool locked = false;
+
+    taskENTER_CRITICAL();
+    if (policy.output.mode == CONTROL_LOCAL_OFF) {
+        locked = true;
+    } else {
+        uint8_t fan = policy.output.fan_level;
+        bool led = policy.output.led;
+        uint32_t epoch = policy.output.control_epoch;
+        switch (cmd) {
+        case 0x45U: /* POWER: all off */
+            handled = Control_Request(&policy, now, epoch, 120U, 0U, false);
+            ac_action = true;
+            ac_target = 0U;
+            break;
+        case 0x47U: /* MENU */
+        case 0x43U: /* BACK (↩): restore AUTO */
+            handled = Control_Request(&policy, now, epoch, 0U, 0U, false);
+            ac.manual = false;
+            break;
+        case 0x15U: /* PLAY (▶): toggle LED */
+            handled = Control_Request(&policy, now, epoch, 120U, fan, !led);
+            break;
+        case 0x16U: /* 0: fan off */
+            handled = Control_Request(&policy, now, epoch, 120U, 0U, led);
+            break;
+        case 0x0CU: /* 1 */
+            handled = Control_Request(&policy, now, epoch, 120U, 1U, led);
+            break;
+        case 0x18U: /* 2 */
+            handled = Control_Request(&policy, now, epoch, 120U, 2U, led);
+            break;
+        case 0x5EU: /* 3 */
+            handled = Control_Request(&policy, now, epoch, 120U, 3U, led);
+            break;
+        case 0x08U: /* 4 */
+            handled = Control_Request(&policy, now, epoch, 120U, 4U, led);
+            break;
+        case 0x1CU: /* 5 */
+            handled = Control_Request(&policy, now, epoch, 120U, 5U, led);
+            break;
+        case 0x40U: /* + : fan +1 */
+            if (fan < CONTROL_FAN_MAX) ++fan;
+            handled = Control_Request(&policy, now, epoch, 120U, fan, led);
+            break;
+        case 0x19U: /* - : fan -1 */
+            if (fan > 0U) --fan;
+            handled = Control_Request(&policy, now, epoch, 120U, fan, led);
+            break;
+        case 0x0DU: /* C */
+        case 0x5AU: /* 6: AC toggle */
+            handled = true;
+            ac_action = true;
+            ac_target = ac.may_be_on ? 0U : ir_ac_setpoint;
+            break;
+        case 0x09U: /* >>| : AC temp +1 */
+            if (ir_ac_setpoint < 30U) ++ir_ac_setpoint;
+            handled = true;
+            ac_action = true;
+            ac_target = ir_ac_setpoint;
+            break;
+        case 0x07U: /* |<< : AC temp -1 */
+            if (ir_ac_setpoint > 16U) --ir_ac_setpoint;
+            handled = true;
+            ac_action = true;
+            ac_target = ir_ac_setpoint;
+            break;
+        default:
+            break;
+        }
+        if (handled) {
+            /* Physical IR actions bump control_epoch so stale in-flight web commands cannot override. */
+            Control_BumpEpoch(&policy);
+        }
+    }
+    taskEXIT_CRITICAL();
+
+    if (locked) {
+        AppLog_Printf("[IR-CTRL] REJECTED LOCAL_OFF cmd=0x%02X\r\n", (unsigned)cmd);
+        return false;
+    }
+    if (ac_action && AppAcDemo_Ready()) {
+        AcModuleResult res = ac_send(ac_target, "IR_LOCAL");
+        if (res != AC_MODULE_REJECTED) {
+            ac.manual = true;
+            ac.manual_at = now;
+            ac.epoch = policy.output.control_epoch;
+            if (policy.output.occupancy == CONTROL_VACANT) ac.vacancy_attempted = true;
+        }
+    }
+    if (handled) {
+        AppLog_Printf("[IR-CTRL] APPLIED cmd=0x%02X fan=%u led=%u ac_set=%u epoch=%lu\r\n",
+            (unsigned)cmd, (unsigned)policy.output.fan_level, policy.output.led ? 1U : 0U,
+            ac_action ? (unsigned)ac_target : (ac.may_be_on ? (unsigned)ir_ac_setpoint : 0U),
+            (unsigned long)policy.output.control_epoch);
+    }
+    return handled;
 }

@@ -19,8 +19,21 @@
 #include "main.h"
 #include "app_aht20.h"
 #include "environment_codec.h"
+#include "cmsis_os.h"
 
 extern I2C_HandleTypeDef hi2c1;
+
+static void aht20_delay_ms(uint32_t ms)
+{
+    if (osKernelGetState() == osKernelRunning)
+    {
+        (void)osDelay(ms);
+    }
+    else
+    {
+        HAL_Delay(ms);
+    }
+}
 
 #define AHT20_I2C_ADDR       (0x38U << 1)   /* HAL 使用 8bit 地址（左移一位） */
 #define AHT20_TIMEOUT_MS     100U
@@ -40,7 +53,7 @@ int AHT20_Init(void)
     int ret;
 
     /* 1) 上电稳定：手册要求 ≥40 ms，这里给 50 ms */
-    HAL_Delay(50U);
+    aht20_delay_ms(50U);
 
     /* 2) 读状态，确认总线通、传感器在校准态 */
     ret = AHT20_ReadStatus(&status);
@@ -58,7 +71,7 @@ int AHT20_Init(void)
         {
             return AHT20_ERR_CAL;
         }
-        HAL_Delay(20U);
+        aht20_delay_ms(20U);
 
         ret = AHT20_ReadStatus(&status);
         if (ret != AHT20_OK)
@@ -90,8 +103,8 @@ int AHT20_Read(AHT20_SampleTypeDef *out)
         return AHT20_ERR_NACK;
     }
 
-    /* 单次测量耗时约 75 ms（手册典型 80 ms），这里留 80 ms */
-    HAL_Delay(80U);
+    /* 单次测量耗时约 75 ms（手册典型 80 ms），使用 osDelay 释放 CPU */
+    aht20_delay_ms(80U);
 
     if (HAL_I2C_Master_Receive(&hi2c1, AHT20_I2C_ADDR, data, 7U,
                                AHT20_TIMEOUT_MS) != HAL_OK)

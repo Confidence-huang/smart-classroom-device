@@ -59,27 +59,29 @@ UART_HandleTypeDef huart2;
 UART_HandleTypeDef huart4;
 UART_HandleTypeDef huart3;
 
-/* Definitions for heartbeatTask */
+/* Definitions for heartbeatTask (low housekeeping: LD2 blink + reed switch) */
 osThreadId_t heartbeatTaskHandle;
 const osThreadAttr_t heartbeatTask_attributes = {
   .name = "heartbeatTask",
   .stack_size = 256 * 4,
-  .priority = (osPriority_t) osPriorityNormal,
+  .priority = (osPriority_t) osPriorityLow1,
 };
-/* Definitions for ledTask */
+/* Definitions for ledTask (highest: B1 safety, IR remote, fan/LED/AC actuator loop) */
 osThreadId_t ledTaskHandle;
 const osThreadAttr_t ledTask_attributes = {
   .name = "ledTask",
-  .stack_size = 384 * 4,
-  .priority = (osPriority_t) osPriorityLow,
+  .stack_size = 512 * 4,
+  .priority = (osPriority_t) osPriorityAboveNormal,
 };
+/* Definitions for environmentTask (above network so 1 Hz SGP30/I2C1 never starves) */
 osThreadId_t environmentTaskHandle;
 const osThreadAttr_t environmentTask_attributes={
- .name="environmentTask", .stack_size=2048, .priority=osPriorityLow
+ .name="environmentTask", .stack_size=2048, .priority=osPriorityBelowNormal
 };
+/* Definitions for visionTask (K230 UART2 DMA parsing + ST7735 LCD refresh) */
 osThreadId_t visionTaskHandle;
 const osThreadAttr_t visionTask_attributes = {
-  .name="visionTask", .stack_size=3072, .priority=osPriorityBelowNormal
+  .name="visionTask", .stack_size=3072, .priority=osPriorityNormal
 };
 /* USER CODE BEGIN PV */
 static const uint8_t boot_message[] =

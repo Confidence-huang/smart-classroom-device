@@ -36,4 +36,5 @@ ControlOutput AppControl_Poll(void);
 void AppControl_PublishApplied(const ControlOutput *output);
 void AppControl_GetSnapshot(ControlOutput *output);
 void AppControl_SafetyOff(void);
+bool AppControl_ApplyLocalIr(uint8_t cmd);
 #endif

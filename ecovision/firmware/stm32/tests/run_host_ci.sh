@@ -24,6 +24,7 @@ run_c_test() {
 run_c_test environment_codec "$tests/test_environment_codec.c" "$app/Src/environment_codec.c"
 run_c_test sgp30 -I "$tests/sgp30_host" -I "$tests/bh1750_host" \
     "$tests/test_sgp30.c" "$app/Src/app_sgp30.c" "$app/Src/environment_codec.c"
+run_c_test ir_nec "$tests/test_ir_nec.c" "$app/Src/ir_nec_codec.c"
 ECOVISION_LCD_PREVIEW="$build/dashboard-preview.ppm" \
     run_c_test lcd_view "$tests/test_lcd_view.c" "$app/Src/lcd_view.c"
 run_c_test fan_output -I "$tests/tb6612_host" "$tests/test_tb6612.c" "$app/Src/app_fan.c"
