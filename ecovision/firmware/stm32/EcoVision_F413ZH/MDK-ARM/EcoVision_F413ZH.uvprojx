@@ -560,6 +560,7 @@
             <File><FileName>rx_cursor.c</FileName><FileType>1</FileType><FilePath>../App/Src/rx_cursor.c</FilePath></File>
             <File><FileName>app_alert.c</FileName><FileType>1</FileType><FilePath>../App/Src/app_alert.c</FilePath></File>
             <File><FileName>app_environment.c</FileName><FileType>1</FileType><FilePath>../App/Src/app_environment.c</FilePath></File>
+            <File><FileName>app_sgp30.c</FileName><FileType>1</FileType><FilePath>../App/Src/app_sgp30.c</FilePath></File>
             <File><FileName>environment_codec.c</FileName><FileType>1</FileType><FilePath>../App/Src/environment_codec.c</FilePath></File>
             <File><FileName>app_lcd.c</FileName><FileType>1</FileType><FilePath>../App/Src/app_lcd.c</FilePath></File>
             <File><FileName>lcd_view.c</FileName><FileType>1</FileType><FilePath>../App/Src/lcd_view.c</FilePath></File>

@@ -4,6 +4,8 @@
 
 ## 当前快照
 
+- 2026-11-28 SGP30 本地采集与实板初验：基于 `main`（`31ee6f2`）接入 F413 I²C1（`0x58`）SGP30 每秒采集，每 5 秒串口输出 `[AIR]` 有效状态、TVOC（ppb）与 eCO₂（ppm）；不改动冻结的 MQTT 1.2.0 公共契约与执行器策略。主机回归通过（`test_sgp30`、18 项契约、33 项 K230 视觉），独立 AC6 编译链接 70 个对象生成 HEX（SHA256 `4d4c10cf85c0adae6b27cfa05673a140822b848c3d180a767a5bc92dfcf72278`，保留 `0x08160000` 私有配置区）。经 ST-Link 烧录实板并通过 `COM4` 连续观测 35 s：`[AIR]` 在 1.05–12.01 s 输出暖机 `valid=0 status=1`，17.01 s 起稳定转为 `valid=1 tvoc_ppb=0 eco2_ppm=400`；同总线 AHT20（`[ENV] th_valid=1 err=0`）、`[ZJ-IR] ADDRESS_OK`、K230 视觉与 4G MQTT（`PUBACK seq=0..7`）均正常。拔除 SGP30 降级与气体刺激变化待按需补测；接线和诊断见 `ecovision/firmware/stm32/SGP30.md`。
+
 - 2026-11-28 实板供电优化与整机验收收尾：将电机（TB6612 `VM`）、灯环与红外发射模块（`ZJ-IR-V2`）改由独立电源模块供电并与 Nucleo 共地（`UART5` `PC12`/`PD2` 及其余控制信号脚不变），消除大负载压降引起的 EC200U 掉线与风扇起步延迟；板上保留已验收正式固件 `2f89a87` 与 K230 20 人 V4 模型，经免密总站 `smartroom.careerpathdesk.com` 实测风扇、模拟空调 `1.2.0` 与 4G 遥测均正常；同步更新 `ecovision/firmware/stm32/MODULE-WIRING.md`。
 
 - 2026-11-27 K230新背景重训练：归档V1～V4权重/曲线/数据标签与SHA清单，最终目标0～20人。同一35图固定阈值V3=25/35、V4=30/35；同日相关布局不作独立准确率。V4已量化并上传，模型SHA7326229c…0cfd7；板端conf0.50/NMS0.45，20人场景600帧597正确、1漏检、2无效，约14FPS。用户确认机器重启、CanMV断开后STM32 PEOPLE更新为20；未做本轮物理断电/跨场景长测。设备入口只换模型及参数，UART/协议/ledger不变，旧模型与程序保留。详见ecovision/figurine-pilot/NEW-BACKGROUND-20261127.md。
