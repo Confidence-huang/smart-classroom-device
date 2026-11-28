@@ -4,6 +4,11 @@
 
 ## 当前快照
 
+- 2026-11-28 节能自控与可靠性增强（BH1750 光照自适应控灯、SGP30 绝对湿度补偿、IWDG 五任务硬件看门狗）：
+  - **BH1750 自然光自适应控灯**（`control_policy.h/c`、`app_control.c`）：`AUTO` + 有人且 BH1750 有效时，照度 `≥ 300 lx` 持续 5 s 自动关灯节能，`≤ 150 lx` 持续 3 s 自动开灯，中间死区保持不闪烁，传感器离线自动回退既有有人亮灯行为；
+  - **SGP30 实时绝对湿度补偿**（`app_sgp30.h/c`、`app_environment.c`）：利用同板 AHT20 实测温湿度按分段饱和水汽压查表插值计算 8.8 定点绝对湿度（`g/m³`），每 60 s 下发 `0x2061` + CRC-8 补偿指令提升气体精度；
+  - **IWDG 16 s 硬件看门狗正式启用**（`Src/main.c`）：开机检测复位源，任务全部拉起 2 s 后由 `StartHeartbeatTask` 启动 `AppHealth_Start()` 并每 500 ms 轮询喂狗，覆盖全部 5 个 FreeRTOS 任务心跳监测。
+
 - 2026-11-28 红外本地遥控、FreeRTOS 优先级重排与算法完善：基于 `main`（`0d52455`，含 BH1750/SGP30 遥测上报）新增 `PA2(A8/CN10-11) + TIM5(1 MHz) + EXTI2` NEC 红外接收驱动（`ir_nec_codec.h/c`、`app_ir_rx.h/c`），适配白色 20 键遥控器实现风扇 0–5 档/`±`、灯环开关、模拟空调开关/调温、一键全关与恢复 `AUTO`（遵守 `LOCAL_OFF` 急停锁、递增 `control_epoch` 并同步空调手动代次）；`app_led.c` 加入非阻塞 150 ms 风扇满速起步助推（Kick-Start）解决低档静摩擦死区；重排 FreeRTOS 五任务优先级（`ledTask AboveNormal` > `visionTask Normal` > `environmentTask BelowNormal` > `heartbeatTask Low1` > `networkTask Low`）并将 `app_aht20.c` 80 ms 忙等替换为 `osDelay`、补齐 5 任务 `AppHealth_Beat`；`app_environment.c` 加入 3 点中值滤波、`osKernelLock` I²C 保护与 SGP30 CRC 10 s 抗抖；`control_policy.c` 新增 SGP30 空气质量超标 10 s 迟滞自动通风与高温/重度污染 4 档强力升档。全部主机回归通过，AC6 72 对象构建并经 ST-Link 实板烧录核验。
 - 2026-11-28 SGP30 本地采集、6 项 LCD 布局与 I²C1 总线锁死自恢复：基于 `main`（`31ee6f2`）接入 F413 I²C1（`0x58`）SGP30 每秒采集（20 ms 读等待、单次 CRC 抖动 5 s 保持，不改动冻结的 MQTT 1.2.0 公共契约与执行器策略）；同步将 ST7735 LCD 精简为 6 项大字布局（人数、联网状况、温度、湿度、空气质量含 `ECO2`/`TVOC`、光照强度 `LUX`），并加入 I²C1 9 时钟脉冲解锁与外设复位自恢复。主机回归通过（`test_sgp30`、`test_lcd_view`、18 项契约、33 项 K230 视觉），独立 AC6 编译链接 70 个对象生成 HEX（SHA256 `b1605e91ff7a76a5b98cad1e49f3f08561cece8c2cde33ae6c6d26c1a972a2f9`，保留 `0x08160000` 私有配置区）。经 ST-Link 烧录实板并通过 `COM4` 验收：验证 I²C1 锁死自动解锁（`before=scl:1,sda:0 -> after=scl:1,sda:1 busy=0`），AHT20（`0x38`、`27.02 °C`/`21.53 %RH`）、BH1750（`0x23`、`10.83 lx`）、SGP30（`0x58`、`valid=1`、`eCO₂=400–404 ppm`、`TVOC=1–9 ppb`）三颗传感器同时稳定在线 0 报错，4G `ONLINE` 与 `[ZJ-IR]` 正常。详见 `ecovision/firmware/stm32/SGP30.md`。
 

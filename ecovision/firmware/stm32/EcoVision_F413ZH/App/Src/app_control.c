@@ -152,6 +152,8 @@ ControlOutput AppControl_Poll(void) {
     input.air_valid=environment.air_valid;
     input.eco2_ppm=environment.eco2_ppm;
     input.tvoc_ppb=environment.tvoc_ppb;
+    input.lux_valid=environment.lux_valid;
+    input.lux_x100=environment.lux_x100;
     /* NUCLEO MB1137 USER B1 is PC13, active high. */
     input.button_pressed=HAL_GPIO_ReadPin(GPIOC,GPIO_PIN_13)==GPIO_PIN_SET;
     taskENTER_CRITICAL();

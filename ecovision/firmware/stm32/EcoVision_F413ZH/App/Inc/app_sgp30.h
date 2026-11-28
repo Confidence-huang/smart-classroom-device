@@ -27,4 +27,10 @@ typedef struct {
  * The sample is written only on SGP30_OK. */
 Sgp30_Result Sgp30_Poll(Sgp30_Context *ctx, I2C_HandleTypeDef *bus, Sgp30_Sample *out);
 
+/* Compute Sensirion 8.8 fixed-point absolute humidity (g/m^3) from temp_x100 (C*100) and rh_x100 (%*100). */
+uint16_t Sgp30_AbsoluteHumidity88(int32_t temp_x100, int32_t rh_x100);
+
+/* Send SGP30 set_humidity (0x2061) command using live AHT20 temperature & relative humidity. */
+bool Sgp30_SetHumidity(const Sgp30_Context *ctx, I2C_HandleTypeDef *bus, int32_t temp_x100, int32_t rh_x100);
+
 #endif

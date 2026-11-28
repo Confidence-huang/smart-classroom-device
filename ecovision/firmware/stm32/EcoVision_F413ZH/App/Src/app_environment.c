@@ -93,6 +93,7 @@ void AppEnvironment_Run(void *argument) {
     uint32_t cycle_at=osKernelGetTickCount();
     uint32_t previous_log=HAL_GetTick()-5000U;
     uint32_t last_recover=HAL_GetTick()-5000U;
+    uint32_t last_hum_comp=HAL_GetTick()-60000U;
     unsigned bus_fail_streak=0U;
     if(__HAL_I2C_GET_FLAG(&hi2c1,I2C_FLAG_BUSY)!=RESET) {
         i2c1_recover_bus();
@@ -130,6 +131,14 @@ void AppEnvironment_Run(void *argument) {
             next.temp_x100=median3_push(&temp_flt,sample.temp_x100);
             next.humi_x100=median3_push(&humi_flt,sample.humi_x100);
             bus_fail_streak=0U;
+            if (next.air_valid && (uint32_t)(HAL_GetTick()-last_hum_comp)>=60000U) {
+                if (Sgp30_SetHumidity(&sgp30,&hi2c1,next.temp_x100,next.humi_x100)) {
+                    last_hum_comp=HAL_GetTick();
+                    uint16_t ah=Sgp30_AbsoluteHumidity88(next.temp_x100,next.humi_x100);
+                    AppLog_Printf("[AIR] SGP30 hum_comp ah_x256=0x%04X (%u.%02u g/m3)\r\n",
+                        (unsigned)ah,(unsigned)(ah>>8),(unsigned)(((ah&0xFFU)*100U)/256U));
+                }
+            }
         } else {
             initialized=false;
             median3_reset(&temp_flt);

@@ -146,11 +146,43 @@ static void air_quality_ventilation_and_boost(void) {
     assert(p.output.fan_level == CONTROL_FAN_DEFAULT);
 }
 
+static void daylight_adaptive_led_hysteresis(void) {
+    ControlPolicy p; Control_Init(&p);
+    occupy(&p, 0, 2500);
+    ControlInput in = sample(1, 2500);
+    in.lux_valid = true; in.lux_x100 = 35000U; /* 350 lx bright sunlight */
+    for (uint32_t t = 3000; t < 8000; t += 1000) {
+        Control_Update(&p, t, &in);
+        assert(p.output.led);
+    }
+    Control_Update(&p, 8000, &in);
+    assert(!p.output.led); /* Auto energy-saving OFF after 5 s */
+
+    /* Deadband 151..299 lx holds OFF without flicker. */
+    in.lux_x100 = 20000U;
+    Control_Update(&p, 15000, &in);
+    assert(!p.output.led);
+
+    /* Dim <=150 lx for 3 s turns LED back ON. */
+    in.lux_x100 = 12000U;
+    Control_Update(&p, 16000, &in); assert(!p.output.led);
+    Control_Update(&p, 18000, &in); assert(!p.output.led);
+    Control_Update(&p, 19000, &in); assert(p.output.led);
+
+    /* Sensor disconnect restores default occupied ON behavior. */
+    in.lux_x100 = 40000U;
+    for (uint32_t t = 20000; t <= 25000; t += 1000) Control_Update(&p, t, &in);
+    assert(!p.output.led);
+    in.lux_valid = false;
+    Control_Update(&p, 26000, &in);
+    assert(p.output.led);
+}
+
 int main(void) {
     three_real_frames();absence_requires_thirty_seconds();invalid_resets_confirmation();
     hysteresis_and_fault_hold();freshness_and_session();short_and_long_button();
     release_before_threshold_is_short();bounce_has_no_action();clock_wrap_and_epoch_exhaustion();
-    remote_levels_expire_to_auto();air_quality_ventilation_and_boost();
-    puts("PASS: AUTO occupancy, duplicates, 30s absence, invalid/session/freshness, hysteresis, 60s fault, button boundaries, wrap, epoch exhaustion, IAQ ventilation and boost");
+    remote_levels_expire_to_auto();air_quality_ventilation_and_boost();daylight_adaptive_led_hysteresis();
+    puts("PASS: AUTO occupancy, duplicates, 30s absence, invalid/session/freshness, hysteresis, 60s fault, button boundaries, wrap, epoch exhaustion, IAQ ventilation, boost and daylight LED");
     return 0;
 }
