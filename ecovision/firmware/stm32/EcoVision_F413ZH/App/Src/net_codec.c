@@ -143,9 +143,10 @@ int Net_LegacyTelemetry(char *out,size_t size,const char *device,const char *roo
  for(;;){unsigned count=leap_year(year)?366U:365U;if(days<count)break;days-=count;year++;}
  static const unsigned months[]={31,28,31,30,31,30,31,31,30,31,30,31};
  for(;;){unsigned count=months[month-1]+((month==2&&leap_year(year))?1U:0U);if(days<count)break;days-=count;month++;}
- char count[12]="null",temp[24],rh[24],lux[24]="null";decimal(temp,sizeof temp,s->temp_x100);decimal(rh,sizeof rh,s->rh_x100);
+ char count[12]="null",temp[24],rh[24],lux[24]="null",eco2[12]="null",tvoc[12]="null";decimal(temp,sizeof temp,s->temp_x100);decimal(rh,sizeof rh,s->rh_x100);
  if(s->lux_valid)(void)snprintf(lux,sizeof lux,"%lu.%02lu",(unsigned long)(s->lux_x100/100U),(unsigned long)(s->lux_x100%100U));
+ if(s->air_valid){(void)snprintf(eco2,sizeof eco2,"%u",(unsigned)s->eco2_ppm);(void)snprintf(tvoc,sizeof tvoc,"%u",(unsigned)s->tvoc_ppb);}
  if(s->vision_valid && s->vision_age<5000U && s->count<=20)(void)snprintf(count,sizeof count,"%u",s->count);
- int n=snprintf(out,size,"{\"schema_version\":1,\"type\":\"telemetry\",\"source\":\"stm32_c_hal_ec200u\",\"simulated\":false,\"device_id\":\"%s\",\"room_id\":\"%s\",\"seq\":%lu,\"captured_at\":\"%04u-%02u-%02uT%02lu:%02lu:%02luZ\",\"people_count\":%s,\"temperature_c\":%s,\"humidity_pct\":%s,\"light_lux\":%s,\"light_raw_u16\":%u}",device,room,(unsigned long)(s->utc-946684800U),year,month,(unsigned)(days+1U),(unsigned long)(seconds/3600U),(unsigned long)(seconds%3600U/60U),(unsigned long)(seconds%60U),count,temp,rh,lux,s->light_valid?s->light_raw16:0U);
+ int n=snprintf(out,size,"{\"schema_version\":1,\"type\":\"telemetry\",\"source\":\"stm32_c_hal_ec200u\",\"simulated\":false,\"device_id\":\"%s\",\"room_id\":\"%s\",\"seq\":%lu,\"captured_at\":\"%04u-%02u-%02uT%02lu:%02lu:%02luZ\",\"people_count\":%s,\"temperature_c\":%s,\"humidity_pct\":%s,\"light_lux\":%s,\"light_raw_u16\":%u,\"air_valid\":%s,\"air_status\":%ld,\"eco2_ppm\":%s,\"tvoc_ppb\":%s}",device,room,(unsigned long)(s->utc-946684800U),year,month,(unsigned)(days+1U),(unsigned long)(seconds/3600U),(unsigned long)(seconds%3600U/60U),(unsigned long)(seconds%60U),count,temp,rh,lux,s->light_valid?s->light_raw16:0U,boolean(s->air_valid),(long)s->air_status,eco2,tvoc);
  return n<0||(size_t)n>=size ? -1:n;
 }
