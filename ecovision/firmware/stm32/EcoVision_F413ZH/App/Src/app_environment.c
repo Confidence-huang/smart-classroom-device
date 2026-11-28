@@ -56,7 +56,7 @@ void AppEnvironment_GetSnapshot(EnvironmentSnapshot *out) {
     if((uint32_t)(HAL_GetTick()-out->sampled_at)>=10000U) {
         out->th_valid=false;out->light_valid=false;out->lux_valid=false;
     }
-    if ((uint32_t)(HAL_GetTick()-out->air_sampled_at)>=2500U) out->air_valid=false;
+    if ((uint32_t)(HAL_GetTick()-out->air_sampled_at)>=5000U) out->air_valid=false;
 }
 void AppEnvironment_Run(void *argument) {
     (void)argument;osDelay(700U);
@@ -81,6 +81,12 @@ void AppEnvironment_Run(void *argument) {
             next.air_sampled_at=HAL_GetTick();
             next.eco2_ppm=air.eco2_ppm;
             next.tvoc_ppb=air.tvoc_ppb;
+        } else if (next.air_status==SGP30_BAD_CRC && latest.air_valid &&
+                   (uint32_t)(HAL_GetTick()-latest.air_sampled_at)<5000U) {
+            next.air_valid=true;
+            next.air_sampled_at=latest.air_sampled_at;
+            next.eco2_ppm=latest.eco2_ppm;
+            next.tvoc_ppb=latest.tvoc_ppb;
         }
         Bh1750_Sample light={0};
         next.light_error=Bh1750_Poll(&bh1750,&hi2c1,&light);
