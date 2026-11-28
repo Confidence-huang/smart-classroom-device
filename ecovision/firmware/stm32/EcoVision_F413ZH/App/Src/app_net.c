@@ -1,6 +1,7 @@
 /* EC200U network waits run only in this task; no credential or AT echo logging. */
 #include "app_net.h"
 #include "app_alert.h"
+#include "app_tts.h"
 #include "app_uart_dma.h"
 #include "net_codec.h"
 #include "net_command.h"
@@ -37,6 +38,11 @@ static char matched_line[512];
 static char command_topic[55],ack_topic[55];
 static bool receive_commands,command_subscribed;
 static uint32_t subscription_utc;
+static bool modem_at_ready,tts_playing;
+static uint32_t tts_started_at;
+static TtsDispatch tts_pending;
+static uint8_t working_prev_fan;
+static bool working_prev_led;
 
 /* Queue modem deliveries independently of AT replies; the network task owns both. */
 typedef struct {
@@ -83,6 +89,7 @@ static bool drain_online_uart(void) {
   if(event==NET_AT_DROPPED)return false;
   if(event!=NET_AT_LINE)continue;
   if(!strncmp(parser.line,"+QMTSTAT:",9))return false;
+  if(!strncmp(parser.line,"+QTTS:",6)){tts_playing=false;continue;}
   receive_command(parser.line);
  }
  return !rx_fault;
@@ -143,6 +150,10 @@ static int transaction(const char *command,const char *expected,uint32_t timeout
    if(event!=NET_AT_LINE)continue;
    if(!strncmp(parser.line,"+QMTRECV:",9)) {
     receive_command(parser.line);
+    continue;
+   }
+   if(!strncmp(parser.line,"+QTTS:",6)) {
+    tts_playing=false;
     continue;
    }
    const char *line=parser.line;
@@ -274,6 +285,38 @@ static bool publish_ack(const ReceivedCommand *item, const ControlOutput *output
  return sent;
 }
 
+static bool service_tts(void) {
+ if(!modem_at_ready)return true;
+ uint32_t now=HAL_GetTick();
+ if(tts_playing && (uint32_t)(now-tts_started_at)>=10000U)tts_playing=false;
+ if(!AppTts_PollDispatch(tts_playing,&tts_pending))return true;
+ if(tts_pending.interrupt && tts_playing) {
+  int stop_res=transaction("AT+QTTS=0",NULL,800U);
+  if(stop_res==-5)return false;
+  tts_playing=false;
+  network_delay(40U);
+ }
+ int res=transaction(tts_pending.command,NULL,1800U);
+ if(res==-1) {
+  int stop_res=transaction("AT+QTTS=0",NULL,800U);
+  if(stop_res==-5)return false;
+  tts_playing=false;
+  network_delay(50U);
+  res=transaction(tts_pending.command,NULL,1800U);
+ }
+ if(res==0) {
+  tts_playing=true;
+  tts_started_at=HAL_GetTick();
+  AppLog_Printf("[TTS] speak=%s\r\n",tts_pending.tag);
+ } else if(res==-5) {
+  return false;
+ } else {
+  if(res<=-2)modem_at_ready=false;
+  AppLog_Printf("[TTS] skipped=%s res=%d\r\n",tts_pending.tag,res);
+ }
+ return true;
+}
+
 static bool finish_command(bool *refresh) {
  ControlReply reply;
  if(!AppControl_TakeReply(&reply))return true;
@@ -288,6 +331,25 @@ static bool finish_command(bool *refresh) {
     reply.result==CONTROL_AC_REJECTED || reply.result==CONTROL_AC_UNKNOWN) {
   applied_cache[reserved_cache]=(AppliedCommand){working,reply.output,reason};
   *refresh=true;
+ }
+ if(reply.result==CONTROL_APPLIED) {
+  TtsActionRequest tts={0};
+  if(working.command.hold_s==0U) {
+   tts.type=TTS_ACT_REMOTE_AUTO;
+  } else {
+   tts.type=TTS_ACT_REMOTE_FAN_LED;
+   tts.value=reply.output.fan_level;
+   tts.aux=reply.output.led?1U:0U;
+   tts.prev_val=working_prev_fan;
+   tts.prev_aux=working_prev_led?1U:0U;
+  }
+  AppTts_SpeakAction(&tts,true);
+ } else if(reply.result==CONTROL_AC_ACCEPTED) {
+  TtsActionRequest tts={
+   .type=TTS_ACT_REMOTE_AC,
+   .value=working.command.ac_temp_c<0?0U:(uint8_t)working.command.ac_temp_c
+  };
+  AppTts_SpeakAction(&tts,true);
  }
  return publish_ack(&working,&reply.output,reason);
 }
@@ -345,6 +407,8 @@ static bool service_commands(bool *refresh) {
                          .ac_demo=cmd->ac_version,.ac_temp_c=cmd->ac_temp_c<0?0U:(uint8_t)cmd->ac_temp_c};
  memcpy(request.id,cmd->id,sizeof request.id);
  if(!AppControl_Queue(&request))return publish_ack(&working,&current,"BUSY");
+ working_prev_fan=current.fan_level;
+ working_prev_led=current.led;
  reserved_cache=free_slot;
  awaiting_output=true;
  return true;
@@ -408,9 +472,12 @@ void AppNet_Run(void *argument) {
  static const uint32_t delays[]={2000,5000,10000,30000,60000};
  for(;;) {
   clock_valid=false;command_subscribed=false;inbox_start=0;inbox_size=0;
+  modem_at_ready=false;tts_playing=false;
   stage("AT_WAIT");
   if(!find_at()){AppLog_Printf("[NET] AT no response UART6 PG14/PG9\r\n");goto backoff;}
   if(!simple("ATE0")||!simple("AT+CMEE=2")||!simple("AT+QURCCFG=\"urcport\",\"uart1\""))goto backoff;
+  modem_at_ready=true;
+  (void)service_tts();
   stage("SIM_CHECK");
   if(transaction("AT+CPIN?","+CPIN: READY",5000U))goto backoff;
   stage("REGISTER");
@@ -468,6 +535,7 @@ void AppNet_Run(void *argument) {
    while((int32_t)(HAL_GetTick()-until)<0) {
     bool refresh=false;
     if(command_subscribed && (!drain_online_uart() || !service_commands(&refresh)))goto backoff;
+    if(!service_tts())goto backoff;
     ControlOutput latest;AppControl_GetSnapshot(&latest);
     if(refresh || latest.mode!=control.mode || latest.control_epoch!=control.control_epoch ||
        latest.fan_level!=control.fan_level || latest.led!=control.led)break;
@@ -478,6 +546,13 @@ backoff:
   AppLog_Printf("[NET] stage=%s failed; retry=%lu (local tasks continue)\r\n",state,(unsigned long)retry);
   stage("OFFLINE");uint32_t delay=delays[retry<5U?retry:4U];if(retry<5U)retry++;
   uint32_t jitter=(Net_Crc32((const uint8_t *)boot,32)^HAL_GetTick())%201U;
-  network_delay(delay+(delay*jitter)/1000U);
+  uint32_t wait_until=HAL_GetTick()+delay+(delay*jitter)/1000U;
+  while((int32_t)(HAL_GetTick()-wait_until)<0) {
+   if(modem_at_ready) {
+    (void)drain_online_uart();
+    (void)service_tts();
+   }
+   network_delay(100U);
+  }
  }
 }

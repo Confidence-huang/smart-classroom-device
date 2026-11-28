@@ -31,6 +31,7 @@
 #include "app_reed.h"
 #include "app_net.h"
 #include "app_alert.h"
+#include "app_tts.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -165,6 +166,7 @@ int main(void)
   /* USER CODE BEGIN RTOS_MUTEX */
   AppLog_Init();
   AppAlert_Init();
+  AppTts_Init((AppAlert_Take() & ALERT_SYSTEM) != 0U);
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
 

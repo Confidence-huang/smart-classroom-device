@@ -559,6 +559,8 @@
             <File><FileName>app_uart_dma.c</FileName><FileType>1</FileType><FilePath>../App/Src/app_uart_dma.c</FilePath></File>
             <File><FileName>rx_cursor.c</FileName><FileType>1</FileType><FilePath>../App/Src/rx_cursor.c</FilePath></File>
             <File><FileName>app_alert.c</FileName><FileType>1</FileType><FilePath>../App/Src/app_alert.c</FilePath></File>
+            <File><FileName>tts_codec.c</FileName><FileType>1</FileType><FilePath>../App/Src/tts_codec.c</FilePath></File>
+            <File><FileName>app_tts.c</FileName><FileType>1</FileType><FilePath>../App/Src/app_tts.c</FilePath></File>
             <File><FileName>app_environment.c</FileName><FileType>1</FileType><FilePath>../App/Src/app_environment.c</FilePath></File>
             <File><FileName>app_sgp30.c</FileName><FileType>1</FileType><FilePath>../App/Src/app_sgp30.c</FilePath></File>
             <File><FileName>ir_nec_codec.c</FileName><FileType>1</FileType><FilePath>../App/Src/ir_nec_codec.c</FilePath></File>
