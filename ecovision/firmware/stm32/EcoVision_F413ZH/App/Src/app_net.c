@@ -452,6 +452,7 @@ void AppNet_Run(void *argument) {
    sample.local_off=control.mode==CONTROL_LOCAL_OFF;sample.control_epoch=control.control_epoch;
    sample.light_valid=env.light_valid;sample.light_raw16=env.light_raw16;
    sample.lux_valid=env.lux_valid;sample.lux_x100=env.lux_x100;
+   sample.air_valid=env.air_valid;sample.eco2_ppm=env.eco2_ppm;sample.tvoc_ppb=env.tvoc_ppb;sample.air_status=env.air_status;
    if(Net_Telemetry(payload,sizeof payload,config.device,boot,&sample,config.fan_levels_version)<0)break;
    (void)snprintf(topic,sizeof topic,"ecovision/%s/telemetry",config.device);
    if(!publish(topic,payload,false))break;

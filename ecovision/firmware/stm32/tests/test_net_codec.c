@@ -76,8 +76,14 @@ int main(void) {
     assert(strstr(json,"2026-11-21T14:49:46Z") && strstr(json,"\"light_lux\":null"));
     s.lux_valid=true;s.lux_x100=1083U;
     assert(Net_LegacyTelemetry(json,sizeof json,"ev001","room01",&s)>0);
-    assert(strstr(json,"\"light_lux\":10.83"));
-    s.lux_valid=false;s.lux_x100=0U;
+    assert(strstr(json,"\"light_lux\":10.83") && strstr(json,"\"air_valid\":false") && strstr(json,"\"eco2_ppm\":null"));
+    s.air_valid=true;s.air_status=0;s.eco2_ppm=412U;s.tvoc_ppb=8U;
+    assert(Net_LegacyTelemetry(json,sizeof json,"ev001","room01",&s)>0);
+    assert(strstr(json,"\"air_valid\":true") && strstr(json,"\"eco2_ppm\":412") && strstr(json,"\"tvoc_ppb\":8"));
+    s.air_valid=false;s.air_status=1;s.eco2_ppm=0U;s.tvoc_ppb=0U;
+    assert(Net_LegacyTelemetry(json,sizeof json,"ev001","room01",&s)>0);
+    assert(strstr(json,"\"air_status\":1") && strstr(json,"\"eco2_ppm\":null"));
+    s.lux_valid=false;s.lux_x100=0U;s.air_status=0;
     /* 2100-03-01 must not be formatted as a nonexistent February 29. */
     s.utc=4107542400U;
     assert(Net_LegacyTelemetry(json,sizeof json,"ev001","room01",&s)>0);
