@@ -100,15 +100,8 @@ static bool initialize_output(void)
     return HAL_DMA_Init(&led_dma) == HAL_OK;
 }
 
-static bool show_level(uint8_t level)
+static bool send_dma(uint8_t new_level)
 {
-    /* WS281x wire order is G, R, B. */
-    const uint8_t grb[3] = {levels[level][1], levels[level][0], levels[level][2]};
-    for (unsigned bit = 0; bit < LED_COUNT * LED_BITS; ++bit)
-    {
-        const uint8_t value = grb[(bit / 8U) % 3U];
-        duty[bit] = (value & (0x80U >> (bit % 8U))) != 0U ? 70U : 37U;
-    }
     if (HAL_DMA_Start(&led_dma, (uint32_t)duty, (uint32_t)&TIM2->CCR4,
                       (uint32_t)(sizeof duty / sizeof duty[0])) != HAL_OK)
     {
@@ -122,8 +115,65 @@ static bool show_level(uint8_t level)
         (void)HAL_DMA_Abort(&led_dma);
         __HAL_TIM_SET_COMPARE(&led_timer, TIM_CHANNEL_4, 0U);
     }
-    if(result==HAL_OK)actual_level=level;
+    if (result == HAL_OK) actual_level = new_level;
     return result == HAL_OK;
+}
+
+static bool show_level(uint8_t level)
+{
+    /* WS281x wire order is G, R, B. */
+    const uint8_t grb[3] = {levels[level][1], levels[level][0], levels[level][2]};
+    for (unsigned bit = 0; bit < LED_COUNT * LED_BITS; ++bit)
+    {
+        const uint8_t value = grb[(bit / 8U) % 3U];
+        duty[bit] = (value & (0x80U >> (bit % 8U))) != 0U ? 70U : 37U;
+    }
+    return send_dma(level);
+}
+
+static void hue_to_grb(uint8_t hue, uint8_t grb[3])
+{
+    /* Power-safe colorful wheel (max channel 36, comparable to level-2 warm white). */
+    uint8_t r = 0U, g = 0U, b = 0U;
+    if (hue < 85U)
+    {
+        r = (uint8_t)(255U - hue * 3U);
+        g = (uint8_t)(hue * 3U);
+    }
+    else if (hue < 170U)
+    {
+        hue = (uint8_t)(hue - 85U);
+        g = (uint8_t)(255U - hue * 3U);
+        b = (uint8_t)(hue * 3U);
+    }
+    else
+    {
+        hue = (uint8_t)(hue - 170U);
+        b = (uint8_t)(255U - hue * 3U);
+        r = (uint8_t)(hue * 3U);
+    }
+    grb[0] = (uint8_t)((uint16_t)g * 36U / 255U);
+    grb[1] = (uint8_t)((uint16_t)r * 36U / 255U);
+    grb[2] = (uint8_t)((uint16_t)b * 36U / 255U);
+}
+
+static bool show_rainbow(uint8_t phase)
+{
+    for (unsigned led = 0U; led < LED_COUNT; ++led)
+    {
+        uint8_t grb[3];
+        hue_to_grb((uint8_t)(phase + led * 16U), grb);
+        for (unsigned byte = 0U; byte < 3U; ++byte)
+        {
+            const uint8_t v = grb[byte];
+            const unsigned base = led * LED_BITS + byte * 8U;
+            for (unsigned b = 0U; b < 8U; ++b)
+            {
+                duty[base + b] = (v & (0x80U >> b)) != 0U ? 70U : 37U;
+            }
+        }
+    }
+    return send_dma(2U);
 }
 
 void AppLed_Run(UART_HandleTypeDef *console)
@@ -201,6 +251,9 @@ void AppLed_Run(UART_HandleTypeDef *console)
         uint32_t now=HAL_GetTick();
         static uint32_t last_ir_at=0U;
         static uint8_t last_ir_cmd=0xFFU;
+        static bool rainbow_mode=false;
+        static uint8_t rainbow_phase=0U;
+        static uint32_t rainbow_at=0U;
         IrNecEvent ir_ev;
         while(AppIrRx_Pop(&ir_ev)) {
             AppLog_Printf("[IR-RX] NEC addr=0x%02X cmd=0x%02X repeat=%u\r\n",
@@ -213,7 +266,16 @@ void AppLed_Run(UART_HandleTypeDef *console)
                 ir_ev.command == 0x09U || ir_ev.command == 0x07U) {
                 AppIrRx_MuteMs(250U);
             }
-            (void)AppControl_ApplyLocalIr(ir_ev.command);
+            if (AppControl_ApplyLocalIr(ir_ev.command)) {
+                if (ir_ev.command == 0x4AU) {
+                    rainbow_mode = !rainbow_mode;
+                    if (!rainbow_mode) (void)show_level(2U);
+                    AppLog_Printf("[LED] rainbow=%u\r\n", rainbow_mode ? 1U : 0U);
+                } else if (ir_ev.command == 0x15U || ir_ev.command == 0x45U ||
+                           ir_ev.command == 0x47U || ir_ev.command == 0x43U) {
+                    rainbow_mode = false;
+                }
+            }
         }
         if((uint32_t)(now-control_at)>=20U) {
             control_at=now;
@@ -229,8 +291,20 @@ void AppLed_Run(UART_HandleTypeDef *console)
             uint8_t fan_level=(next.fan_level>0U && fan_kick_until!=0U && (int32_t)(now-fan_kick_until)<0)
                 ?CONTROL_FAN_MAX:next.fan_level;
             uint8_t led_level=next.led?2U:0U;
+            static bool was_rainbow=false;
+            if (!next.led || next.mode != CONTROL_REMOTE) rainbow_mode = false;
             bool fan_ok=AppFan_GetLevel()==fan_level || AppFan_SetLevel(fan_level);
-            bool led_ok=AppLed_GetLevel()==led_level || show_level(led_level);
+            bool led_ok=true;
+            if (rainbow_mode && next.led) {
+                if (!was_rainbow || (uint32_t)(now - rainbow_at) >= 60U) {
+                    rainbow_at = now;
+                    rainbow_phase = (uint8_t)(rainbow_phase + 4U);
+                    led_ok = show_rainbow(rainbow_phase);
+                }
+            } else if (was_rainbow || AppLed_GetLevel()!=led_level) {
+                led_ok = show_level(led_level);
+            }
+            was_rainbow = rainbow_mode && next.led;
             if(!fan_ok || !led_ok) {
                 AppLog_Printf("[CTRL] actuator write failed; safety OFF and reset\r\n");
                 (void)AppFan_SetLevel(0U);(void)show_level(0U);
