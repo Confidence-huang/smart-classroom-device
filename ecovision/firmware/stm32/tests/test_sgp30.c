@@ -22,7 +22,7 @@ int32_t osDelay(uint32_t ticks)
 HAL_StatusTypeDef HAL_I2C_Master_Transmit(I2C_HandleTypeDef *bus, uint16_t addr,
     uint8_t *data, uint16_t length, uint32_t timeout)
 {
-    assert(bus && addr == (0x58U << 1) && length == 2U && timeout <= 10U);
+    assert(bus && addr == (0x58U << 1) && (length == 2U || length == 5U) && timeout <= 10U);
     last_cmd = (uint16_t)((data[0] << 8) | data[1]);
     ++commands;
     return tx_failed ? HAL_ERROR : HAL_OK;
@@ -96,6 +96,15 @@ int main(void)
     ctx = (Sgp30_Context){0};
     tx_failed = true;
     assert(Sgp30_Poll(&ctx, &bus, &sample) == SGP30_IO_ERROR);
-    puts("PASS: SGP30 startup, 1 s measurements, warm-up, CRC, range, retry and tick wrap");
+
+    /* Absolute humidity compensation math & 0x2061 frame. */
+    uint16_t ah25 = Sgp30_AbsoluteHumidity88(2500, 5000); /* 11.52 g/m^3 -> ~2948 */
+    assert(ah25 >= 2935U && ah25 <= 2965U);
+    assert(Sgp30_AbsoluteHumidity88(2500, 0) == 0U);
+    tx_failed = false;
+    ctx.initialized = true;
+    assert(Sgp30_SetHumidity(&ctx, &bus, 2500, 5000));
+    assert(last_cmd == 0x2061U);
+    puts("PASS: SGP30 startup, 1 s measurements, warm-up, CRC, range, retry, tick wrap and humidity compensation");
     return 0;
 }

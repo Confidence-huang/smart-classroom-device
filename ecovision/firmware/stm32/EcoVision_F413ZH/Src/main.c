@@ -30,6 +30,7 @@
 #include "app_environment.h"
 #include "app_reed.h"
 #include "app_net.h"
+#include "app_alert.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -163,6 +164,7 @@ int main(void)
 
   /* USER CODE BEGIN RTOS_MUTEX */
   AppLog_Init();
+  AppAlert_Init();
   /* add mutexes, ... */
   /* USER CODE END RTOS_MUTEX */
 
@@ -598,14 +600,23 @@ void StartHeartbeatTask(void *argument)
   }
 
   (void)HAL_UART_Transmit(&huart3, boot_message, sizeof boot_message - 1U, 25U);
+  const uint32_t watchdog_arm_at = HAL_GetTick() + 1500U;
+  bool watchdog_armed = false;
   uint32_t heartbeat_at = HAL_GetTick();
   for (;;)
   {
     AppReed_Poll();
+    if (!watchdog_armed && (int32_t)(HAL_GetTick() - watchdog_arm_at) >= 0)
+    {
+      AppHealth_Start();
+      watchdog_armed = true;
+      AppLog_Printf("[HEALTH] IWDG 16s hardware watchdog armed (5 tasks monitored)\r\n");
+    }
     if ((uint32_t)(HAL_GetTick() - heartbeat_at) >= 500U)
     {
       heartbeat_at = HAL_GetTick();
       HAL_GPIO_TogglePin(LD2_GPIO_Port, LD2_Pin);
+      if (watchdog_armed) AppHealth_Poll();
     }
     osDelay((osKernelGetTickFreq() + 99U) / 100U);
   }

@@ -26,9 +26,10 @@ void Control_LocalOff(ControlPolicy *p) {
     p->output.mode=CONTROL_LOCAL_OFF;
     p->output.led=false;p->output.fan_level=CONTROL_FAN_OFF;
     p->output.hold_remaining_s=0;
-    p->auto_led=false;p->auto_fan=false;p->auto_air_fan=false;p->auto_boost=false;
+    p->auto_led=false;p->auto_fan=false;p->auto_air_fan=false;p->auto_boost=false;p->auto_daylight_off=false;
     p->hot_active=false;p->cold_active=false;
     p->air_bad_active=false;p->air_ok_active=false;
+    p->daylight_bright_active=false;p->daylight_dark_active=false;
     Control_BumpEpoch(p);
 }
 
@@ -50,6 +51,7 @@ static void button(ControlPolicy *p,uint32_t now,bool pressed) {
                 p->output.hold_remaining_s=0;
                 p->hot_active=false;p->cold_active=false;
                 p->air_bad_active=false;p->air_ok_active=false;
+                p->daylight_bright_active=false;p->daylight_dark_active=false;
                 Control_BumpEpoch(p);
             }
         }
@@ -93,15 +95,31 @@ void Control_Update(ControlPolicy *p,uint32_t now,const ControlInput *in) {
         p->output.led=false;p->output.fan_level=CONTROL_FAN_OFF;p->output.hold_remaining_s=0;
         p->hot_active=false;p->cold_active=false;
         p->air_bad_active=false;p->air_ok_active=false;
+        p->daylight_bright_active=false;p->daylight_dark_active=false;
         return;
     }
     /* Maintain the AUTO decision separately so remote settings never become AUTO's remembered outputs. */
     if(p->output.occupancy==CONTROL_VACANT) {
-        p->auto_led=false;p->auto_fan=false;p->auto_air_fan=false;p->auto_boost=false;
+        p->auto_led=false;p->auto_fan=false;p->auto_air_fan=false;p->auto_boost=false;p->auto_daylight_off=false;
         p->hot_active=false;p->cold_active=false;
         p->air_bad_active=false;p->air_ok_active=false;
+        p->daylight_bright_active=false;p->daylight_dark_active=false;
     } else if(p->output.occupancy==CONTROL_OCCUPIED) {
-        p->auto_led=true;
+        /* Optional BH1750 daylight harvesting: >=300 lx for 5 s turns LED off; <=150 lx for 3 s restores ON. */
+        if(!in->lux_valid) {
+            p->daylight_bright_active=false;p->daylight_dark_active=false;p->auto_daylight_off=false;
+        } else if(in->lux_x100>=30000U) {
+            p->daylight_dark_active=false;
+            if(!p->daylight_bright_active){p->daylight_bright_active=true;p->daylight_bright_at=now;}
+            if((uint32_t)(now-p->daylight_bright_at)>=5000U)p->auto_daylight_off=true;
+        } else if(in->lux_x100<=15000U) {
+            p->daylight_bright_active=false;
+            if(!p->daylight_dark_active){p->daylight_dark_active=true;p->daylight_dark_at=now;}
+            if((uint32_t)(now-p->daylight_dark_at)>=3000U)p->auto_daylight_off=false;
+        } else {
+            p->daylight_bright_active=false;p->daylight_dark_active=false;
+        }
+        p->auto_led=!p->auto_daylight_off;
         if(!temperature) {p->hot_active=false;p->cold_active=false;}
         else if(in->temperature_x100>=2800) {
             p->cold_active=false;
@@ -137,9 +155,10 @@ void Control_Update(ControlPolicy *p,uint32_t now,const ControlInput *in) {
     } else {
         p->hot_active=false;p->cold_active=false;
         p->air_bad_active=false;p->air_ok_active=false;
+        p->daylight_bright_active=false;p->daylight_dark_active=false;
     }
     if(p->fault_active && (uint32_t)(now-p->fault_at)>=60000U) {
-        p->auto_led=false;p->auto_fan=false;p->auto_air_fan=false;p->auto_boost=false;
+        p->auto_led=false;p->auto_fan=false;p->auto_air_fan=false;p->auto_boost=false;p->auto_daylight_off=false;
     }
 
     if(p->output.mode==CONTROL_REMOTE) {
