@@ -300,6 +300,19 @@ void AppControl_SafetyOff(void) {
 }
 
 static uint8_t ir_ac_setpoint = AC_SETPOINT_C;
+static uint8_t last_ir_ac_target = 0U;
+
+uint8_t AppControl_GetLastIrAcTarget(void) {
+    return last_ir_ac_target;
+}
+
+bool AppControl_IsLocalLocked(void) {
+    bool locked;
+    taskENTER_CRITICAL();
+    locked = (policy.output.mode == CONTROL_LOCAL_OFF);
+    taskEXIT_CRITICAL();
+    return locked;
+}
 
 bool AppControl_ApplyLocalIr(uint8_t cmd) {
     uint32_t now = HAL_GetTick();
@@ -391,6 +404,9 @@ bool AppControl_ApplyLocalIr(uint8_t cmd) {
     if (locked) {
         AppLog_Printf("[IR-CTRL] REJECTED LOCAL_OFF cmd=0x%02X\r\n", (unsigned)cmd);
         return false;
+    }
+    if (ac_action) {
+        last_ir_ac_target = ac_target;
     }
     if (ac_action && AppAcDemo_Ready()) {
         AcModuleResult res = ac_send(ac_target, "IR_LOCAL");

@@ -2,9 +2,11 @@
 #include "app_log.h"
 #include "app_fan.h"
 #include "app_vision.h"
+#include "app_environment.h"
 #include "app_control.h"
 #include "app_ir_rx.h"
 #include "app_alert.h"
+#include "app_tts.h"
 #include "cmsis_os.h"
 
 #include <stdbool.h>
@@ -322,24 +324,65 @@ void AppLed_Run(UART_HandleTypeDef *console)
             if (ir_ev.command == last_ir_cmd && (uint32_t)(now - last_ir_at) < 300U) continue;
             last_ir_cmd = ir_ev.command;
             last_ir_at = now;
+            if (ir_ev.command == 0x44U) {
+                bool muted = AppTts_ToggleMute();
+                AppLog_Printf("[TTS] mute=%u\r\n", muted ? 1U : 0U);
+                continue;
+            }
             if (ir_ev.command == 0x45U || ir_ev.command == 0x0DU || ir_ev.command == 0x5AU ||
                 ir_ev.command == 0x09U || ir_ev.command == 0x07U) {
                 AppIrRx_MuteMs(250U);
             }
             if (AppControl_ApplyLocalIr(ir_ev.command)) {
+                ControlOutput ir_out;
+                AppControl_GetSnapshot(&ir_out);
+                TtsActionRequest tts_req = {0};
                 if (ir_ev.command == 0x42U) {
                     led_scene = LED_SCENE_WHITE;
                     AppLog_Printf("[LED] scene=WHITE\r\n");
+                    tts_req.type = TTS_ACT_IR_WHITE;
                 } else if (ir_ev.command == 0x52U) {
                     led_scene = LED_SCENE_KTV;
                     AppLog_Printf("[LED] scene=KTV\r\n");
+                    tts_req.type = TTS_ACT_IR_KTV;
                 } else if (ir_ev.command == 0x4AU) {
                     led_scene = (led_scene == LED_SCENE_RAINBOW) ? LED_SCENE_WARM : LED_SCENE_RAINBOW;
                     AppLog_Printf("[LED] scene=%s\r\n", led_scene == LED_SCENE_RAINBOW ? "RAINBOW" : "WARM");
-                } else if (ir_ev.command == 0x15U || ir_ev.command == 0x45U ||
-                           ir_ev.command == 0x47U || ir_ev.command == 0x43U) {
+                    tts_req.type = (led_scene == LED_SCENE_RAINBOW) ? TTS_ACT_IR_RAINBOW : TTS_ACT_IR_WARM;
+                } else if (ir_ev.command == 0x15U) {
                     led_scene = LED_SCENE_WARM;
+                    tts_req.type = !ir_out.led ? TTS_ACT_IR_LED_ON : TTS_ACT_IR_LED_OFF;
+                } else if (ir_ev.command == 0x45U) {
+                    led_scene = LED_SCENE_WARM;
+                    tts_req.type = TTS_ACT_IR_ALL_OFF;
+                } else if (ir_ev.command == 0x47U || ir_ev.command == 0x43U) {
+                    led_scene = LED_SCENE_WARM;
+                    tts_req.type = TTS_ACT_IR_AUTO;
+                } else if (ir_ev.command == 0x16U || ir_ev.command == 0x0CU || ir_ev.command == 0x18U ||
+                           ir_ev.command == 0x5EU || ir_ev.command == 0x08U || ir_ev.command == 0x1CU ||
+                           ir_ev.command == 0x40U || ir_ev.command == 0x19U) {
+                    uint8_t target_fan = ir_out.fan_level;
+                    if (ir_ev.command == 0x16U) target_fan = 0U;
+                    else if (ir_ev.command == 0x0CU) target_fan = 1U;
+                    else if (ir_ev.command == 0x18U) target_fan = 2U;
+                    else if (ir_ev.command == 0x5EU) target_fan = 3U;
+                    else if (ir_ev.command == 0x08U) target_fan = 4U;
+                    else if (ir_ev.command == 0x1CU) target_fan = 5U;
+                    else if (ir_ev.command == 0x40U && target_fan < CONTROL_FAN_MAX) ++target_fan;
+                    else if (ir_ev.command == 0x19U && target_fan > 0U) --target_fan;
+                    tts_req.type = TTS_ACT_IR_FAN;
+                    tts_req.value = target_fan;
+                } else if (ir_ev.command == 0x0DU || ir_ev.command == 0x5AU ||
+                           ir_ev.command == 0x09U || ir_ev.command == 0x07U) {
+                    tts_req.type = TTS_ACT_IR_AC;
+                    tts_req.value = AppControl_GetLastIrAcTarget();
                 }
+                if (tts_req.type != TTS_ACT_NONE) {
+                    AppTts_SpeakAction(&tts_req, true);
+                }
+            } else if (AppControl_IsLocalLocked()) {
+                TtsActionRequest locked_req = {.type = TTS_ACT_IR_LOCKED};
+                AppTts_SpeakAction(&locked_req, true);
             }
         }
         if((uint32_t)(now-control_at)>=20U) {
@@ -388,6 +431,44 @@ void AppLed_Run(UART_HandleTypeDef *console)
             }
             AppControl_PublishApplied(&next);
             AppHealth_Beat(HEALTH_OUTPUT);
+            static uint32_t fault_check_at = 0U;
+            if ((uint32_t)(now - fault_check_at) >= 500U) {
+                fault_check_at = now;
+                EvVision vis;
+                EnvironmentSnapshot env;
+                AppVision_GetSnapshot(&vis);
+                AppEnvironment_GetSnapshot(&env);
+                uint8_t fault_mask = 0U;
+                if (!(vis.active && vis.valid && (uint32_t)(now - vis.fresh_at) <= 6000U)) {
+                    fault_mask |= (uint8_t)TTS_FAULT_VISION;
+                }
+                if (!env.th_valid) {
+                    fault_mask |= (uint8_t)TTS_FAULT_SENSOR;
+                }
+                if (env.air_valid && (env.eco2_ppm >= 1500U || env.tvoc_ppb >= 500U)) {
+                    fault_mask |= (uint8_t)TTS_FAULT_AIR_POOR;
+                }
+                if (next.mode == CONTROL_LOCAL_OFF) {
+                    fault_mask |= (uint8_t)TTS_FAULT_LOCAL_LOCK;
+                }
+                AppTts_UpdateFaults(fault_mask);
+            }
+            if (before.mode == CONTROL_AUTO && next.mode == CONTROL_AUTO) {
+                if (before.occupancy != CONTROL_VACANT && next.occupancy == CONTROL_VACANT &&
+                    (before.led || before.fan_level > 0U)) {
+                    AppTts_SpeakAuto(TTS_AUTO_VACANT_OFF);
+                } else if (before.occupancy == CONTROL_OCCUPIED && next.occupancy == CONTROL_OCCUPIED) {
+                    if (before.led && !next.led) {
+                        AppTts_SpeakAuto(TTS_AUTO_DAYLIGHT_OFF);
+                    } else if (before.fan_level == 0U && next.fan_level > 0U) {
+                        EnvironmentSnapshot env;
+                        AppEnvironment_GetSnapshot(&env);
+                        if (env.air_valid && (env.eco2_ppm >= 1200U || env.tvoc_ppb >= 400U)) {
+                            AppTts_SpeakAuto(TTS_AUTO_AIR_VENT);
+                        }
+                    }
+                }
+            }
             if(before.occupancy!=next.occupancy || before.mode!=next.mode ||
                before.control_epoch!=next.control_epoch || before.led!=next.led || before.fan_level!=next.fan_level) {
                 static const char *names[]={"UNKNOWN","OCCUPIED","VACANT"};

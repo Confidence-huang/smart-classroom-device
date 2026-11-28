@@ -37,4 +37,6 @@ void AppControl_PublishApplied(const ControlOutput *output);
 void AppControl_GetSnapshot(ControlOutput *output);
 void AppControl_SafetyOff(void);
 bool AppControl_ApplyLocalIr(uint8_t cmd);
+uint8_t AppControl_GetLastIrAcTarget(void);
+bool AppControl_IsLocalLocked(void);
 #endif
