@@ -43,27 +43,52 @@ static void fixed_one(char *out,size_t size,const char *label,int32_t value,cons
     uint32_t tenths=(magnitude+5U)/10U;
     (void)snprintf(out,size,"%s%s%lu.%lu%s",label,value<0?"-":"",(unsigned long)(tenths/10U),(unsigned long)(tenths%10U),unit);
 }
+static const char *air_quality_label(const EnvironmentSnapshot *env,uint16_t *color) {
+    if(!env || !env->air_valid) {
+        *color=0xfd20;
+        return (env && env->air_status==1)?"WARM":"ERR";
+    }
+    if(env->eco2_ppm>=2000U || env->tvoc_ppb>=660U) {
+        *color=0xf800;
+        return "POOR";
+    }
+    if(env->eco2_ppm>=1000U || env->tvoc_ppb>=220U) {
+        *color=0xffe0;
+        return "FAIR";
+    }
+    *color=0x07e0;
+    return "GOOD";
+}
 bool LcdView_RenderDashboard(uint8_t *pixels,size_t size,bool linked,bool valid,uint8_t count,uint32_t seq,const EnvironmentSnapshot *env) {
     if(!pixels || size<LCD_VIEW_BYTES) return false;
     memset(pixels,0,LCD_VIEW_BYTES);
     bool good=linked && valid && count<=20;
-    text(pixels,4,1,"ENV / K230",2,0x07ff);
+    text(pixels,4,2,"ECOVISION / K230",1,0x07ff);
     char line[32]="PEOPLE: --";
     if(good) (void)snprintf(line,sizeof line,"PEOPLE: %u",(unsigned)count);
-    text(pixels,4,23,line,2,good?0x07e0:0xfd20);
+    text(pixels,4,12,line,2,good?0x07e0:0xfd20);
     bool th=env && env->th_valid && env->temp_x100>=-4000 && env->temp_x100<=8500 && env->humi_x100>=0 && env->humi_x100<=10000;
     if(th) fixed_one(line,sizeof line,"TEMP:",env->temp_x100," C");
     else (void)snprintf(line,sizeof line,"TEMP: -- C");
-    text(pixels,4,45,line,2,th?0xffff:0xfd20);
+    text(pixels,4,30,line,2,th?0xffff:0xfd20);
     if(th) fixed_one(line,sizeof line,"RH:",env->humi_x100," %");
     else (void)snprintf(line,sizeof line,"RH: -- %%");
-    text(pixels,4,67,line,2,th?0xffff:0xfd20);
-    if(env && env->lux_valid) (void)snprintf(line,sizeof line,"LUX: %lu",(unsigned long)(env->lux_x100/100U));
-    else (void)snprintf(line,sizeof line,"LUX: --");
-    text(pixels,4,89,line,2,env && env->lux_valid?0xffff:0xfd20);
+    text(pixels,4,48,line,2,th?0xffff:0xfd20);
+    uint16_t air_color=0xfd20;
+    const char *air_label=air_quality_label(env,&air_color);
+    bool air=env && env->air_valid;
+    if(air) (void)snprintf(line,sizeof line,"ECO2:%u",(unsigned)env->eco2_ppm);
+    else (void)snprintf(line,sizeof line,"ECO2:--");
+    text(pixels,4,66,line,2,air_color);
+    if(air) (void)snprintf(line,sizeof line,"TVOC:%u",(unsigned)env->tvoc_ppb);
+    else (void)snprintf(line,sizeof line,"TVOC:--");
+    text(pixels,4,84,line,2,air_color);
+    if(env && env->lux_valid) (void)snprintf(line,sizeof line,"AIR:%s LUX:%lu",air_label,(unsigned long)(env->lux_x100/100U));
+    else (void)snprintf(line,sizeof line,"AIR:%s LUX:--",air_label);
+    text(pixels,4,102,line,1,air_color);
     (void)snprintf(line,sizeof line,"UART:%s NET:%s",!linked?"WAIT":good?"OK":"BAD",network_state);
-    text(pixels,4,109,line,1,!strcmp(network_state,"ONLINE")?0x07e0:0xfd20);
+    text(pixels,4,112,line,1,!strcmp(network_state,"ONLINE")?0x07e0:0xfd20);
     (void)snprintf(line,sizeof line,"SEQ: %lu",(unsigned long)seq);
-    text(pixels,4,120,line,1,0xffff);
+    text(pixels,4,121,line,1,0xffff);
     return true;
 }
