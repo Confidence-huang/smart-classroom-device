@@ -1,0 +1,2715 @@
+{
+  "summary": {
+    "first_puback_after_restore_s": 62.729,
+    "recovery_pubacks": 18,
+    "phases": {
+      "BASELINE": {
+        "VISION": 14,
+        "ENV": 3,
+        "PUBACK": 3
+      },
+      "OUTAGE": {
+        "VISION": 127,
+        "ENV": 26,
+        "PUBACK": 0
+      },
+      "RECOVERY": {
+        "VISION": 143,
+        "ENV": 29,
+        "PUBACK": 18
+      }
+    },
+    "maximum_sample_gap_s": {
+      "VISION": 1.059,
+      "ENV": 5.97
+    },
+    "unexpected_boot_banners": 0,
+    "passed": true,
+    "error": null,
+    "listener_errors": [],
+    "case": "rf",
+    "outage_seconds": 130,
+    "observation_seconds": 150
+  },
+  "records": [
+    {
+      "elapsed_s": 0.044,
+      "phase": "BASELINE",
+      "kind": "AT",
+      "command": "AT",
+      "ok": true
+    },
+    {
+      "elapsed_s": 0.947,
+      "phase": "BASELINE",
+      "kind": "VISION",
+      "seq": 6178,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 1.999,
+      "phase": "BASELINE",
+      "kind": "VISION",
+      "seq": 6179,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 2.16,
+      "phase": "BASELINE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2645 rh_x100=2126 adc_valid=1 adc12=1353 adc16=21653 err=0"
+    },
+    {
+      "elapsed_s": 2.739,
+      "phase": "BASELINE",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=252 bytes=465 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 3.049,
+      "phase": "BASELINE",
+      "kind": "VISION",
+      "seq": 6180,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 4.102,
+      "phase": "BASELINE",
+      "kind": "VISION",
+      "seq": 6181,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 5.151,
+      "phase": "BASELINE",
+      "kind": "VISION",
+      "seq": 6182,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 6.203,
+      "phase": "BASELINE",
+      "kind": "VISION",
+      "seq": 6183,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 7.161,
+      "phase": "BASELINE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2646 rh_x100=2128 adc_valid=1 adc12=1364 adc16=21829 err=0"
+    },
+    {
+      "elapsed_s": 7.254,
+      "phase": "BASELINE",
+      "kind": "VISION",
+      "seq": 6184,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 7.77,
+      "phase": "BASELINE",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=253 bytes=465 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 8.306,
+      "phase": "BASELINE",
+      "kind": "VISION",
+      "seq": 6185,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 9.358,
+      "phase": "BASELINE",
+      "kind": "VISION",
+      "seq": 6186,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 10.412,
+      "phase": "BASELINE",
+      "kind": "VISION",
+      "seq": 6187,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 11.468,
+      "phase": "BASELINE",
+      "kind": "VISION",
+      "seq": 6188,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 12.161,
+      "phase": "BASELINE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2647 rh_x100=2130 adc_valid=1 adc12=1362 adc16=21797 err=0"
+    },
+    {
+      "elapsed_s": 12.524,
+      "phase": "BASELINE",
+      "kind": "VISION",
+      "seq": 6189,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 12.783,
+      "phase": "BASELINE",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=254 bytes=466 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 13.58,
+      "phase": "BASELINE",
+      "kind": "VISION",
+      "seq": 6190,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 14.636,
+      "phase": "BASELINE",
+      "kind": "VISION",
+      "seq": 6191,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 15.044,
+      "phase": "OUTAGE",
+      "kind": "INJECTION_START",
+      "case": "rf"
+    },
+    {
+      "elapsed_s": 15.21,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] stage=ONLINE failed; retry=0 (local tasks continue)"
+    },
+    {
+      "elapsed_s": 15.212,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=OFFLINE"
+    },
+    {
+      "elapsed_s": 15.692,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6192,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 16.748,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6193,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 17.161,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2647 rh_x100=2126 adc_valid=1 adc12=1357 adc16=21717 err=0"
+    },
+    {
+      "elapsed_s": 17.505,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=AT_WAIT"
+    },
+    {
+      "elapsed_s": 17.57,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=SIM_CHECK"
+    },
+    {
+      "elapsed_s": 17.595,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] stage=SIM_CHECK failed; retry=1 (local tasks continue)"
+    },
+    {
+      "elapsed_s": 17.597,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=OFFLINE"
+    },
+    {
+      "elapsed_s": 17.804,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6194,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 18.337,
+      "phase": "OUTAGE",
+      "kind": "AT",
+      "command": "AT+CFUN=0",
+      "ok": true
+    },
+    {
+      "elapsed_s": 18.86,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6195,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 19.916,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6196,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 20.972,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6197,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 22.028,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6198,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 22.161,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2647 rh_x100=2124 adc_valid=1 adc12=1363 adc16=21813 err=0"
+    },
+    {
+      "elapsed_s": 23.024,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6199,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 23.082,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=AT_WAIT"
+    },
+    {
+      "elapsed_s": 23.15,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=SIM_CHECK"
+    },
+    {
+      "elapsed_s": 23.183,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] stage=SIM_CHECK failed; retry=2 (local tasks continue)"
+    },
+    {
+      "elapsed_s": 23.185,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=OFFLINE"
+    },
+    {
+      "elapsed_s": 24.074,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6200,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 25.126,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6201,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 26.176,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6202,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 27.161,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2646 rh_x100=2117 adc_valid=1 adc12=1349 adc16=21589 err=0"
+    },
+    {
+      "elapsed_s": 27.228,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6203,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 28.28,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6204,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 29.33,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6205,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 30.382,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6206,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 31.434,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6207,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 32.161,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2647 rh_x100=2118 adc_valid=1 adc12=1355 adc16=21685 err=0"
+    },
+    {
+      "elapsed_s": 32.484,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6208,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 33.536,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6209,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 33.873,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=AT_WAIT"
+    },
+    {
+      "elapsed_s": 33.938,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=SIM_CHECK"
+    },
+    {
+      "elapsed_s": 33.963,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] stage=SIM_CHECK failed; retry=3 (local tasks continue)"
+    },
+    {
+      "elapsed_s": 33.965,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=OFFLINE"
+    },
+    {
+      "elapsed_s": 34.586,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6210,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 35.638,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6211,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 36.687,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6212,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 37.161,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2646 rh_x100=2114 adc_valid=1 adc12=1384 adc16=22149 err=0"
+    },
+    {
+      "elapsed_s": 37.739,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6213,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 38.789,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6214,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 39.842,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6215,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 40.895,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6216,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 41.946,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6217,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 42.2,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2642 rh_x100=2114 adc_valid=1 adc12=1354 adc16=21669 err=0"
+    },
+    {
+      "elapsed_s": 42.996,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6218,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 44.048,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6219,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 45.098,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6220,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 46.15,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6221,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 47.2,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6222,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 48.161,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2643 rh_x100=2117 adc_valid=1 adc12=1364 adc16=21829 err=0"
+    },
+    {
+      "elapsed_s": 48.252,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6223,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 49.304,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6224,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 50.354,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6225,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 51.406,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6226,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 52.458,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6227,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 53.161,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2641 rh_x100=2115 adc_valid=1 adc12=1354 adc16=21669 err=0"
+    },
+    {
+      "elapsed_s": 53.508,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6228,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 54.56,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6229,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 55.61,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6230,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 56.662,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6231,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 57.714,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6232,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 58.161,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2639 rh_x100=2112 adc_valid=1 adc12=1355 adc16=21685 err=0"
+    },
+    {
+      "elapsed_s": 58.764,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6233,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 59.816,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6234,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 60.868,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6235,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 61.918,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6236,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 62.97,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6237,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 63.218,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2636 rh_x100=2120 adc_valid=1 adc12=1380 adc16=22085 err=0"
+    },
+    {
+      "elapsed_s": 64.02,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6238,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 65.072,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6239,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 66.122,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6240,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 67.174,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6241,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 68.226,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6242,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 68.881,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=AT_WAIT"
+    },
+    {
+      "elapsed_s": 68.947,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=SIM_CHECK"
+    },
+    {
+      "elapsed_s": 68.972,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] stage=SIM_CHECK failed; retry=4 (local tasks continue)"
+    },
+    {
+      "elapsed_s": 68.974,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=OFFLINE"
+    },
+    {
+      "elapsed_s": 69.161,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2634 rh_x100=2123 adc_valid=1 adc12=1387 adc16=22197 err=0"
+    },
+    {
+      "elapsed_s": 69.276,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6243,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 70.328,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6244,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 71.38,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6245,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 72.43,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6246,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 73.482,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6247,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 74.161,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2632 rh_x100=2125 adc_valid=1 adc12=1388 adc16=22213 err=0"
+    },
+    {
+      "elapsed_s": 74.532,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6248,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 75.585,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6249,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 76.637,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6250,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 77.687,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6251,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 78.739,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6252,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 79.162,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2632 rh_x100=2118 adc_valid=1 adc12=1395 adc16=22325 err=0"
+    },
+    {
+      "elapsed_s": 79.791,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6253,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 80.841,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6254,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 81.893,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6255,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 82.943,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6256,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 83.995,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6257,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 84.162,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2632 rh_x100=2120 adc_valid=1 adc12=1386 adc16=22181 err=0"
+    },
+    {
+      "elapsed_s": 85.045,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6258,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 86.097,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6259,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 87.149,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6260,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 88.199,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6261,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 89.162,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2629 rh_x100=2118 adc_valid=1 adc12=1418 adc16=22693 err=0"
+    },
+    {
+      "elapsed_s": 89.251,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6262,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 90.303,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6263,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 91.353,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6264,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 92.405,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6265,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 93.455,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6266,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 94.162,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2628 rh_x100=2116 adc_valid=1 adc12=1388 adc16=22213 err=0"
+    },
+    {
+      "elapsed_s": 94.507,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6267,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 95.557,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6268,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 96.609,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6269,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 97.661,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6270,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 98.711,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6271,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 99.205,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2628 rh_x100=2116 adc_valid=1 adc12=1383 adc16=22133 err=0"
+    },
+    {
+      "elapsed_s": 99.763,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6272,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 100.815,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6273,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 101.865,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6274,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 102.917,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6275,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 103.967,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6276,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 105.019,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6277,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 105.162,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2626 rh_x100=2118 adc_valid=1 adc12=1387 adc16=22197 err=0"
+    },
+    {
+      "elapsed_s": 106.071,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6278,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 107.121,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6279,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 108.173,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6280,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 109.226,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6281,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 110.163,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2623 rh_x100=2125 adc_valid=1 adc12=1379 adc16=22069 err=0"
+    },
+    {
+      "elapsed_s": 110.276,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6282,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 111.328,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6283,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 112.378,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6284,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 113.43,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6285,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 114.48,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6286,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 115.163,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2622 rh_x100=2125 adc_valid=1 adc12=1451 adc16=23221 err=0"
+    },
+    {
+      "elapsed_s": 115.532,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6287,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 116.584,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6288,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 117.636,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6289,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 118.686,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6290,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 119.738,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6291,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 120.163,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2619 rh_x100=2123 adc_valid=1 adc12=1499 adc16=23989 err=0"
+    },
+    {
+      "elapsed_s": 120.788,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6292,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 121.84,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6293,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 122.89,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6294,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 123.942,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6295,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 124.994,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6296,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 125.163,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2619 rh_x100=2124 adc_valid=1 adc12=1486 adc16=23781 err=0"
+    },
+    {
+      "elapsed_s": 126.044,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6297,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 127.096,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6298,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 128.146,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6299,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 129.198,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6300,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 130.163,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2621 rh_x100=2122 adc_valid=1 adc12=1495 adc16=23925 err=0"
+    },
+    {
+      "elapsed_s": 130.25,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6301,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 131.3,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6302,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 132.352,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6303,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 133.402,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6304,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 134.454,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6305,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 135.163,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2619 rh_x100=2120 adc_valid=1 adc12=1498 adc16=23973 err=0"
+    },
+    {
+      "elapsed_s": 135.506,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6306,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 136.556,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6307,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 137.608,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6308,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 138.658,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6309,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 139.71,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6310,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 140.163,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2618 rh_x100=2119 adc_valid=1 adc12=1486 adc16=23781 err=0"
+    },
+    {
+      "elapsed_s": 140.761,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6311,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 141.811,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6312,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 142.863,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6313,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 143.913,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6314,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 144.05,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=AT_WAIT"
+    },
+    {
+      "elapsed_s": 144.116,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=SIM_CHECK"
+    },
+    {
+      "elapsed_s": 144.149,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] stage=SIM_CHECK failed; retry=5 (local tasks continue)"
+    },
+    {
+      "elapsed_s": 144.151,
+      "phase": "OUTAGE",
+      "kind": "NET",
+      "text": "[NET] state=OFFLINE"
+    },
+    {
+      "elapsed_s": 144.965,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6315,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 145.163,
+      "phase": "OUTAGE",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2615 rh_x100=2124 adc_valid=1 adc12=1493 adc16=23893 err=0"
+    },
+    {
+      "elapsed_s": 146.018,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6316,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 147.07,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6317,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 148.12,
+      "phase": "OUTAGE",
+      "kind": "VISION",
+      "seq": 6318,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 148.68,
+      "phase": "OUTAGE",
+      "kind": "AT",
+      "command": "AT+CFUN=1",
+      "ok": true
+    },
+    {
+      "elapsed_s": 148.68,
+      "phase": "RECOVERY",
+      "kind": "RECOVERY_START"
+    },
+    {
+      "elapsed_s": 149.172,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6319,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 150.163,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2615 rh_x100=2124 adc_valid=1 adc12=1407 adc16=22517 err=0"
+    },
+    {
+      "elapsed_s": 150.222,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6320,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 151.274,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6321,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 152.324,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6322,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 153.376,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6323,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 154.426,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6324,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 155.193,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2616 rh_x100=2117 adc_valid=1 adc12=1399 adc16=22389 err=0"
+    },
+    {
+      "elapsed_s": 155.478,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6325,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 156.53,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6326,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 157.58,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6327,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 158.632,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6328,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 159.684,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6329,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 160.734,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6330,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 161.163,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2614 rh_x100=2123 adc_valid=1 adc12=1427 adc16=22837 err=0"
+    },
+    {
+      "elapsed_s": 161.786,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6331,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 162.836,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6332,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 163.888,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6333,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 164.938,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6334,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 165.99,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6335,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 166.163,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2618 rh_x100=2122 adc_valid=1 adc12=1447 adc16=23157 err=0"
+    },
+    {
+      "elapsed_s": 167.042,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6336,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 168.094,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6337,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 169.146,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6338,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 170.196,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6339,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 171.163,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2620 rh_x100=2119 adc_valid=1 adc12=1496 adc16=23941 err=0"
+    },
+    {
+      "elapsed_s": 171.246,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6340,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 172.298,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6341,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 173.348,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6342,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 174.4,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6343,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 175.452,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6344,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 176.212,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2622 rh_x100=2119 adc_valid=1 adc12=1466 adc16=23461 err=0"
+    },
+    {
+      "elapsed_s": 176.502,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6345,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 177.554,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6346,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 178.607,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6347,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 179.657,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6348,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 180.709,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6349,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 181.759,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6350,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 182.164,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2622 rh_x100=2125 adc_valid=1 adc12=1400 adc16=22405 err=0"
+    },
+    {
+      "elapsed_s": 182.811,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6351,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 183.861,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6352,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 184.913,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6353,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 185.965,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6354,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 187.015,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6355,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 187.164,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2628 rh_x100=2130 adc_valid=1 adc12=1396 adc16=22341 err=0"
+    },
+    {
+      "elapsed_s": 188.067,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6356,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 189.119,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6357,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 190.169,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6358,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 191.221,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6359,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 192.164,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2629 rh_x100=2130 adc_valid=1 adc12=1373 adc16=21973 err=0"
+    },
+    {
+      "elapsed_s": 192.271,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6360,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 193.323,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6361,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 194.373,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6362,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 195.425,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6363,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 196.477,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6364,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 197.164,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2632 rh_x100=2135 adc_valid=1 adc12=1361 adc16=21781 err=0"
+    },
+    {
+      "elapsed_s": 197.527,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6365,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 198.579,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6366,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 199.631,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6367,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 200.681,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6368,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 201.733,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6369,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 202.164,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2633 rh_x100=2128 adc_valid=1 adc12=1355 adc16=21685 err=0"
+    },
+    {
+      "elapsed_s": 202.783,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6370,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 203.835,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6371,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 204.887,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6372,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 205.937,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6373,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 206.987,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6374,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 207.164,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2636 rh_x100=2129 adc_valid=1 adc12=1356 adc16=21701 err=0"
+    },
+    {
+      "elapsed_s": 208.041,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6375,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 209.093,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6376,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 209.422,
+      "phase": "RECOVERY",
+      "kind": "NET",
+      "text": "[NET] state=AT_WAIT"
+    },
+    {
+      "elapsed_s": 209.488,
+      "phase": "RECOVERY",
+      "kind": "NET",
+      "text": "[NET] state=SIM_CHECK"
+    },
+    {
+      "elapsed_s": 209.503,
+      "phase": "RECOVERY",
+      "kind": "NET",
+      "text": "[NET] state=REGISTER"
+    },
+    {
+      "elapsed_s": 209.521,
+      "phase": "RECOVERY",
+      "kind": "NET",
+      "text": "[NET] state=PDP"
+    },
+    {
+      "elapsed_s": 209.582,
+      "phase": "RECOVERY",
+      "kind": "NET",
+      "text": "[NET] state=TIME_SYNC"
+    },
+    {
+      "elapsed_s": 209.607,
+      "phase": "RECOVERY",
+      "kind": "NET",
+      "text": "[NET] state=TLS_CONFIG"
+    },
+    {
+      "elapsed_s": 210.143,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6377,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 210.178,
+      "phase": "RECOVERY",
+      "kind": "NET",
+      "text": "[NET] state=MQTT_CONNECT"
+    },
+    {
+      "elapsed_s": 211.138,
+      "phase": "RECOVERY",
+      "kind": "NET",
+      "text": "[NET] state=ONLINE"
+    },
+    {
+      "elapsed_s": 211.193,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6378,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 211.409,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=255 bytes=466 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 212.218,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2639 rh_x100=2138 adc_valid=1 adc12=1355 adc16=21685 err=0"
+    },
+    {
+      "elapsed_s": 212.245,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6379,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 213.295,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6380,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 214.347,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6381,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 215.4,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6382,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 216.392,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=256 bytes=465 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 216.45,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6383,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 217.502,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6384,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 218.165,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2639 rh_x100=2150 adc_valid=1 adc12=1352 adc16=21637 err=0"
+    },
+    {
+      "elapsed_s": 218.554,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6385,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 219.604,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6386,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 220.656,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6387,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 221.402,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=257 bytes=466 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 221.706,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6388,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 222.758,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6389,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 223.165,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2643 rh_x100=2151 adc_valid=1 adc12=1362 adc16=21797 err=0"
+    },
+    {
+      "elapsed_s": 223.808,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6390,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 224.86,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6391,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 225.912,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6392,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 226.412,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=258 bytes=466 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 226.962,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6393,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 228.014,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6394,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 228.165,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2643 rh_x100=2148 adc_valid=1 adc12=1356 adc16=21701 err=0"
+    },
+    {
+      "elapsed_s": 229.066,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6395,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 230.116,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6396,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 231.168,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6397,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 231.429,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=259 bytes=466 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 232.218,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6398,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 233.165,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2649 rh_x100=2152 adc_valid=1 adc12=1354 adc16=21669 err=0"
+    },
+    {
+      "elapsed_s": 233.272,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6399,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 234.322,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6400,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 235.372,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6401,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 236.412,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=260 bytes=463 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 236.424,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6402,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 237.474,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6403,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 238.165,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2649 rh_x100=2148 adc_valid=1 adc12=1354 adc16=21669 err=0"
+    },
+    {
+      "elapsed_s": 238.526,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6404,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 239.578,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6405,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 240.632,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6406,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 241.41,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=261 bytes=463 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 241.691,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6407,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 242.744,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6408,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 243.165,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2651 rh_x100=2144 adc_valid=1 adc12=1354 adc16=21669 err=0"
+    },
+    {
+      "elapsed_s": 243.8,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6409,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 244.856,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6410,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 245.912,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6411,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 246.419,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=262 bytes=463 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 246.968,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6412,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 248.024,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6413,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 248.165,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2653 rh_x100=2146 adc_valid=1 adc12=1364 adc16=21829 err=0"
+    },
+    {
+      "elapsed_s": 249.081,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6414,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 250.137,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6415,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 251.193,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6416,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 251.431,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=263 bytes=466 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 252.191,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6417,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 253.165,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2654 rh_x100=2132 adc_valid=1 adc12=1360 adc16=21765 err=0"
+    },
+    {
+      "elapsed_s": 253.245,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6418,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 254.295,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6419,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 255.345,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6420,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 256.397,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6421,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 256.478,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=264 bytes=464 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 257.447,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6422,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 258.165,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2657 rh_x100=2138 adc_valid=1 adc12=1351 adc16=21621 err=0"
+    },
+    {
+      "elapsed_s": 258.499,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6423,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 259.551,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6424,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 260.601,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6425,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 261.462,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=265 bytes=464 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 261.653,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6426,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 262.705,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6427,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 263.165,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2658 rh_x100=2129 adc_valid=1 adc12=1349 adc16=21589 err=0"
+    },
+    {
+      "elapsed_s": 263.755,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6428,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 264.807,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6429,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 265.859,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6430,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 266.452,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=266 bytes=464 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 266.909,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6431,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 267.959,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6432,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 268.198,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2660 rh_x100=2123 adc_valid=1 adc12=1348 adc16=21573 err=0"
+    },
+    {
+      "elapsed_s": 269.011,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6433,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 270.063,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6434,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 271.115,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6435,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 271.514,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=267 bytes=464 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 272.165,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6436,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 273.219,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6437,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 274.165,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2661 rh_x100=2116 adc_valid=1 adc12=1352 adc16=21637 err=0"
+    },
+    {
+      "elapsed_s": 274.267,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6438,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 275.319,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6439,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 276.369,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6440,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 276.542,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=268 bytes=465 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 277.421,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6441,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 278.471,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6442,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 279.165,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2662 rh_x100=2113 adc_valid=1 adc12=1350 adc16=21605 err=0"
+    },
+    {
+      "elapsed_s": 279.523,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6443,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 280.573,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6444,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 281.512,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=269 bytes=465 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 281.625,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6445,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 282.677,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6446,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 283.729,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6447,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 284.166,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2665 rh_x100=2106 adc_valid=1 adc12=1353 adc16=21653 err=0"
+    },
+    {
+      "elapsed_s": 284.78,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6448,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 285.832,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6449,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 286.513,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=270 bytes=465 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 286.882,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6450,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 287.934,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6451,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 288.986,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6452,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 289.218,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2666 rh_x100=2105 adc_valid=1 adc12=1352 adc16=21637 err=0"
+    },
+    {
+      "elapsed_s": 290.036,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6453,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 291.088,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6454,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 291.573,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=271 bytes=465 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 292.14,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6455,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 293.19,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6456,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 294.242,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6457,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 295.166,
+      "phase": "RECOVERY",
+      "kind": "ENV",
+      "text": "[ENV] th_valid=1 temp_x100=2667 rh_x100=2103 adc_valid=1 adc12=1358 adc16=21733 err=0"
+    },
+    {
+      "elapsed_s": 295.292,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6458,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 296.344,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6459,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 296.607,
+      "phase": "RECOVERY",
+      "kind": "PUBACK",
+      "text": "[NET] PUBACK seq=272 bytes=466 temp_valid=1 vision_valid=1"
+    },
+    {
+      "elapsed_s": 297.396,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6460,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 298.446,
+      "phase": "RECOVERY",
+      "kind": "VISION",
+      "seq": 6461,
+      "valid": 1
+    },
+    {
+      "elapsed_s": 298.859,
+      "phase": "RECOVERY",
+      "kind": "CAPTURE_END"
+    }
+  ]
+}

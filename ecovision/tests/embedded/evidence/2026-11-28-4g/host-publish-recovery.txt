@@ -1,0 +1,4 @@
+test_net_publish.c
+net_publish.c
+正在生成代码...
+PASS: missing-prompt fixed-length completion, one payload only, strict ACK, rejection and failed transport boundaries

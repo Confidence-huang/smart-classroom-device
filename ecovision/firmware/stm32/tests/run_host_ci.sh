@@ -31,6 +31,7 @@ run_c_test bh1750 -I "$tests/bh1750_host" "$tests/test_bh1750.c" \
     "$app/Src/app_bh1750.c" "$app/Src/lcd_view.c"
 run_c_test reed -I "$tests/reed_host" "$tests/test_reed.c" "$app/Src/app_reed.c"
 python3 -B "$tests/test_led_task_exit.py"
+python3 -B -m unittest discover -s tests/embedded -p 'test_4g_recovery_evidence.py' -v
 python3 -B -m unittest discover -s ../tests -p 'test_payload.py' -v
 python3 -B ../check_syntax.py ../src/main.py
 

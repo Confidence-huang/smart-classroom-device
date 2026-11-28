@@ -1,0 +1,10 @@
+test_control_policy.c
+control_policy.c
+正在生成代码...
+PASS: AUTO occupancy, duplicates, 30s absence, invalid/session/freshness, hysteresis, 60s fault, button boundaries, wrap and epoch exhaustion
+test_control_adapter.c
+control_policy.c
+app_control.c
+正在生成代码...
+PASS: adapter frame identity, invalid sample between polls, applied-only snapshot, safety OFF and critical-section balance
+PASS: demo AC heat, humidity, cooldown, vacancy, manual hold, uncertain ACK, sensor fault and local lock
