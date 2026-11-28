@@ -249,20 +249,22 @@ static void local_ir_control_bumps_epoch_and_obeys_lock(void) {
     assert(out.led && out.fan_level == 2U && out.control_epoch == 2U);
 
     tick = 1750U;
+    assert(AppControl_ApplyLocalIr(0x42U)); /* Key 7: pure white LED ON */
+    assert(AppControl_ApplyLocalIr(0x52U)); /* Key 8: KTV dynamic LED ON */
     assert(AppControl_ApplyLocalIr(0x4AU)); /* Key 9: rainbow colorful LED ON */
     out = AppControl_Poll();
-    assert(out.led && out.mode == CONTROL_REMOTE && out.control_epoch == 3U);
+    assert(out.led && out.mode == CONTROL_REMOTE && out.control_epoch == 5U);
 
     tick = 2000U;
     assert(AppControl_ApplyLocalIr(0x0DU)); /* Key C: AC toggle ON (26 C) */
     assert(ac_requests == 1U && ac_temperature == 26U);
     out = AppControl_Poll();
-    assert(out.control_epoch == 4U);
+    assert(out.control_epoch == 6U);
 
     tick = 2500U;
     assert(AppControl_ApplyLocalIr(0x47U)); /* Key MENU: restore AUTO */
     out = AppControl_Poll();
-    assert(out.mode == CONTROL_AUTO && out.control_epoch == 5U);
+    assert(out.mode == CONTROL_AUTO && out.control_epoch == 7U);
 
     AppControl_SafetyOff();
     assert(!AppControl_ApplyLocalIr(0x1CU)); /* Key '5' rejected under LOCAL_OFF */

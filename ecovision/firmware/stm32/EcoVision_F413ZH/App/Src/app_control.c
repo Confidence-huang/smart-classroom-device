@@ -327,6 +327,8 @@ bool AppControl_ApplyLocalIr(uint8_t cmd) {
         case 0x15U: /* PLAY (▶): toggle LED */
             handled = Control_Request(&policy, now, epoch, 120U, fan, !led);
             break;
+        case 0x42U: /* 7: pure white LED ON */
+        case 0x52U: /* 8: KTV dynamic party LED ON */
         case 0x4AU: /* 9: colorful rainbow LED ON */
             handled = Control_Request(&policy, now, epoch, 120U, fan, true);
             break;

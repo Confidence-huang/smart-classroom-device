@@ -157,20 +157,79 @@ static void hue_to_grb(uint8_t hue, uint8_t grb[3])
     grb[2] = (uint8_t)((uint16_t)b * 36U / 255U);
 }
 
+static void set_pixel_grb(unsigned led, uint8_t g, uint8_t r, uint8_t b)
+{
+    const uint8_t grb[3] = {g, r, b};
+    for (unsigned byte = 0U; byte < 3U; ++byte)
+    {
+        const uint8_t v = grb[byte];
+        const unsigned base = led * LED_BITS + byte * 8U;
+        for (unsigned bit = 0U; bit < 8U; ++bit)
+        {
+            duty[base + bit] = (v & (0x80U >> bit)) != 0U ? 70U : 37U;
+        }
+    }
+}
+
+static bool show_white(void)
+{
+    /* Pure bright classroom white (G, R, B = 30, 30, 30). */
+    for (unsigned led = 0U; led < LED_COUNT; ++led) set_pixel_grb(led, 30U, 30U, 30U);
+    return send_dma(2U);
+}
+
 static bool show_rainbow(uint8_t phase)
 {
     for (unsigned led = 0U; led < LED_COUNT; ++led)
     {
         uint8_t grb[3];
         hue_to_grb((uint8_t)(phase + led * 16U), grb);
-        for (unsigned byte = 0U; byte < 3U; ++byte)
+        set_pixel_grb(led, grb[0], grb[1], grb[2]);
+    }
+    return send_dma(2U);
+}
+
+static bool show_ktv(uint16_t step)
+{
+    /* High-energy KTV party mode: beat-alternating neon sectors + dual counter-rotating comets. */
+    static const uint8_t palette[6][3] = {
+        /* G, R, B */
+        {0U, 42U, 34U},  /* Neon Magenta */
+        {38U, 0U, 42U},  /* Electric Cyan */
+        {6U, 44U, 0U},   /* Laser Red */
+        {10U, 0U, 46U},  /* Deep Club Blue */
+        {42U, 32U, 0U},  /* Golden Yellow */
+        {44U, 0U, 16U}   /* Acid Green */
+    };
+    const unsigned beat = (step / 6U) % 6U;
+    const unsigned alt = (beat + 3U) % 6U;
+    const unsigned head_a = step % LED_COUNT;
+    const unsigned head_b = (LED_COUNT - (step % LED_COUNT)) % LED_COUNT;
+    const unsigned tail_a = (head_a + LED_COUNT - 1U) % LED_COUNT;
+    const unsigned tail_b = (head_b + 1U) % LED_COUNT;
+    const bool strobe_odd = ((step / 3U) & 1U) != 0U;
+
+    for (unsigned led = 0U; led < LED_COUNT; ++led)
+    {
+        if (led == head_a || led == head_b)
         {
-            const uint8_t v = grb[byte];
-            const unsigned base = led * LED_BITS + byte * 8U;
-            for (unsigned b = 0U; b < 8U; ++b)
-            {
-                duty[base + b] = (v & (0x80U >> b)) != 0U ? 70U : 37U;
-            }
+            /* Bright white-tinted spotlight head spinning in both directions. */
+            set_pixel_grb(led, 44U, 48U, 48U);
+        }
+        else if (led == tail_a || led == tail_b)
+        {
+            const uint8_t *c = palette[(beat + 1U) % 6U];
+            set_pixel_grb(led, c[0], c[1], c[2]);
+        }
+        else if ((((led / 2U) + (strobe_odd ? 1U : 0U)) & 1U) == 0U)
+        {
+            const uint8_t *c = palette[beat];
+            set_pixel_grb(led, (uint8_t)(c[0] / 2U), (uint8_t)(c[1] / 2U), (uint8_t)(c[2] / 2U));
+        }
+        else
+        {
+            const uint8_t *c = palette[alt];
+            set_pixel_grb(led, (uint8_t)(c[0] / 3U), (uint8_t)(c[1] / 3U), (uint8_t)(c[2] / 3U));
         }
     }
     return send_dma(2U);
@@ -251,9 +310,10 @@ void AppLed_Run(UART_HandleTypeDef *console)
         uint32_t now=HAL_GetTick();
         static uint32_t last_ir_at=0U;
         static uint8_t last_ir_cmd=0xFFU;
-        static bool rainbow_mode=false;
+        static enum { LED_SCENE_WARM = 0, LED_SCENE_WHITE = 1, LED_SCENE_KTV = 2, LED_SCENE_RAINBOW = 3 } led_scene = LED_SCENE_WARM;
         static uint8_t rainbow_phase=0U;
-        static uint32_t rainbow_at=0U;
+        static uint16_t ktv_step=0U;
+        static uint32_t anim_at=0U;
         IrNecEvent ir_ev;
         while(AppIrRx_Pop(&ir_ev)) {
             AppLog_Printf("[IR-RX] NEC addr=0x%02X cmd=0x%02X repeat=%u\r\n",
@@ -267,13 +327,18 @@ void AppLed_Run(UART_HandleTypeDef *console)
                 AppIrRx_MuteMs(250U);
             }
             if (AppControl_ApplyLocalIr(ir_ev.command)) {
-                if (ir_ev.command == 0x4AU) {
-                    rainbow_mode = !rainbow_mode;
-                    if (!rainbow_mode) (void)show_level(2U);
-                    AppLog_Printf("[LED] rainbow=%u\r\n", rainbow_mode ? 1U : 0U);
+                if (ir_ev.command == 0x42U) {
+                    led_scene = LED_SCENE_WHITE;
+                    AppLog_Printf("[LED] scene=WHITE\r\n");
+                } else if (ir_ev.command == 0x52U) {
+                    led_scene = LED_SCENE_KTV;
+                    AppLog_Printf("[LED] scene=KTV\r\n");
+                } else if (ir_ev.command == 0x4AU) {
+                    led_scene = (led_scene == LED_SCENE_RAINBOW) ? LED_SCENE_WARM : LED_SCENE_RAINBOW;
+                    AppLog_Printf("[LED] scene=%s\r\n", led_scene == LED_SCENE_RAINBOW ? "RAINBOW" : "WARM");
                 } else if (ir_ev.command == 0x15U || ir_ev.command == 0x45U ||
                            ir_ev.command == 0x47U || ir_ev.command == 0x43U) {
-                    rainbow_mode = false;
+                    led_scene = LED_SCENE_WARM;
                 }
             }
         }
@@ -291,20 +356,31 @@ void AppLed_Run(UART_HandleTypeDef *console)
             uint8_t fan_level=(next.fan_level>0U && fan_kick_until!=0U && (int32_t)(now-fan_kick_until)<0)
                 ?CONTROL_FAN_MAX:next.fan_level;
             uint8_t led_level=next.led?2U:0U;
-            static bool was_rainbow=false;
-            if (!next.led || next.mode != CONTROL_REMOTE) rainbow_mode = false;
+            static uint8_t prev_scene=0U;
+            if (!next.led || next.mode != CONTROL_REMOTE) led_scene = LED_SCENE_WARM;
             bool fan_ok=AppFan_GetLevel()==fan_level || AppFan_SetLevel(fan_level);
             bool led_ok=true;
-            if (rainbow_mode && next.led) {
-                if (!was_rainbow || (uint32_t)(now - rainbow_at) >= 60U) {
-                    rainbow_at = now;
+            uint8_t active_scene = next.led ? (uint8_t)led_scene : 0U;
+            if (active_scene == LED_SCENE_KTV) {
+                if (prev_scene != LED_SCENE_KTV || (uint32_t)(now - anim_at) >= 40U) {
+                    anim_at = now;
+                    ++ktv_step;
+                    led_ok = show_ktv(ktv_step);
+                }
+            } else if (active_scene == LED_SCENE_RAINBOW) {
+                if (prev_scene != LED_SCENE_RAINBOW || (uint32_t)(now - anim_at) >= 60U) {
+                    anim_at = now;
                     rainbow_phase = (uint8_t)(rainbow_phase + 4U);
                     led_ok = show_rainbow(rainbow_phase);
                 }
-            } else if (was_rainbow || AppLed_GetLevel()!=led_level) {
+            } else if (active_scene == LED_SCENE_WHITE) {
+                if (prev_scene != LED_SCENE_WHITE || AppLed_GetLevel() != led_level) {
+                    led_ok = show_white();
+                }
+            } else if (prev_scene != LED_SCENE_WARM || AppLed_GetLevel() != led_level) {
                 led_ok = show_level(led_level);
             }
-            was_rainbow = rainbow_mode && next.led;
+            prev_scene = active_scene;
             if(!fan_ok || !led_ok) {
                 AppLog_Printf("[CTRL] actuator write failed; safety OFF and reset\r\n");
                 (void)AppFan_SetLevel(0U);(void)show_level(0U);
