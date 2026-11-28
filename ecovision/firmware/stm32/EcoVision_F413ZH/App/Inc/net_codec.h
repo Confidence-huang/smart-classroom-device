@@ -16,7 +16,7 @@ typedef struct {
  bool vision_valid,temp_valid,have_vision,have_temp,time_valid;
  uint8_t count,fan_level,led;int32_t temp_x100,rh_x100;
  bool ac_demo_ready; /* Firmware and module are ready for AC demo commands. */
- bool light_valid;uint16_t light_raw16;
+ bool light_valid,lux_valid;uint16_t light_raw16;uint32_t lux_x100;
  uint8_t occupancy;bool local_off,remote;uint32_t control_epoch;
  uint16_t hold_remaining_s;char last_command[65];
 } NetSample;

@@ -138,13 +138,14 @@ int Net_Telemetry(char *out,size_t size,const char *device,const char *boot,cons
  return n<0 || (size_t)n>=size || n>1500 ? -1:n;
 }
 int Net_LegacyTelemetry(char *out,size_t size,const char *device,const char *room,const NetSample *s) {
- if(!out||!s||!identifier(device,32)||!identifier(room,32)||!s->time_valid||s->utc<946684800U||!s->temp_valid||s->temp_age>=10000U||!s->light_valid||s->temp_x100<-4000||s->temp_x100>8500||s->rh_x100<0||s->rh_x100>10000)return -1;
+ if(!out||!s||!identifier(device,32)||!identifier(room,32)||!s->time_valid||s->utc<946684800U||!s->temp_valid||s->temp_age>=10000U||(!s->light_valid&&!s->lux_valid)||s->temp_x100<-4000||s->temp_x100>8500||s->rh_x100<0||s->rh_x100>10000)return -1;
  uint32_t days=s->utc/86400U,seconds=s->utc%86400U;unsigned year=1970,month=1;
  for(;;){unsigned count=leap_year(year)?366U:365U;if(days<count)break;days-=count;year++;}
  static const unsigned months[]={31,28,31,30,31,30,31,31,30,31,30,31};
  for(;;){unsigned count=months[month-1]+((month==2&&leap_year(year))?1U:0U);if(days<count)break;days-=count;month++;}
- char count[12]="null",temp[24],rh[24];decimal(temp,sizeof temp,s->temp_x100);decimal(rh,sizeof rh,s->rh_x100);
+ char count[12]="null",temp[24],rh[24],lux[24]="null";decimal(temp,sizeof temp,s->temp_x100);decimal(rh,sizeof rh,s->rh_x100);
+ if(s->lux_valid)(void)snprintf(lux,sizeof lux,"%lu.%02lu",(unsigned long)(s->lux_x100/100U),(unsigned long)(s->lux_x100%100U));
  if(s->vision_valid && s->vision_age<5000U && s->count<=20)(void)snprintf(count,sizeof count,"%u",s->count);
- int n=snprintf(out,size,"{\"schema_version\":1,\"type\":\"telemetry\",\"source\":\"stm32_c_hal_ec200u\",\"simulated\":false,\"device_id\":\"%s\",\"room_id\":\"%s\",\"seq\":%lu,\"captured_at\":\"%04u-%02u-%02uT%02lu:%02lu:%02luZ\",\"people_count\":%s,\"temperature_c\":%s,\"humidity_pct\":%s,\"light_lux\":null,\"light_raw_u16\":%u}",device,room,(unsigned long)(s->utc-946684800U),year,month,(unsigned)(days+1U),(unsigned long)(seconds/3600U),(unsigned long)(seconds%3600U/60U),(unsigned long)(seconds%60U),count,temp,rh,s->light_raw16);
+ int n=snprintf(out,size,"{\"schema_version\":1,\"type\":\"telemetry\",\"source\":\"stm32_c_hal_ec200u\",\"simulated\":false,\"device_id\":\"%s\",\"room_id\":\"%s\",\"seq\":%lu,\"captured_at\":\"%04u-%02u-%02uT%02lu:%02lu:%02luZ\",\"people_count\":%s,\"temperature_c\":%s,\"humidity_pct\":%s,\"light_lux\":%s,\"light_raw_u16\":%u}",device,room,(unsigned long)(s->utc-946684800U),year,month,(unsigned)(days+1U),(unsigned long)(seconds/3600U),(unsigned long)(seconds%3600U/60U),(unsigned long)(seconds%60U),count,temp,rh,lux,s->light_valid?s->light_raw16:0U);
  return n<0||(size_t)n>=size ? -1:n;
 }

@@ -451,6 +451,7 @@ void AppNet_Run(void *argument) {
    sample.occupancy=(uint8_t)control.occupancy;
    sample.local_off=control.mode==CONTROL_LOCAL_OFF;sample.control_epoch=control.control_epoch;
    sample.light_valid=env.light_valid;sample.light_raw16=env.light_raw16;
+   sample.lux_valid=env.lux_valid;sample.lux_x100=env.lux_x100;
    if(Net_Telemetry(payload,sizeof payload,config.device,boot,&sample,config.fan_levels_version)<0)break;
    (void)snprintf(topic,sizeof topic,"ecovision/%s/telemetry",config.device);
    if(!publish(topic,payload,false))break;
