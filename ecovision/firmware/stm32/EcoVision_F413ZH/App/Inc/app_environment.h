@@ -12,6 +12,10 @@ typedef struct {
     uint16_t bh1750_raw;
     uint32_t lux_x100;
     int light_error;
+    bool air_valid;
+    uint16_t eco2_ppm, tvoc_ppb;
+    uint32_t air_sampled_at;
+    int air_status;
 } EnvironmentSnapshot;
 void AppEnvironment_Run(void *argument);
 void AppEnvironment_GetSnapshot(EnvironmentSnapshot *out);

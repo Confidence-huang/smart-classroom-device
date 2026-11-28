@@ -24,6 +24,7 @@ int main(void) {
     for(uint8_t n=0;n<=20;n++) assert(LcdView_Render(guarded+1,LCD_VIEW_BYTES,true,true,n,0xffffffffU));
     assert(guarded[0]==0xA5 && guarded[LCD_VIEW_BYTES+1]==0xA5);
     env.th_valid=true;env.light_valid=true;env.temp_x100=2510;env.humi_x100=5030;env.light_raw16=23029;
+    env.air_valid=true;env.eco2_ppm=403;env.tvoc_ppb=2;
     assert(LcdView_RenderDashboard(guarded+1,LCD_VIEW_BYTES,true,true,12,583,&env));
     /* CI writes to its temporary directory, while the desktop script keeps its preview path. */
     const char *preview_path=getenv("ECOVISION_LCD_PREVIEW");
@@ -36,6 +37,18 @@ int main(void) {
         (void)fwrite(rgb,1,3,preview);
     }
     (void)fclose(preview);
+    memcpy(previous,guarded+1,LCD_VIEW_BYTES);
+    env.eco2_ppm=1500;env.tvoc_ppb=300;
+    assert(LcdView_RenderDashboard(guarded+1,LCD_VIEW_BYTES,true,true,12,583,&env));
+    assert(memcmp(previous,guarded+1,LCD_VIEW_BYTES)!=0);
+    memcpy(previous,guarded+1,LCD_VIEW_BYTES);
+    env.eco2_ppm=2500;env.tvoc_ppb=800;
+    assert(LcdView_RenderDashboard(guarded+1,LCD_VIEW_BYTES,true,true,12,583,&env));
+    assert(memcmp(previous,guarded+1,LCD_VIEW_BYTES)!=0);
+    memcpy(previous,guarded+1,LCD_VIEW_BYTES);
+    env.air_valid=false;env.air_status=1;
+    assert(LcdView_RenderDashboard(guarded+1,LCD_VIEW_BYTES,true,true,12,583,&env));
+    assert(memcmp(previous,guarded+1,LCD_VIEW_BYTES)!=0);
     memset(&env,0,sizeof env);
     assert(LcdView_RenderDashboard(guarded+1,LCD_VIEW_BYTES,true,true,12,3,&env));
     memcpy(previous,guarded+1,LCD_VIEW_BYTES);
