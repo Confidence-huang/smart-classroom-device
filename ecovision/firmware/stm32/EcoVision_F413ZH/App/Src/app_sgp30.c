@@ -41,25 +41,41 @@ Sgp30_Result Sgp30_Poll(Sgp30_Context *ctx, I2C_HandleTypeDef *bus, Sgp30_Sample
         return SGP30_WARMING_UP;
     }
 
-    /* The IAQ result needs up to 12 ms. The environment task runs at 1 kHz. */
+    /* The IAQ result needs up to 12 ms. Retry up to 2 times on transient CRC glitch. */
     uint8_t data[6];
-    if (osDelay(SGP30_WAIT_TICKS) != osOK)
+    for (unsigned attempt = 0U; attempt < 3U; ++attempt)
     {
-        ctx->initialized = false;
-        return SGP30_IO_ERROR;
+        if (attempt > 0U)
+        {
+            lock = osKernelLock();
+            tx_status = HAL_I2C_Master_Transmit(bus, SGP30_HAL_ADDRESS, command,
+                                                sizeof command, SGP30_IO_TIMEOUT_MS);
+            (void)osKernelRestoreLock(lock);
+            if (tx_status != HAL_OK)
+            {
+                ctx->initialized = false;
+                return SGP30_IO_ERROR;
+            }
+        }
+        if (osDelay(SGP30_WAIT_TICKS) != osOK)
+        {
+            ctx->initialized = false;
+            return SGP30_IO_ERROR;
+        }
+        lock = osKernelLock();
+        HAL_StatusTypeDef rx_status = HAL_I2C_Master_Receive(bus, SGP30_HAL_ADDRESS, data,
+                                                             sizeof data, SGP30_IO_TIMEOUT_MS);
+        (void)osKernelRestoreLock(lock);
+        if (rx_status != HAL_OK)
+        {
+            ctx->initialized = false;
+            return SGP30_IO_ERROR;
+        }
+        for (unsigned i = 0U; i < 6U; ++i) ctx->last_raw[i] = data[i];
+        if (Environment_Crc8(data, 2U) == data[2] && Environment_Crc8(data + 3, 2U) == data[5])
+            break;
+        if (attempt == 2U) return SGP30_BAD_CRC;
     }
-    lock = osKernelLock();
-    HAL_StatusTypeDef rx_status = HAL_I2C_Master_Receive(bus, SGP30_HAL_ADDRESS, data,
-                                                         sizeof data, SGP30_IO_TIMEOUT_MS);
-    (void)osKernelRestoreLock(lock);
-    if (rx_status != HAL_OK)
-    {
-        ctx->initialized = false;
-        return SGP30_IO_ERROR;
-    }
-    for (unsigned i = 0U; i < 6U; ++i) ctx->last_raw[i] = data[i];
-    if (Environment_Crc8(data, 2U) != data[2] || Environment_Crc8(data + 3, 2U) != data[5])
-        return SGP30_BAD_CRC;
     if (now - ctx->started_at < SGP30_WARMUP_MS) return SGP30_WARMING_UP;
 
     const uint16_t eco2 = (uint16_t)((data[0] << 8) | data[1]);
