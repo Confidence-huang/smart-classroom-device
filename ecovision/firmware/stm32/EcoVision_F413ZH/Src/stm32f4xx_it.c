@@ -23,6 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "app_uart_dma.h"
+#include "app_ir_rx.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -224,5 +225,6 @@ void DMA2_Stream1_IRQHandler(void) {
 
 /* USER CODE BEGIN 1 */
 void USART2_IRQHandler(void) { HAL_UART_IRQHandler(&huart2); }
+void EXTI2_IRQHandler(void) { AppIrRx_ExtiIrq(); }
 
 /* USER CODE END 1 */

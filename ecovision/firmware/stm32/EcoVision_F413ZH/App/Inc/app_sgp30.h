@@ -16,6 +16,7 @@ typedef enum {
 typedef struct {
     uint32_t started_at, last_command_at;
     bool attempted, initialized;
+    uint8_t last_raw[6];
 } Sgp30_Context;
 
 typedef struct {

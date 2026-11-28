@@ -6,7 +6,7 @@ void Control_Init(ControlPolicy *p) {
     memset(p,0,sizeof *p);
 }
 
-static void bump_epoch(ControlPolicy *p) {
+void Control_BumpEpoch(ControlPolicy *p) {
     if(p->output.control_epoch==UINT32_MAX) {
         p->output.requires_new_boot=true;
         p->output.mode=CONTROL_LOCAL_OFF;
@@ -16,14 +16,20 @@ static void bump_epoch(ControlPolicy *p) {
     }
 }
 
+static uint8_t auto_fan_level(const ControlPolicy *p) {
+    if(!p->auto_fan && !p->auto_air_fan) return CONTROL_FAN_OFF;
+    return p->auto_boost ? CONTROL_FAN_BOOST : CONTROL_FAN_DEFAULT;
+}
+
 /* Local takeover cancels the lease even if an old command is retransmitted. */
 void Control_LocalOff(ControlPolicy *p) {
     p->output.mode=CONTROL_LOCAL_OFF;
     p->output.led=false;p->output.fan_level=CONTROL_FAN_OFF;
     p->output.hold_remaining_s=0;
-    p->auto_led=false;p->auto_fan=false;
+    p->auto_led=false;p->auto_fan=false;p->auto_air_fan=false;p->auto_boost=false;
     p->hot_active=false;p->cold_active=false;
-    bump_epoch(p);
+    p->air_bad_active=false;p->air_ok_active=false;
+    Control_BumpEpoch(p);
 }
 
 static void button(ControlPolicy *p,uint32_t now,bool pressed) {
@@ -43,7 +49,8 @@ static void button(ControlPolicy *p,uint32_t now,bool pressed) {
                 p->output.mode=CONTROL_AUTO;
                 p->output.hold_remaining_s=0;
                 p->hot_active=false;p->cold_active=false;
-                bump_epoch(p);
+                p->air_bad_active=false;p->air_ok_active=false;
+                Control_BumpEpoch(p);
             }
         }
     }
@@ -85,12 +92,14 @@ void Control_Update(ControlPolicy *p,uint32_t now,const ControlInput *in) {
     if(p->output.mode==CONTROL_LOCAL_OFF || p->output.requires_new_boot) {
         p->output.led=false;p->output.fan_level=CONTROL_FAN_OFF;p->output.hold_remaining_s=0;
         p->hot_active=false;p->cold_active=false;
+        p->air_bad_active=false;p->air_ok_active=false;
         return;
     }
     /* Maintain the AUTO decision separately so remote settings never become AUTO's remembered outputs. */
     if(p->output.occupancy==CONTROL_VACANT) {
-        p->auto_led=false;p->auto_fan=false;
+        p->auto_led=false;p->auto_fan=false;p->auto_air_fan=false;p->auto_boost=false;
         p->hot_active=false;p->cold_active=false;
+        p->air_bad_active=false;p->air_ok_active=false;
     } else if(p->output.occupancy==CONTROL_OCCUPIED) {
         p->auto_led=true;
         if(!temperature) {p->hot_active=false;p->cold_active=false;}
@@ -103,9 +112,34 @@ void Control_Update(ControlPolicy *p,uint32_t now,const ControlInput *in) {
             if(!p->cold_active){p->cold_active=true;p->cold_at=now;}
             if((uint32_t)(now-p->cold_at)>=5000U)p->auto_fan=false;
         } else {p->hot_active=false;p->cold_active=false;}
-    } else {p->hot_active=false;p->cold_active=false;}
+
+        /* Optional SGP30 air-quality ventilation assist with 10s hysteresis dwell. */
+        if(!in->air_valid) {
+            p->air_bad_active=false;p->air_ok_active=false;p->auto_air_fan=false;
+        } else if(in->eco2_ppm>=1200U || in->tvoc_ppb>=400U) {
+            p->air_ok_active=false;
+            if(!p->air_bad_active){p->air_bad_active=true;p->air_bad_at=now;}
+            if((uint32_t)(now-p->air_bad_at)>=10000U)p->auto_air_fan=true;
+        } else if(in->eco2_ppm<=900U && in->tvoc_ppb<=250U) {
+            p->air_bad_active=false;
+            if(!p->air_ok_active){p->air_ok_active=true;p->air_ok_at=now;}
+            if((uint32_t)(now-p->air_ok_at)>=10000U)p->auto_air_fan=false;
+        } else {p->air_bad_active=false;p->air_ok_active=false;}
+
+        /* Boost AUTO fan to level 4 under severe heat (>=30 C) or poor IAQ, with hysteresis. */
+        bool high_heat = temperature && in->temperature_x100 >= 3000;
+        bool cool_enough = !temperature || in->temperature_x100 <= 2900;
+        bool poor_air = in->air_valid && (in->eco2_ppm >= 2000U || in->tvoc_ppb >= 660U);
+        bool air_cleared = !in->air_valid || (in->eco2_ppm <= 1600U && in->tvoc_ppb <= 500U);
+        if(!p->auto_fan && !p->auto_air_fan) p->auto_boost=false;
+        else if(high_heat || poor_air) p->auto_boost=true;
+        else if(cool_enough && air_cleared) p->auto_boost=false;
+    } else {
+        p->hot_active=false;p->cold_active=false;
+        p->air_bad_active=false;p->air_ok_active=false;
+    }
     if(p->fault_active && (uint32_t)(now-p->fault_at)>=60000U) {
-        p->auto_led=false;p->auto_fan=false;
+        p->auto_led=false;p->auto_fan=false;p->auto_air_fan=false;p->auto_boost=false;
     }
 
     if(p->output.mode==CONTROL_REMOTE) {
@@ -118,7 +152,7 @@ void Control_Update(ControlPolicy *p,uint32_t now,const ControlInput *in) {
         p->output.mode=CONTROL_AUTO;
     }
     p->output.hold_remaining_s=0;
-    p->output.fan_level=p->auto_fan?CONTROL_FAN_DEFAULT:CONTROL_FAN_OFF;
+    p->output.fan_level=auto_fan_level(p);
     p->output.led=p->auto_led;
 }
 
@@ -130,7 +164,7 @@ bool Control_Request(ControlPolicy *p,uint32_t now,uint32_t epoch,uint16_t hold_
     p->output.hold_remaining_s=hold_s;
     if(hold_s==0U) {
         p->output.mode=CONTROL_AUTO;
-        p->output.fan_level=p->auto_fan?CONTROL_FAN_DEFAULT:CONTROL_FAN_OFF;
+        p->output.fan_level=auto_fan_level(p);
         p->output.led=p->auto_led;
     } else {
         p->output.mode=CONTROL_REMOTE;

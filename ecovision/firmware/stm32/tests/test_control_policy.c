@@ -104,11 +104,53 @@ static void remote_levels_expire_to_auto(void) {
     assert(!Control_Request(&p,1000000,0,120,CONTROL_FAN_MAX+1,true));
 }
 
+static void air_quality_ventilation_and_boost(void) {
+    ControlPolicy p; Control_Init(&p);
+    occupy(&p, 0, 2500);
+    ControlInput in = sample(1, 2500);
+    in.air_valid = true; in.eco2_ppm = 1250U; in.tvoc_ppb = 100U;
+    for (uint32_t t = 3000; t < 13000; t += 1000) {
+        Control_Update(&p, t, &in);
+        assert(p.output.fan_level == CONTROL_FAN_OFF);
+    }
+    Control_Update(&p, 13000, &in);
+    assert(p.output.fan_level == CONTROL_FAN_DEFAULT);
+
+    /* Severe IAQ boosts AUTO fan from level 2 to level 4; moderate drop holds until cleared. */
+    in.eco2_ppm = 2100U;
+    Control_Update(&p, 14000, &in);
+    assert(p.output.fan_level == CONTROL_FAN_BOOST);
+    in.eco2_ppm = 1700U;
+    Control_Update(&p, 15000, &in);
+    assert(p.output.fan_level == CONTROL_FAN_BOOST);
+    in.eco2_ppm = 1500U;
+    Control_Update(&p, 16000, &in);
+    assert(p.output.fan_level == CONTROL_FAN_DEFAULT);
+
+    /* Clean air must persist for 10 s before ventilation turns off. */
+    in.eco2_ppm = 800U; in.tvoc_ppb = 100U;
+    for (uint32_t t = 17000; t < 27000; t += 1000) {
+        Control_Update(&p, t, &in);
+        assert(p.output.fan_level == CONTROL_FAN_DEFAULT);
+    }
+    Control_Update(&p, 27000, &in);
+    assert(p.output.fan_level == CONTROL_FAN_OFF);
+
+    /* High temperature (>=30 C) also boosts AUTO fan to level 4 and drops back at <=29 C. */
+    in.air_valid = false; in.temperature_x100 = 3000;
+    for (uint32_t t = 28000; t < 33000; t += 1000) Control_Update(&p, t, &in);
+    Control_Update(&p, 33000, &in);
+    assert(p.output.fan_level == CONTROL_FAN_BOOST);
+    in.temperature_x100 = 2900;
+    Control_Update(&p, 34000, &in);
+    assert(p.output.fan_level == CONTROL_FAN_DEFAULT);
+}
+
 int main(void) {
     three_real_frames();absence_requires_thirty_seconds();invalid_resets_confirmation();
     hysteresis_and_fault_hold();freshness_and_session();short_and_long_button();
     release_before_threshold_is_short();bounce_has_no_action();clock_wrap_and_epoch_exhaustion();
-    remote_levels_expire_to_auto();
-    puts("PASS: AUTO occupancy, duplicates, 30s absence, invalid/session/freshness, hysteresis, 60s fault, button boundaries, wrap and epoch exhaustion");
+    remote_levels_expire_to_auto();air_quality_ventilation_and_boost();
+    puts("PASS: AUTO occupancy, duplicates, 30s absence, invalid/session/freshness, hysteresis, 60s fault, button boundaries, wrap, epoch exhaustion, IAQ ventilation and boost");
     return 0;
 }
