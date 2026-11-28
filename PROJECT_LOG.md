@@ -4,7 +4,7 @@
 
 ## 当前快照
 
-- 2026-11-28 SGP30 本地采集与实板初验：基于 `main`（`31ee6f2`）接入 F413 I²C1（`0x58`）SGP30 每秒采集，每 5 秒串口输出 `[AIR]` 有效状态、TVOC（ppb）与 eCO₂（ppm）；不改动冻结的 MQTT 1.2.0 公共契约与执行器策略。主机回归通过（`test_sgp30`、18 项契约、33 项 K230 视觉），独立 AC6 编译链接 70 个对象生成 HEX（SHA256 `4d4c10cf85c0adae6b27cfa05673a140822b848c3d180a767a5bc92dfcf72278`，保留 `0x08160000` 私有配置区）。经 ST-Link 烧录实板并通过 `COM4` 连续观测 35 s：`[AIR]` 在 1.05–12.01 s 输出暖机 `valid=0 status=1`，17.01 s 起稳定转为 `valid=1 tvoc_ppb=0 eco2_ppm=400`；同总线 AHT20（`[ENV] th_valid=1 err=0`）、`[ZJ-IR] ADDRESS_OK`、K230 视觉与 4G MQTT（`PUBACK seq=0..7`）均正常。拔除 SGP30 降级与气体刺激变化待按需补测；接线和诊断见 `ecovision/firmware/stm32/SGP30.md`。
+- 2026-11-28 SGP30 本地采集、6 项 LCD 布局与 I²C1 总线锁死自恢复：基于 `main`（`31ee6f2`）接入 F413 I²C1（`0x58`）SGP30 每秒采集（20 ms 读等待、单次 CRC 抖动 5 s 保持，不改动冻结的 MQTT 1.2.0 公共契约与执行器策略）；同步将 ST7735 LCD 精简为 6 项大字布局（人数、联网状况、温度、湿度、空气质量含 `ECO2`/`TVOC`、光照强度 `LUX`），并加入 I²C1 9 时钟脉冲解锁与外设复位自恢复。主机回归通过（`test_sgp30`、`test_lcd_view`、18 项契约、33 项 K230 视觉），独立 AC6 编译链接 70 个对象生成 HEX（SHA256 `b1605e91ff7a76a5b98cad1e49f3f08561cece8c2cde33ae6c6d26c1a972a2f9`，保留 `0x08160000` 私有配置区）。经 ST-Link 烧录实板并通过 `COM4` 验收：验证 I²C1 锁死自动解锁（`before=scl:1,sda:0 -> after=scl:1,sda:1 busy=0`），AHT20（`0x38`、`27.02 °C`/`21.53 %RH`）、BH1750（`0x23`、`10.83 lx`）、SGP30（`0x58`、`valid=1`、`eCO₂=400–404 ppm`、`TVOC=1–9 ppb`）三颗传感器同时稳定在线 0 报错，4G `ONLINE` 与 `[ZJ-IR]` 正常。详见 `ecovision/firmware/stm32/SGP30.md`。
 
 - 2026-11-28 实板供电优化与整机验收收尾：将电机（TB6612 `VM`）、灯环与红外发射模块（`ZJ-IR-V2`）改由独立电源模块供电并与 Nucleo 共地（`UART5` `PC12`/`PD2` 及其余控制信号脚不变），消除大负载压降引起的 EC200U 掉线与风扇起步延迟；板上保留已验收正式固件 `2f89a87` 与 K230 20 人 V4 模型，经免密总站 `smartroom.careerpathdesk.com` 实测风扇、模拟空调 `1.2.0` 与 4G 遥测均正常；同步更新 `ecovision/firmware/stm32/MODULE-WIRING.md`。
 

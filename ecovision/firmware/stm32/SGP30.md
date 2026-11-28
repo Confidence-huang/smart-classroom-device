@@ -32,4 +32,7 @@ SGP30 地址为 7 位 `0x58`，与同总线的 AHT20 `0x38` 和 BH1750 `0x23` �
 - 运行设备仓 `ecovision/firmware/stm32/tests/run_host_ci.sh`。SGP30 用例模拟 I²C，覆盖初始化、周期测量、暖机、解码、双 CRC、异常范围、退避重试和时钟回绕。
 - 实板先确认模块确切型号和供电电平，查看 `[AIR]` 由暖机变为有效，并同时观察 `[ENV]`、`[LIGHT]` 和 4G 遥测。另一次断电后移除 SGP30，再启动核对空气质量无效、现有温湿度与光照仍更新。
 - 用于提交验收时保留固件提交、HEX SHA256、模块型号和串口日志。
-- **2026-11-28 实板初验（NUCLEO-F413ZH + COM4）**：烧录 AC6 构建 HEX（SHA256 `4d4c10cf85c0adae6b27cfa05673a140822b848c3d180a767a5bc92dfcf72278`，仅擦写 sectors 0–3 保留 `0x08160000` 私有配置区），上电 35 s 串口观测确认：`1.05s / 7.07s / 12.01s` 输出 `[AIR] source=SGP30 valid=0 status=1`（暖机），`17.01s / 22.01s / 27.01s / 32.01s` 持续输出 `[AIR] source=SGP30 valid=1 tvoc_ppb=0 eco2_ppm=400`；同总线 AHT20（`[ENV] th_valid=1 err=0`）、`[ZJ-IR] UART5 ADDRESS_OK`、K230 视觉与 4G 遥测（`PUBACK seq=0..7`）均正常。拔除 SGP30 后的断线降级与呼气/酒精刺激变化待按需补测。
+- **2026-11-28 实板验收（NUCLEO-F413ZH + COM4 + LCD）**：
+  - 烧录 AC6 构建 HEX（SHA256 `b1605e91ff7a76a5b98cad1e49f3f08561cece8c2cde33ae6c6d26c1a972a2f9`，仅擦写 sectors 0–3 保留 `0x08160000` 私有配置区）。
+  - I²C1 锁死自恢复实测：上电检测到 `before=scl:1,sda:0` 后经 9 时钟脉冲解锁为 `after=scl:1,sda:1 busy=0`。
+  - 三传感器同总线并发（28 s 连续观测 0 CRC 报错）：AHT20（`0x38`、`27.02 °C`/`21.53 %RH`）、BH1750（`0x23`、`10.83 lx`）、SGP30（`0x58`、15 s 暖机后 `valid=1 tvoc_ppb=1..9 eco2_ppm=400..404`）均正常；LCD 同步显示 6 项核心数据（人数、联网、温湿度、空气质量/eCO₂/TVOC、光照），`[ZJ-IR]` 与 4G 遥测正常。拔除 SGP30 断线降级与气体刺激响应待按需补测。
