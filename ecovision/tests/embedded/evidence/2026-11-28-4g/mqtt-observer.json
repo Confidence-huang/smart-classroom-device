@@ -1,0 +1,9 @@
+{
+  "started_at": "2026-11-28T10:27:54.525Z",
+  "observer_only": true,
+  "connected": true,
+  "messages": [],
+  "errors": [
+    "SUBSCRIBE_FAILED"
+  ]
+}
